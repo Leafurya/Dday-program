@@ -1,0 +1,14 @@
+{
+	"test prj":{
+		"cntnt":"test project",
+		"tasks":{"one":false,"two":true},
+		"D":"+"
+	},
+	"second prj":{
+		"cntnt":"second project",
+		"tasks":{"one":true,"two":false},
+		"D":"-",
+		"Day":7,
+		"LastTask":{"one":false}
+	}
+}

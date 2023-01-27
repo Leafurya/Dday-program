@@ -5,7 +5,7 @@ function Project(props){
 	//프로젝트 데이터 요청.
 	return(
 		<div>
-			<input type="button" value="lobby" onClick={()=>{props.PageCallBack("Lobby")}}></input>
+			<input type="button" value="lobby" onClick={()=>{props.PageCallback("Lobby")}}></input>;
 			project page
 			name:{props.name}
 		</div>
