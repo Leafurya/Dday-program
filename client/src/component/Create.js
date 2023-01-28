@@ -7,7 +7,7 @@ function Create(props){
 	useEffect(()=>{
 		inputRef.current.click();
 	},[]);
-
+	console.log("props.pjs",props.prjs);
 	return(
 		<div>
 			<h1>프로젝트 생성</h1>
@@ -73,17 +73,12 @@ function Create(props){
 						prj["Day"]=GetElement("prj_day").value;
 						tasks=document.getElementsByName("last_task_input");
 						prj["LastTasks"]={}
-						for(var i=0;i<tasks.length;i++){
+						for(i=0;i<tasks.length;i++){
 							prj["LastTasks"][tasks[i].value]=false;
 						}
 					}
-					console.log(data);
-					if(!(prjName in props.prjs)){
-
-						props.DataSendCallback(data){
-
-						}
-					}
+					console.log(props.prjs);
+					props.DataSendCallback(props.prjs,data);
 				}}></input>
 			</div>
 		</div>

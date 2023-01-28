@@ -23,10 +23,20 @@ app.get('/getdata',(req,res)=>{
 	
 });
 app.post("/savedata",(req,res)=>{
-	fs.readFile("./data/data.json","utf-8",(err,data)=>{
-		var json=res.recv();
-		data+=json
-	})
+	console.log(typeof(req.body));
+	console.log(req.body);
+	let result;
+	fs.writeFile("./data/data.json",JSON.stringify(req.body),"utf-8",(err)=>{
+		result=err;
+	});
+	if(result){
+		console.log("fail");
+		res.sendStatus(500);
+	}
+	else{
+		console.log("success");
+		res.sendStatus(200);
+	}
 })
 
 app.listen(port,()=>{

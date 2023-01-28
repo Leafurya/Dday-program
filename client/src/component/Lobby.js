@@ -13,7 +13,7 @@ function Lobby(props){
 	console.log(props.projects)
 	let prjLists=[];
 	for(var i=0;i<props.projects.length;i++){
-		prjLists.push(<li><input type="button" value={props.projects[i]} key={i} onClick={
+		prjLists.push(<li key={i}><input type="button" value={props.projects[i]} key={i} onClick={
 			(event)=>{
 				console.log(event.target)
 				props.PageCallback("Project",{name:event.target.value});
