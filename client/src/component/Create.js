@@ -2,12 +2,50 @@ import React,{useRef,useEffect} from 'react';
 function GetElement(id){
 	return document.getElementById(id);
 }
+let taskInputID=0;
+function GetTaskInput(id,name){
+	var cntnt=prompt("도전과제 내용을 적어주세요.");
+	if(cntnt!=null){
+		var div=document.createElement("div");
+		div.id=(taskInputID)+"task_input";
+
+		var input=document.createElement("input");
+		input.type="text";
+		input.value=cntnt;
+		input.name=name;
+		
+
+		var delBtn=document.createElement("input");
+		delBtn.type="button";
+		delBtn.value="-";
+		delBtn.name=(taskInputID++)+"task_input";
+		delBtn.onclick=(event)=>{
+			GetElement(event.target.name).remove();
+		}
+		div.appendChild(input);
+		div.appendChild(delBtn);
+
+		GetElement(id).appendChild(div);
+	}
+}
+function Disable(disabled){
+	GetElement("prj_day").disabled=disabled;
+	GetElement("last_task").disabled=disabled;
+}
+function GetTaskValue(obj,targetName){
+	let tasks=document.getElementsByName(targetName);
+	for(var i=0;i<tasks.length;i++){
+		if(tasks[i].value!=""){
+			obj[tasks[i].value]=false;
+		}
+	}
+}
+
 function Create(props){
 	const inputRef=useRef(null);
 	useEffect(()=>{
 		inputRef.current.click();
 	},[]);
-	console.log("props.pjs",props.prjs);
 	return(
 		<div>
 			<h1>프로젝트 생성</h1>
@@ -16,39 +54,21 @@ function Create(props){
 			<div>
 				<ul id="task_inputs">
 					<input type="button" value="도전과제 추가" onClick={()=>{
-						//console.log(document.createElement("input[type='text'][value='"+cntnt+"']"));
-						var cntnt=prompt("도전과제 내용을 적어주세요.");
-						if(cntnt!=null){
-							var input=document.createElement("input");
-							input.type="text";
-							input.value=cntnt;
-							input.name="task_input";
-							GetElement("task_inputs").appendChild(input);
-						}
+						GetTaskInput("task_inputs","task_input");
 					}}></input>
 				</ul>
 			</div>
 			<div>
 				<input ref={inputRef} id="D+" type="radio" value="D+" name="project_type" onClick={()=>{
-					GetElement("prj_day").disabled=true;
-					GetElement("last_task").disabled=true;
+					Disable(true);
 				}}/>D+
 				<input id="D-" type="radio" value="D-" name="project_type" onClick={()=>{
-					GetElement("prj_day").disabled=false;
-					GetElement("last_task").disabled=false;
+					Disable(false);
 				}}/>D-
 				<input type="number" placeholder="일수" id="prj_day"></input>
 				<ul id="last_task_inputs">
 					<input id="last_task" type="button" value="최종 도전과제 추가" onClick={()=>{
-						//console.log(document.createElement("input[type='text'][value='"+cntnt+"']"));
-						var cntnt=prompt("도전과제 내용을 적어주세요.");
-						if(cntnt!=null){
-							var input=document.createElement("input");
-							input.type="text";
-							input.value=cntnt;
-							input.name="last_task_input";
-							GetElement("last_task_inputs").appendChild(input);
-						}
+						GetTaskInput("last_task_inputs","last_task_input");
 					}}></input>
 				</ul>
 			
@@ -64,21 +84,19 @@ function Create(props){
 					prj["cntnt"]=GetElement("prj_cntnt").value;
 					prj["tasks"]={}
 
-					let tasks=document.getElementsByName("task_input");
-					for(var i=0;i<tasks.length;i++){
-						prj["tasks"][tasks[i].value]=false;
-					}
+					GetTaskValue(prj["tasks"],"task_input");
 					prj["D"]=GetElement("D+").checked?"+":"-";
 					if(GetElement("D-").checked){
-						prj["Day"]=GetElement("prj_day").value;
-						tasks=document.getElementsByName("last_task_input");
-						prj["LastTasks"]={}
-						for(i=0;i<tasks.length;i++){
-							prj["LastTasks"][tasks[i].value]=false;
+						if(GetElement("prj_day").value==""){
+							alert("일수를 입력해주세요");
+							return;
 						}
+						prj["Day"]=GetElement("prj_day").value;
+						prj["lastTasks"]={}
+						GetTaskValue(prj["lastTasks"],"last_task_input");
 					}
-					console.log(props.prjs);
-					props.DataSendCallback(props.prjs,data);
+					//console.log("data",data);
+					props.DataSendCallback(data);
 				}}></input>
 			</div>
 		</div>

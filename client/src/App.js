@@ -3,16 +3,18 @@ import Lobby from './component/Lobby.js';
 import Project from './component/Project.js';
 import Create from './component/Create.js';
 import React, {useEffect,useState} from "react";
-let prjNames;
+//let prjNames;
 
 function App() {
 	const [nowPage,setPage]=useState("");
-	const [data,setData]=useState("");
+	let [data,setData]=useState("");
 	//let oldPage;
 	const PageCallbackFunc=(page,props)=>{
+		//let data=tempData;
+		console.log("page callback data",data);
 		switch(page){
 			case "Lobby":
-				setPage(<Lobby PageCallback={PageCallbackFunc} projects={prjNames}></Lobby>);
+				setPage(<Lobby PageCallback={PageCallbackFunc} projects={Object.keys(data)}></Lobby>);
 				break;
 			case "Project":
 				console.log(props.name);
@@ -20,37 +22,32 @@ function App() {
 				break;
 			case "Create":
 				console.log("data", data);
-				setPage(<Create PageCallback={PageCallbackFunc} prjs={data} DataSendCallback={CreatePrjCallbackFunc}></Create>)
+				setPage(<Create PageCallback={PageCallbackFunc} prjs={Object.keys(data)} DataSendCallback={CreatePrjCallbackFunc}></Create>)
 				break;
 			default:
-				setData("");
+				//setData("");
 				break;
 		}
 	}
-	const CreatePrjCallbackFunc=(data,newPrj)=>{
+	const CreatePrjCallbackFunc=(newPrj)=>{
 		console.log(data);
 		var name=Object.keys(newPrj)[0];
 		console.log(name in data);
 		if(!(name in data)){
-			var newData={...data};
-			newData[name]=newPrj[name];
-			console.log("newdata",newData);
+			//var newData={...data};
+			data[name]=newPrj[name];
+			console.log("newdata",data);
+			//setData(newData);
 			fetch("http://localhost:8080/savedata",{
 				method:"POST",
-				body:JSON.stringify(newData),
+				body:JSON.stringify(data),
 				headers:{
 					'Content-Type':"application/json"
 				}
-			}).then(res=>{
+			}).then((res)=>{
 				console.log(res.status);
 				if(res.status==200){
-					setData(newData);
-					console.log("newData",newData);
-					prjNames=[];
-					console.log(newData);
-					for(var p in newData){
-						prjNames.push(p);
-					}
+					alert(name+"프로젝트가 저장되었습니다!");
 					PageCallbackFunc("Lobby");
 				}
 				else{
@@ -65,18 +62,18 @@ function App() {
 		}).then(res=>res.json()).then(res=>{
 			//setData(res);
 			//console.log(res);
+			//data=res;
 			setData(res);
-			prjNames=[];
+			/*prjNames=[];
 			console.log(res);
 			for(var p in res){
 				prjNames.push(p);
-			}
+			}*/
 			
 			//setPage(<Lobby PageCallback={PageCallbackFunc} projects={prjNames}></Lobby>)
 		})
 	},[]);
 	if(typeof(data)!="string"&&nowPage!=""){
-		console.log("prjNames",prjNames);	
 		return (
 			<div className="App">
 				{nowPage}
