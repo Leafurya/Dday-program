@@ -85,8 +85,8 @@ function Create(props){
 					prj["tasks"]={}
 
 					GetTaskValue(prj["tasks"],"task_input");
-					prj["D"]=GetElement("D+").checked?"+":"-";
 					if(GetElement("D-").checked){
+						prj["D"]="-";
 						if(GetElement("prj_day").value==""){
 							alert("일수를 입력해주세요");
 							return;
@@ -94,6 +94,10 @@ function Create(props){
 						prj["Day"]=GetElement("prj_day").value;
 						prj["lastTasks"]={}
 						GetTaskValue(prj["lastTasks"],"last_task_input");
+					}
+					else{
+						prj["D"]="+";
+						prj["Day"]=0;
 					}
 					//console.log("data",data);
 					props.DataSendCallback(data);

@@ -1,15 +1,6 @@
-import React, {useEffect,useState} from 'react';
+import React, {useState} from 'react';
 
 function Lobby(props){
-	const [data,setData]=useState("");
-	//프로젝트 데이터 받기
-	// useEffect(()=>{
-	// 	fetch("http://localhost:8080/lobbydata",{
-	// 		method:"GET"
-	// 	}).then(res=>{res.json();console.log(res)}).then(res=>{
-		// 		console.log(res);
-		// 	})
-	// },[]);
 	console.log(props.projects)
 	let prjLists=[];
 	for(var i=0;i<props.projects.length;i++){

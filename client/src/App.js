@@ -5,6 +5,24 @@ import Create from './component/Create.js';
 import React, {useEffect,useState} from "react";
 //let prjNames;
 
+let oldDate;
+function GetToday(){
+	var date=new Date();
+	var today="";
+	today+=date.getFullYear();
+	today+=(date.getMonth()+1);
+	today+=date.getDate();
+	return today;
+}
+function DateCheckFunc(NextDayCallback){
+	var today=GetToday();
+	
+	if(oldDate!=today){
+		NextDayCallback();
+		localStorage.setItem("oldDate",today);
+	}
+
+}
 function App() {
 	const [nowPage,setPage]=useState("");
 	let [data,setData]=useState("");
@@ -17,12 +35,12 @@ function App() {
 				setPage(<Lobby PageCallback={PageCallbackFunc} projects={Object.keys(data)}></Lobby>);
 				break;
 			case "Project":
-				console.log(props.name);
-				setPage(<Project name={props.name} PageCallback={PageCallbackFunc}></Project>);
+				console.log("name", props.name);
+				setPage(<Project projectName={props.name} projectData={data[props.name]} PageCallback={PageCallbackFunc} SaveDataCallback={SaveDataCallbackFunc}></Project>);
 				break;
 			case "Create":
 				console.log("data", data);
-				setPage(<Create PageCallback={PageCallbackFunc} prjs={Object.keys(data)} DataSendCallback={CreatePrjCallbackFunc}></Create>)
+				setPage(<Create PageCallback={PageCallbackFunc} DataSendCallback={CreatePrjCallbackFunc}></Create>)
 				break;
 			default:
 				//setData("");
@@ -37,41 +55,30 @@ function App() {
 			//var newData={...data};
 			data[name]=newPrj[name];
 			console.log("newdata",data);
-			//setData(newData);
-			fetch("http://localhost:8080/savedata",{
-				method:"POST",
-				body:JSON.stringify(data),
-				headers:{
-					'Content-Type':"application/json"
-				}
-			}).then((res)=>{
-				console.log(res.status);
-				if(res.status==200){
-					alert(name+"프로젝트가 저장되었습니다!");
-					PageCallbackFunc("Lobby");
-				}
-				else{
-					alert("저장에 실패했습니다.")
-				}
-			})
+			localStorage.setItem("projects",JSON.stringify(data));
+			PageCallbackFunc("Lobby");
 		}
 	}
+	const SaveDataCallbackFunc=()=>{
+		console.log("data in app",data)
+		console.log("stringify",JSON.stringify(data))
+		localStorage.setItem("projects",JSON.stringify(data));
+	}
+	const NextDayCallbackFunc=()=>{
+	}
 	useEffect(()=>{
-		fetch("http://localhost:8080/getdata",{
-			method:"GET",
-		}).then(res=>res.json()).then(res=>{
-			//setData(res);
-			//console.log(res);
-			//data=res;
-			setData(res);
-			/*prjNames=[];
-			console.log(res);
-			for(var p in res){
-				prjNames.push(p);
-			}*/
-			
-			//setPage(<Lobby PageCallback={PageCallbackFunc} projects={prjNames}></Lobby>)
-		})
+		oldDate=localStorage.getItem("oldDate");
+		if(oldDate==null){
+			oldDate=GetToday();
+			localStorage.setItem("oldDate",oldDate);
+		}
+		setInterval(()=>{
+			DateCheckFunc()
+		},1000);
+		var result=localStorage.getItem("projects");
+		console.log("result",result)
+		setData(result!=null?JSON.parse(result):{})
+
 	},[]);
 	if(typeof(data)!="string"&&nowPage!=""){
 		return (
