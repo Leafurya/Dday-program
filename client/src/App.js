@@ -6,22 +6,19 @@ import React, {useEffect,useState} from "react";
 //let prjNames;
 
 let oldDate;
-function GetToday(){
-	var date=new Date();
-	var today="";
-	today+=date.getFullYear();
-	today+=(date.getMonth()+1);
-	today+=date.getDate();
-	return today;
+let dateOdj=new Date();
+let intervalHandle=null;
+function GetDay(){
+	return Math.floor(Date.now()/86400000);
 }
 function DateCheckFunc(NextDayCallback){
-	var today=GetToday();
-	
-	if(oldDate!=today){
-		NextDayCallback();
-		localStorage.setItem("oldDate",today);
-	}
-
+	//console.log(Math.floor(Date.now()/86400000))
+	// var today=GetToday();
+	// if(oldDate!=today){
+	// 	NextDayCallback();
+	// 	localStorage.setItem("oldDate",today);
+	// 	oldDate=today;
+	// }
 }
 function App() {
 	const [nowPage,setPage]=useState("");
@@ -65,16 +62,36 @@ function App() {
 		localStorage.setItem("projects",JSON.stringify(data));
 	}
 	const NextDayCallbackFunc=()=>{
+		let today=GetDay();
+		if(oldDate!=today){
+			let d;
+			for(var prj in data){
+				d=data[prj];
+				switch(d.D){
+					case "+":
+						d.Day+=(today-oldDate);
+						break;
+					case "-":
+						d.Day-=(today-oldDate);
+						break;
+				}
+			}
+			oldDate=today;
+			localStorage.setItem("oldDate",oldDate);
+		}
 	}
 	useEffect(()=>{
 		oldDate=localStorage.getItem("oldDate");
 		if(oldDate==null){
-			oldDate=GetToday();
+			oldDate=GetDay();
 			localStorage.setItem("oldDate",oldDate);
 		}
-		setInterval(()=>{
-			DateCheckFunc()
-		},1000);
+		console.log("intervalHandle",intervalHandle);
+		if(intervalHandle==null){
+			intervalHandle=setInterval(()=>{
+				NextDayCallbackFunc()
+			},1000);
+		}
 		var result=localStorage.getItem("projects");
 		console.log("result",result)
 		setData(result!=null?JSON.parse(result):{})
