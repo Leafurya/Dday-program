@@ -6,23 +6,13 @@ import React, {useEffect,useState} from "react";
 //let prjNames;
 
 let oldDate;
-let dateOdj=new Date();
 let intervalHandle=null;
 function GetDay(){
-	return Math.floor(Date.now()/86400000);
-}
-function DateCheckFunc(NextDayCallback){
-	//console.log(Math.floor(Date.now()/86400000))
-	// var today=GetToday();
-	// if(oldDate!=today){
-	// 	NextDayCallback();
-	// 	localStorage.setItem("oldDate",today);
-	// 	oldDate=today;
-	// }
+	return Math.floor(Date.now()/86400000);//86400000
 }
 function App() {
+	let [data,setData]=useState(JSON.parse((localStorage.getItem("projects")??"{}")));
 	const [nowPage,setPage]=useState("");
-	let [data,setData]=useState("");
 	//let oldPage;
 	const PageCallbackFunc=(page,props)=>{
 		//let data=tempData;
@@ -63,6 +53,7 @@ function App() {
 	}
 	const NextDayCallbackFunc=()=>{
 		let today=GetDay();
+		console.log("today",today);
 		if(oldDate!=today){
 			let d;
 			for(var prj in data){
@@ -75,13 +66,17 @@ function App() {
 						d.Day-=(today-oldDate);
 						break;
 				}
+				
 			}
+			localStorage.setItem("projects",JSON.stringify(data));
+			setData(data);
 			oldDate=today;
 			localStorage.setItem("oldDate",oldDate);
 		}
 	}
 	useEffect(()=>{
 		oldDate=localStorage.getItem("oldDate");
+		console.log("oldDate",oldDate);
 		if(oldDate==null){
 			oldDate=GetDay();
 			localStorage.setItem("oldDate",oldDate);
@@ -92,20 +87,14 @@ function App() {
 				NextDayCallbackFunc()
 			},1000);
 		}
-		var result=localStorage.getItem("projects");
-		console.log("result",result)
-		setData(result!=null?JSON.parse(result):{})
-
+		PageCallbackFunc("Lobby");
 	},[]);
-	if(typeof(data)!="string"&&nowPage!=""){
+	if(nowPage!=""){
 		return (
 			<div className="App">
 				{nowPage}
 			</div>
 		);
-	}
-	else if(typeof(data)!="string"){
-		PageCallbackFunc("Lobby");
 	}
     else{
 		return(
