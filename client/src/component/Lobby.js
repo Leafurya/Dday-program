@@ -1,35 +1,45 @@
-import React, {useEffect,useState} from 'react';
+import React, {useState} from 'react';
+import "../style/Lobby.css";
 
 function Lobby(props){
-	const [data,setData]=useState("");
-	//프로젝트 데이터 받기
-	// useEffect(()=>{
-	// 	fetch("http://localhost:8080/lobbydata",{
-	// 		method:"GET"
-	// 	}).then(res=>{res.json();console.log(res)}).then(res=>{
-		// 		console.log(res);
-		// 	})
-	// },[]);
-	console.log(props.projects)
+	let prjs=props.projects;
+	let prj;
+	let prjName;
 	let prjLists=[];
-	for(var i=0;i<props.projects.length;i++){
-		prjLists.push(<li key={i}><input type="button" value={props.projects[i]} key={i} onClick={
+	let i=0;
+	console.log("lobby props",prjs);
+	for(prjName in prjs){
+		prj=prjs[prjName];
+		prjLists.push(
+		<li className="project_list_li" key={i}><input id={"prj"+i} type="button" value={prjName} onClick={
 			(event)=>{
 				console.log(event.target)
 				props.PageCallback("Project",{name:event.target.value});
 			}
-		}></input></li>);
+		}></input>
+			<label className="project_list_label" for={"prj"+i}>
+				<div><span className="project_list_day">{"D"+prj.D+prj.Day}</span></div>
+				<div><span className="project_list_name">{prjName}</span></div>
+			</label>
+		</li>);
+		i++;
 	}
 	return(
 		<div>
-			<ol>
+			<ul className="project_list_ul">
+				<li className="project_list_li" >
+					<input id="create_btn" type="button" value="생성" onClick={
+						()=>{
+							props.PageCallback("Create");
+						}
+					}></input>
+					<label  className="project_list_label plus_btn" for="create_btn">
+						<span className="plus_btn_value">+</span>
+					</label>
+				</li>
 				{prjLists}
-			</ol>
-			<input type="button" value="생성" onClick={
-				()=>{
-					props.PageCallback("Create");
-				}
-			}></input>
+			</ul>
+			
 		</div>
 	)
 }

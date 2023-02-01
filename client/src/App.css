@@ -1,3 +1,18 @@
-input[type="text"]{
-	display:block;
+@import url(//fonts.googleapis.com/earlyaccess/jejugothic.css);
+body{
+	overflow: hidden;
+	position: absolute;
+	height: 100%;
+	width: 100%;
+	font-size: x-large;
+	font-family: 'Jeju Gothic', sans-serif;
+}
+li{
+	list-style: none;
+}
+.App{
+	position: absolute;
+	overflow: hidden;
+	height: 100%;
+	width: 100%;
 }

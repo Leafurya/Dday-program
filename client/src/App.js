@@ -5,29 +5,58 @@ import Create from './component/Create.js';
 import React, {useEffect,useState} from "react";
 //let prjNames;
 
+const storageName="projects";
+let oldDate;
+let intervalHandle=null;
+function GetDay(){
+	return Math.floor(Date.now()/86400000);//86400000
+}
+function UpdateData(data,setData){
+	localStorage.setItem(storageName,JSON.stringify(data));
+	setData(data);
+}
 function App() {
+	console.log("typeof",localStorage.getItem(storageName));
+	let [data,setData]=useState(JSON.parse(localStorage.getItem(storageName)??"{}"));
 	const [nowPage,setPage]=useState("");
-	let [data,setData]=useState("");
 	//let oldPage;
 	const PageCallbackFunc=(page,props)=>{
 		//let data=tempData;
 		console.log("page callback data",data);
+		console.log("props",props);
+		
 		switch(page){
 			case "Lobby":
-				setPage(<Lobby PageCallback={PageCallbackFunc} projects={Object.keys(data)}></Lobby>);
+				setPage(<Lobby PageCallback={PageCallbackFunc} projects={data}></Lobby>);
 				break;
 			case "Project":
-				console.log(props.name);
-				setPage(<Project name={props.name} PageCallback={PageCallbackFunc}></Project>);
+				console.log("name", props.name);
+				setPage(<Project projectName={props.name} projectData={data[props.name]} SaveDataCallback={SaveDataCallbackFunc} QuitCallback={QuitCallbackFunc} PageCallback={PageCallbackFunc} StartProjectCallback={StartProjectCallbackFunc}></Project>);
 				break;
 			case "Create":
 				console.log("data", data);
-				setPage(<Create PageCallback={PageCallbackFunc} prjs={Object.keys(data)} DataSendCallback={CreatePrjCallbackFunc}></Create>)
+				setPage(<Create QuitCallback={QuitCallbackFunc} PageCallback={PageCallbackFunc} modiData={props} SaveDataCallback={CreatePrjCallbackFunc}></Create>)
 				break;
 			default:
 				//setData("");
 				break;
 		}
+	}
+	const QuitCallbackFunc=(prjName)=>{
+		console.log(data);
+		delete data[prjName];
+		console.log(data);
+		UpdateData(data,setData);
+	}
+	const StartProjectCallbackFunc=(prjName)=>{
+		if(!data[prjName].Start){
+			data[prjName].Start=true;
+			UpdateData(data,setData)
+			alert(prjName+"프로젝트가 시작됐습니다.")
+			PageCallbackFunc("Project",{name:prjName});
+			return true;
+		}
+		return false;
 	}
 	const CreatePrjCallbackFunc=(newPrj)=>{
 		console.log(data);
@@ -37,51 +66,58 @@ function App() {
 			//var newData={...data};
 			data[name]=newPrj[name];
 			console.log("newdata",data);
-			//setData(newData);
-			fetch("http://localhost:8080/savedata",{
-				method:"POST",
-				body:JSON.stringify(data),
-				headers:{
-					'Content-Type':"application/json"
+			localStorage.setItem(storageName,JSON.stringify(data));
+			PageCallbackFunc("Lobby");
+		}
+	}
+	const SaveDataCallbackFunc=()=>{
+		UpdateData(data,setData)
+	}
+	const NextDayCallbackFunc=()=>{
+		let today=GetDay();
+		console.log("today",today);
+		if(oldDate!=today){
+			let d;
+			for(var prj in data){
+				d=data[prj];
+				if(d.Start){
+					switch(d.D){
+						case "+":
+							d.Day+=(today-oldDate);
+							break;
+						case "-":
+							d.Day-=(today-oldDate);
+							break;
+					}
 				}
-			}).then((res)=>{
-				console.log(res.status);
-				if(res.status==200){
-					alert(name+"프로젝트가 저장되었습니다!");
-					PageCallbackFunc("Lobby");
-				}
-				else{
-					alert("저장에 실패했습니다.")
-				}
-			})
+				
+			}
+			UpdateData(data,setData)
+			oldDate=today;
+			localStorage.setItem("oldDate",oldDate);
 		}
 	}
 	useEffect(()=>{
-		fetch("http://localhost:8080/getdata",{
-			method:"GET",
-		}).then(res=>res.json()).then(res=>{
-			//setData(res);
-			//console.log(res);
-			//data=res;
-			setData(res);
-			/*prjNames=[];
-			console.log(res);
-			for(var p in res){
-				prjNames.push(p);
-			}*/
-			
-			//setPage(<Lobby PageCallback={PageCallbackFunc} projects={prjNames}></Lobby>)
-		})
+		oldDate=localStorage.getItem("oldDate");
+		console.log("oldDate",oldDate);
+		if(oldDate==null){
+			oldDate=GetDay();
+			localStorage.setItem("oldDate",oldDate);
+		}
+		console.log("intervalHandle",intervalHandle);
+		if(intervalHandle==null){
+			intervalHandle=setInterval(()=>{
+				NextDayCallbackFunc()
+			},1000);
+		}
+		PageCallbackFunc("Lobby");
 	},[]);
-	if(typeof(data)!="string"&&nowPage!=""){
+	if(nowPage!=""){
 		return (
 			<div className="App">
 				{nowPage}
 			</div>
 		);
-	}
-	else if(typeof(data)!="string"){
-		PageCallbackFunc("Lobby");
 	}
     else{
 		return(
