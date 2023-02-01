@@ -3,18 +3,21 @@ function GetElement(id){
 	return document.getElementById(id);
 }
 let taskInputID=0;
-function GetTaskInput(id,name){
-	var cntnt=prompt("도전과제 내용을 적어주세요.");
+function CreateTaskInput(name,cntnt){
+	let input=document.createElement("input");
+	input.type="text";
+	input.value=cntnt;
+	input.name=name;
+	return input;
+}
+function GetTaskInput(id,name,val){
+	var cntnt=val??prompt("도전과제 내용을 적어주세요.");
 	if(cntnt!=null){
 		var div=document.createElement("div");
 		div.id=(taskInputID)+"task_input";
 
-		var input=document.createElement("input");
-		input.type="text";
-		input.value=cntnt;
-		input.name=name;
+		var input=CreateTaskInput(name,cntnt)
 		
-
 		var delBtn=document.createElement("input");
 		delBtn.type="button";
 		delBtn.value="-";
@@ -42,41 +45,76 @@ function GetTaskValue(obj,targetName){
 }
 
 function Create(props){
-	const inputRef=useRef(null);
+	const modiData=props.modiData??null;
+	const plusRef=useRef(null);
+	const minRef=useRef(null);
+	let taskInputs=[];
+	let lastTaskInputs=[];
+	let deleteBtn=<input type="button" value="삭제" onClick={()=>{
+		if(window.confirm('프로젝트 삭제를 원하신다면 확인을 눌러주십시오.\n한번 삭제한 프로젝트는 복구가 불가능합니다.')){
+			props.QuitCallback(modiData.name);
+			alert("프로젝트를 삭제하였습니다.");
+			props.PageCallback("Lobby");
+		}
+	}}></input>;
+	console.log("modiData",props.modiData);
+	let t=1;
 	useEffect(()=>{
-		inputRef.current.click();
+		if(!modiData){
+			plusRef.current.click();
+		}
+		else{
+			modiData.data.D=="+"?plusRef.current.click():minRef.current.click();
+			if(t===1){
+				for(t in modiData.data.tasks){
+					console.log("t",t);
+					taskInputs.push(GetTaskInput("task_inputs","task_input",t))
+				}
+				console.log("taskInputs",taskInputs);
+				for(t in modiData.data.lastTasks){
+					console.log("t",t);
+					lastTaskInputs.push(GetTaskInput("last_task_inputs","last_task_input",t))
+				}
+				console.log("lastTaskInputs",lastTaskInputs);
+			}
+		}
 	},[]);
 	return(
 		<div>
-			<h1>프로젝트 생성</h1>
-			<input id="prj_name" type="text" placeholder="프로젝트 이름"></input>
-			<textarea id="prj_cntnt" placeholder="프로젝트 내용"></textarea>
+			<h1>프로젝트 {modiData?"수정":"생성"}</h1>
+			<input id="prj_name" type="text" placeholder="프로젝트 이름" defaultValue={modiData?modiData.name:""}></input>
+			<textarea id="prj_cntnt" placeholder="프로젝트 내용" defaultValue={modiData?modiData.data.cntnt:""}></textarea>
 			<div>
 				<ul id="task_inputs">
 					<input type="button" value="도전과제 추가" onClick={()=>{
 						GetTaskInput("task_inputs","task_input");
 					}}></input>
+					{taskInputs}
 				</ul>
 			</div>
 			<div>
-				<input ref={inputRef} id="D+" type="radio" value="D+" name="project_type" onClick={()=>{
+				<input ref={plusRef} id="D+" type="radio" value="D+" name="project_type" onClick={()=>{
 					Disable(true);
 				}}/>D+
-				<input id="D-" type="radio" value="D-" name="project_type" onClick={()=>{
+				<input ref={minRef} id="D-" type="radio" value="D-" name="project_type" onClick={()=>{
 					Disable(false);
 				}}/>D-
-				<input type="number" placeholder="일수" id="prj_day"></input>
+				<input type="number" placeholder="일수" id="prj_day" defaultValue={modiData?modiData.data.Day:""}></input>
 				<ul id="last_task_inputs">
 					<input id="last_task" type="button" value="최종 도전과제 추가" onClick={()=>{
 						GetTaskInput("last_task_inputs","last_task_input");
 					}}></input>
+					{lastTaskInputs}
 				</ul>
 			
 				
 			</div>
 			<div>
 				<input type="button" value="취소" onClick={()=>{props.PageCallback("Lobby")}}></input>
-				<input type="button" value="생성" onClick={()=>{
+				<input type="button" value={modiData?"저장":"생성"} onClick={()=>{
+					if(modiData){
+						props.QuitCallback(modiData.name);
+					}
 					let data={};
 					let prjName=GetElement("prj_name").value;
 					data[prjName]={};
@@ -99,9 +137,11 @@ function Create(props){
 						prj["D"]="+";
 						prj["Day"]=0;
 					}
+					prj["Start"]=false;
 					//console.log("data",data);
-					props.DataSendCallback(data);
+					props.SaveDataCallback(data);
 				}}></input>
+				{modiData?deleteBtn:""}
 			</div>
 		</div>
 	)

@@ -5,34 +5,58 @@ import Create from './component/Create.js';
 import React, {useEffect,useState} from "react";
 //let prjNames;
 
+const storageName="projects";
 let oldDate;
 let intervalHandle=null;
 function GetDay(){
 	return Math.floor(Date.now()/86400000);//86400000
 }
+function UpdateData(data,setData){
+	localStorage.setItem(storageName,JSON.stringify(data));
+	setData(data);
+}
 function App() {
-	let [data,setData]=useState(JSON.parse((localStorage.getItem("projects")??"{}")));
+	console.log("typeof",localStorage.getItem(storageName));
+	let [data,setData]=useState(JSON.parse(localStorage.getItem(storageName)??"{}"));
 	const [nowPage,setPage]=useState("");
 	//let oldPage;
 	const PageCallbackFunc=(page,props)=>{
 		//let data=tempData;
 		console.log("page callback data",data);
+		console.log("props",props);
+		
 		switch(page){
 			case "Lobby":
-				setPage(<Lobby PageCallback={PageCallbackFunc} projects={Object.keys(data)}></Lobby>);
+				setPage(<Lobby PageCallback={PageCallbackFunc} projects={data}></Lobby>);
 				break;
 			case "Project":
 				console.log("name", props.name);
-				setPage(<Project projectName={props.name} projectData={data[props.name]} PageCallback={PageCallbackFunc} SaveDataCallback={SaveDataCallbackFunc}></Project>);
+				setPage(<Project projectName={props.name} projectData={data[props.name]} SaveDataCallback={SaveDataCallbackFunc} QuitCallback={QuitCallbackFunc} PageCallback={PageCallbackFunc} StartProjectCallback={StartProjectCallbackFunc}></Project>);
 				break;
 			case "Create":
 				console.log("data", data);
-				setPage(<Create PageCallback={PageCallbackFunc} DataSendCallback={CreatePrjCallbackFunc}></Create>)
+				setPage(<Create QuitCallback={QuitCallbackFunc} PageCallback={PageCallbackFunc} modiData={props} SaveDataCallback={CreatePrjCallbackFunc}></Create>)
 				break;
 			default:
 				//setData("");
 				break;
 		}
+	}
+	const QuitCallbackFunc=(prjName)=>{
+		console.log(data);
+		delete data[prjName];
+		console.log(data);
+		UpdateData(data,setData);
+	}
+	const StartProjectCallbackFunc=(prjName)=>{
+		if(!data[prjName].Start){
+			data[prjName].Start=true;
+			UpdateData(data,setData)
+			alert(prjName+"프로젝트가 시작됐습니다.")
+			PageCallbackFunc("Project",{name:prjName});
+			return true;
+		}
+		return false;
 	}
 	const CreatePrjCallbackFunc=(newPrj)=>{
 		console.log(data);
@@ -42,14 +66,12 @@ function App() {
 			//var newData={...data};
 			data[name]=newPrj[name];
 			console.log("newdata",data);
-			localStorage.setItem("projects",JSON.stringify(data));
+			localStorage.setItem(storageName,JSON.stringify(data));
 			PageCallbackFunc("Lobby");
 		}
 	}
 	const SaveDataCallbackFunc=()=>{
-		console.log("data in app",data)
-		console.log("stringify",JSON.stringify(data))
-		localStorage.setItem("projects",JSON.stringify(data));
+		UpdateData(data,setData)
 	}
 	const NextDayCallbackFunc=()=>{
 		let today=GetDay();
@@ -58,18 +80,19 @@ function App() {
 			let d;
 			for(var prj in data){
 				d=data[prj];
-				switch(d.D){
-					case "+":
-						d.Day+=(today-oldDate);
-						break;
-					case "-":
-						d.Day-=(today-oldDate);
-						break;
+				if(d.Start){
+					switch(d.D){
+						case "+":
+							d.Day+=(today-oldDate);
+							break;
+						case "-":
+							d.Day-=(today-oldDate);
+							break;
+					}
 				}
 				
 			}
-			localStorage.setItem("projects",JSON.stringify(data));
-			setData(data);
+			UpdateData(data,setData)
 			oldDate=today;
 			localStorage.setItem("oldDate",oldDate);
 		}
