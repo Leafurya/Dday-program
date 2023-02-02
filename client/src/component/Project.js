@@ -6,12 +6,17 @@ function Project(props){
 	const [refresh,pageUpdate]=useState();
 	console.log("data",props.projectData)
 	const data=props.projectData;
+	let checkedClassName="";
 	let taskEles=[];
 	var eleID=0;
 	const TaskCheck=(task,val)=>{
 		data.tasks[task]=val;
 	}
 	for(var t in data.tasks){
+		checkedClassName="";
+		if(data.tasks[t]){
+			checkedClassName="checked";
+		}
 		taskEles.push(
 		<li key={eleID}>
 			<input className='when_start' type="checkbox" id={"task"+eleID} defaultChecked={data.tasks[t]} value={t} onChange={(event)=>{
@@ -25,7 +30,7 @@ function Project(props){
 				console.log("data in project",data);
 				props.SaveDataCallback();
 			}}></input>
-			<label className='col_align_re' htmlFor={"task"+eleID}>{t}</label>
+			<label className={'col_align_re '+checkedClassName} htmlFor={"task"+eleID}>{t}</label>
 		</li>)
 		eleID++;
 	}
