@@ -110,7 +110,7 @@ function App() {
 				NextDayCallbackFunc()
 			},1000);
 		}
-		PageCallbackFunc("Create");
+		PageCallbackFunc("Lobby");
 	},[]);
 	if(nowPage!=""){
 		return (
