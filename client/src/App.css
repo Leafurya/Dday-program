@@ -1,6 +1,5 @@
 @import url(//fonts.googleapis.com/earlyaccess/jejugothic.css);
 body{
-	overflow: hidden;
 	position: absolute;
 	height: 100%;
 	width: 100%;
@@ -12,7 +11,10 @@ li{
 }
 .App{
 	position: absolute;
-	overflow: hidden;
+	overflow: scroll;
 	height: 100%;
 	width: 100%;
+}
+textarea,input{
+	font-family: 'Jeju Gothic', sans-serif;
 }

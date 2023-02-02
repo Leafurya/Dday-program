@@ -17,7 +17,7 @@ function Lobby(props){
 				props.PageCallback("Project",{name:event.target.value});
 			}
 		}></input>
-			<label className="project_list_label" for={"prj"+i}>
+			<label className="project_list_label" htmlFor={"prj"+i}>
 				<div><span className="project_list_day">{"D"+prj.D+prj.Day}</span></div>
 				<div><span className="project_list_name">{prjName}</span></div>
 			</label>
@@ -30,10 +30,10 @@ function Lobby(props){
 				<li className="project_list_li" >
 					<input id="create_btn" type="button" value="생성" onClick={
 						()=>{
-							props.PageCallback("Create");
+							props.PageCallback("Lobby");
 						}
 					}></input>
-					<label  className="project_list_label plus_btn" for="create_btn">
+					<label  className="project_list_label plus_btn" htmlFor="create_btn">
 						<span className="plus_btn_value">+</span>
 					</label>
 				</li>

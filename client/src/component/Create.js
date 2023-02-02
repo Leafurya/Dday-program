@@ -1,4 +1,7 @@
 import React,{useRef,useEffect} from 'react';
+import "../style/Create.css";
+import "../style/Align.css";
+
 function GetElement(id){
 	return document.getElementById(id);
 }
@@ -14,6 +17,7 @@ function GetTaskInput(id,name,val){
 	var cntnt=val??prompt("도전과제 내용을 적어주세요.");
 	if(cntnt!=null){
 		var div=document.createElement("div");
+		div.classList="task_input_div";
 		div.id=(taskInputID)+"task_input";
 
 		var input=CreateTaskInput(name,cntnt)
@@ -50,7 +54,7 @@ function Create(props){
 	const minRef=useRef(null);
 	let taskInputs=[];
 	let lastTaskInputs=[];
-	let deleteBtn=<input type="button" value="삭제" onClick={()=>{
+	let deleteBtn=<input className="function_btn" type="button" value="삭제" onClick={()=>{
 		if(window.confirm('프로젝트 삭제를 원하신다면 확인을 눌러주십시오.\n한번 삭제한 프로젝트는 복구가 불가능합니다.')){
 			props.QuitCallback(modiData.name);
 			alert("프로젝트를 삭제하였습니다.");
@@ -80,38 +84,42 @@ function Create(props){
 		}
 	},[]);
 	return(
-		<div>
-			<h1>프로젝트 {modiData?"수정":"생성"}</h1>
-			<input id="prj_name" type="text" placeholder="프로젝트 이름" defaultValue={modiData?modiData.name:""}></input>
-			<textarea id="prj_cntnt" placeholder="프로젝트 내용" defaultValue={modiData?modiData.data.cntnt:""}></textarea>
-			<div>
-				<ul id="task_inputs">
-					<input type="button" value="도전과제 추가" onClick={()=>{
+		<div className="borad">
+			<h1 className="col_align_re">프로젝트 {modiData?"수정":"생성"}</h1>
+			<input className="col_align_re" id="prj_name" type="text" placeholder="프로젝트 이름" defaultValue={modiData?modiData.name:""}></input>
+			<textarea rows="5" className="col_align_re" id="prj_cntnt" placeholder="프로젝트 내용" defaultValue={modiData?modiData.data.cntnt:""}></textarea>
+			<div className='col_align_re sub_div'>
+				<div>
+					<input className="add_task_btn col_align_re" type="button" value="도전과제 추가" onClick={()=>{
 						GetTaskInput("task_inputs","task_input");
 					}}></input>
-					{taskInputs}
-				</ul>
+					<ul className="task_input_ul" id="task_inputs">
+						{taskInputs}
+					</ul>
+				</div>
 			</div>
-			<div>
-				<input ref={plusRef} id="D+" type="radio" value="D+" name="project_type" onClick={()=>{
-					Disable(true);
-				}}/>D+
-				<input ref={minRef} id="D-" type="radio" value="D-" name="project_type" onClick={()=>{
-					Disable(false);
-				}}/>D-
-				<input type="number" placeholder="일수" id="prj_day" defaultValue={modiData?modiData.data.Day:""}></input>
-				<ul id="last_task_inputs">
-					<input id="last_task" type="button" value="최종 도전과제 추가" onClick={()=>{
+			<div className="col_align_re sub_div">
+				<div className="col_align_re type_choice">
+					<input ref={plusRef} id="D+" type="radio" value="D+" name="project_type" onClick={()=>{
+						Disable(true);
+					}}/>D+
+					<input ref={minRef} id="D-" type="radio" value="D-" name="project_type" onClick={()=>{
+						Disable(false);
+					}}/>D-
+					<input type="number" placeholder="일수" id="prj_day" defaultValue={modiData?modiData.data.Day:""}></input>
+				</div>
+				<div>
+					<input className="add_task_btn col_align_re" id="last_task" type="button" value="최종 도전과제 추가" onClick={()=>{
 						GetTaskInput("last_task_inputs","last_task_input");
 					}}></input>
-					{lastTaskInputs}
-				</ul>
-			
-				
+					<ul id="last_task_inputs" className="task_input_ul">
+						{lastTaskInputs}
+					</ul>
+				</div>
 			</div>
-			<div>
-				<input type="button" value="취소" onClick={()=>{props.PageCallback("Lobby")}}></input>
-				<input type="button" value={modiData?"저장":"생성"} onClick={()=>{
+			<div className="function_btns">
+				<input className="function_btn" type="button" value="취소" onClick={()=>{props.PageCallback("Lobby")}}></input>
+				<input className="function_btn" type="button" value={modiData?"저장":"생성"} onClick={()=>{
 					if(modiData){
 						props.QuitCallback(modiData.name);
 					}
