@@ -30,7 +30,7 @@ function Lobby(props){
 				<li className="project_list_li" >
 					<input id="create_btn" type="button" value="생성" onClick={
 						()=>{
-							props.PageCallback("Lobby");
+							props.PageCallback("Create");
 						}
 					}></input>
 					<label  className="project_list_label plus_btn" htmlFor="create_btn">
