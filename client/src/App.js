@@ -93,7 +93,7 @@ function App() {
 		console.log("init after",prj);
 	}
 	const NextDayCallbackFunc=()=>{
-		let today=19379;//GetDay();
+		let today=GetDay();
 		console.log("today",today);
 		console.log("oldDate",oldDate);
 		if(oldDate!=today){
@@ -115,7 +115,7 @@ function App() {
 							}
 							if(d.Day==0){
 								d.Day="DAY";
-								task=d.lastTasks;
+								task=Object.keys(data.lastTasks).length>0?d.lastTasks:d.tasks;
 							}
 							else if(d.Day<0||d.Day=="DAY"){
 								InitProject(d);

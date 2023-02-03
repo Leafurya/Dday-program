@@ -23,7 +23,8 @@ function Project(props){
 			data.taskDone=true;
 		}
 	}
-	if(data.Day=="DAY"){
+	console.log("data.lastTasks.length",data.lastTasks.length);
+	if(data.Day=="DAY"&&Object.keys(data.lastTasks).length!=0){
 		nowTask=data.lastTasks;
 	}
 	else{
