@@ -4,22 +4,39 @@ import "../style/Align.css";
 
 function Project(props){
 	const [refresh,pageUpdate]=useState();
-	console.log("data",props.projectData)
+	console.log("project comp data",props.projectData)
 	const data=props.projectData;
 	let checkedClassName="";
 	let taskEles=[];
+	let nowTask;
 	var eleID=0;
 	const TaskCheck=(task,val)=>{
-		data.tasks[task]=val;
+		let done=true;
+		nowTask[task]=val;
+		for(var t in nowTask){
+			if(!nowTask[t]){
+				done=false;
+				break;
+			}
+		}
+		if(done){
+			data.taskDone=true;
+		}
 	}
-	for(var t in data.tasks){
+	if(data.Day=="DAY"){
+		nowTask=data.lastTasks;
+	}
+	else{
+		nowTask=data.tasks;
+	}
+	for(var t in nowTask){
 		checkedClassName="";
-		if(data.tasks[t]){
+		if(nowTask[t]){
 			checkedClassName="checked";
 		}
 		taskEles.push(
 		<li key={eleID}>
-			<input className='when_start' type="checkbox" id={"task"+eleID} defaultChecked={data.tasks[t]} value={t} onChange={(event)=>{
+			<input className='when_start' type="checkbox" id={"task"+eleID} defaultChecked={nowTask[t]} value={t} onChange={(event)=>{
 				TaskCheck(event.target.value,event.target.checked);
 				if(event.target.checked){
 					document.querySelector("label[for="+event.target.id+"]").classList.add("checked");
@@ -33,6 +50,7 @@ function Project(props){
 			<label className={'col_align_re '+checkedClassName} htmlFor={"task"+eleID}>{t}</label>
 		</li>)
 		eleID++;
+		console.log("for(var t in nowTask) in project comp",data);
 	}
 	useEffect(()=>{
 		for(var i=0,ele=document.querySelectorAll(".when_start");i<ele.length;i++){
@@ -41,11 +59,15 @@ function Project(props){
 		for(var i=0,ele=document.querySelectorAll(".when_ready");i<ele.length;i++){
 			ele[i].disabled=data.Start;
 		}
+		if(data.prjDone){
+			alert("프로젝트가 끝났습니다! 이제 프로젝트 설정을 변경하거나 프로젝트를 제거 할 수 있습니다.\n 수고하셨습니다!");
+			data.prjDone=false;
+		}
 		console.log(taskEles);
 	},[refresh])
 	return(
 		<div>
-			<div className="project_board">
+			<div className={"project_board "+(data.Start?"":"not_start_in_prjcomp")}>
 				<div><h1 className="col_align_re project_day">{"D"+data.D+data.Day}</h1></div>
 				<div><h2 className="col_align_re project_header">{props.projectName}</h2></div>
 				<div><h4 className="col_align_re project_content">{data.cntnt}</h4></div>

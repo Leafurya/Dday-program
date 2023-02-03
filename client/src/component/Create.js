@@ -117,6 +117,7 @@ function Create(props){
 					</ul>
 				</div>
 			</div>
+			<div className="bottom_padding"></div>
 			<div className="function_btns">
 				<input className="function_btn" type="button" value="취소" onClick={()=>{props.PageCallback("Lobby")}}></input>
 				<input className="function_btn" type="button" value={modiData?"저장":"생성"} onClick={()=>{
@@ -146,9 +147,12 @@ function Create(props){
 						prj["Day"]=0;
 					}
 					prj["Start"]=false;
+					prj["taskDone"]=false;
+					prj["prjDone"]=false;
 					//console.log("data",data);
 					props.SaveDataCallback(data);
 				}}></input>
+				
 				{modiData?deleteBtn:""}
 			</div>
 		</div>

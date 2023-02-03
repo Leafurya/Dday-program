@@ -3,6 +3,7 @@
 	width: 100%;
 	position: absolute;
 	overflow-y: scroll;
+	overflow-x: hidden;
 	padding:0;
 	height: 90%;
 	margin:0;
@@ -49,6 +50,7 @@
 	left: 50%;
 	top: 50%;
 	font-size: large;
+	text-align: center;
 }
 .plus_btn{
 	display: inline-block;
@@ -60,4 +62,33 @@
 	transform: translate(-50%,-50%);
 	left: 50%;
 	top: 60%;
+}
+.project_done{
+	background-image: url("./project_done.png");
+	background-size: contain;
+	background-repeat: no-repeat;
+	width: 250px;
+	height: 100px;
+	position: absolute;
+	transform: translateX(-50%);
+	left: 50%;
+	top:-5px;
+}
+.task_done{
+	background-image: url("./task_done.png");
+	background-size: contain;
+	background-repeat: no-repeat;
+	width: 130px;
+	height: 100px;
+	position: absolute;
+	right: -20px;
+	top: -10px;
+	transform: rotate(25deg);
+}
+.not_start{
+	color: gray;
+	border-style: dashed;
+}
+.not_start_in_prjcomp{
+	color: gray;
 }

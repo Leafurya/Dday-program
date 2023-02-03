@@ -16,14 +16,13 @@ function UpdateData(data,setData){
 	setData(data);
 }
 function App() {
-	console.log("typeof",localStorage.getItem(storageName));
 	let [data,setData]=useState(JSON.parse(localStorage.getItem(storageName)??"{}"));
 	const [nowPage,setPage]=useState("");
 	//let oldPage;
 	const PageCallbackFunc=(page,props)=>{
 		//let data=tempData;
-		console.log("page callback data",data);
-		console.log("props",props);
+		// console.log("page callback data",data);
+		// console.log("props",props);
 		
 		switch(page){
 			case "Lobby":
@@ -49,12 +48,17 @@ function App() {
 		UpdateData(data,setData);
 	}
 	const StartProjectCallbackFunc=(prjName)=>{
-		if(!data[prjName].Start){
-			data[prjName].Start=true;
-			UpdateData(data,setData)
-			alert(prjName+"프로젝트가 시작됐습니다.")
-			PageCallbackFunc("Project",{name:prjName});
-			return true;
+		if(data[prjName].Day=="DAY"){
+			alert("프로젝트 재설정 부탁드립니다.");
+		}
+		else{
+			if(!data[prjName].Start){
+				data[prjName].Start=true;
+				UpdateData(data,setData)
+				alert(prjName+"프로젝트가 시작됐습니다.")
+				PageCallbackFunc("Project",{name:prjName});
+				return true;
+			}
 		}
 		return false;
 	}
@@ -73,22 +77,66 @@ function App() {
 	const SaveDataCallbackFunc=()=>{
 		UpdateData(data,setData)
 	}
+	const InitProject=(prj)=>{
+		console.log("init before",prj);
+		prj.Day="DAY";
+		prj.Start=false;
+		let t;
+		for(t in prj.tasks){
+			prj.tasks[t]=false;
+		}
+		for(t in prj.lastTasks){
+			prj.lastTasks[t]=false;
+		}
+		prj.prjDone=false;
+		prj.taskDone=false;
+		console.log("init after",prj);
+	}
 	const NextDayCallbackFunc=()=>{
-		let today=GetDay();
+		let today=19379;//GetDay();
 		console.log("today",today);
+		console.log("oldDate",oldDate);
 		if(oldDate!=today){
 			let d;
+			let task;
 			for(var prj in data){
 				d=data[prj];
 				if(d.Start){
+					console.log("prj",prj);
 					switch(d.D){
 						case "+":
 							d.Day+=(today-oldDate);
+							task=d.tasks;
 							break;
 						case "-":
-							d.Day-=(today-oldDate);
+							if(d.Day>0){
+								d.Day-=(today-oldDate);
+								task=d.tasks;
+							}
+							if(d.Day==0){
+								d.Day="DAY";
+								task=d.lastTasks;
+							}
+							else if(d.Day<0||d.Day=="DAY"){
+								InitProject(d);
+								d.prjDone=true;
+							}
+							// if(d.Day<=0){
+							// 	if(d.Day==="DAY"){
+							// 		InitProject(d);
+							// 		d.prjDone=true;
+							// 	}
+							// 	else{
+							// 		d.Day="DAY";
+							// 		task=d.lastTasks;
+							// 	}
+							// }
 							break;
 					}
+					for(var t in task){
+						task[t]=false;
+					}
+					d.taskDone=false;
 				}
 				
 			}
@@ -104,14 +152,18 @@ function App() {
 			oldDate=GetDay();
 			localStorage.setItem("oldDate",oldDate);
 		}
-		console.log("intervalHandle",intervalHandle);
-		if(intervalHandle==null){
-			intervalHandle=setInterval(()=>{
-				NextDayCallbackFunc()
-			},1000);
-		}
+		//console.log("intervalHandle",intervalHandle);
+		
+		// if(intervalHandle==null){
+		// 	intervalHandle=setInterval(()=>{
+		// 		NextDayCallbackFunc()
+		// 	},1000);
+		// }
 		PageCallbackFunc("Lobby");
 	},[]);
+	useEffect(()=>{
+		NextDayCallbackFunc();
+	},[nowPage]);
 	if(nowPage!=""){
 		return (
 			<div className="App">

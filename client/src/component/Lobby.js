@@ -1,6 +1,8 @@
 import React, {useState} from 'react';
 import "../style/Lobby.css";
 
+const prjDoneStamp=<span className="project_done"></span>;
+const taskDoneStamp=<span className="task_done"></span>
 function Lobby(props){
 	let prjs=props.projects;
 	let prj;
@@ -11,15 +13,16 @@ function Lobby(props){
 	for(prjName in prjs){
 		prj=prjs[prjName];
 		prjLists.push(
-		<li className="project_list_li" key={i}><input id={"prj"+i} type="button" value={prjName} onClick={
+		<li className={"project_list_li "+(prj.Start?"":"not_start")} key={i}><input id={"prj"+i} type="button" value={prjName} onClick={
 			(event)=>{
 				console.log(event.target)
 				props.PageCallback("Project",{name:event.target.value});
 			}
 		}></input>
 			<label className="project_list_label" htmlFor={"prj"+i}>
-				<div><span className="project_list_day">{"D"+prj.D+prj.Day}</span></div>
+				<div><span className="project_list_day">{"D"+prj.D+prj.Day}{prj.prjDone?prjDoneStamp:""}</span></div>
 				<div><span className="project_list_name">{prjName}</span></div>
+				{prj.taskDone?taskDoneStamp:""}
 			</label>
 		</li>);
 		i++;
@@ -38,6 +41,7 @@ function Lobby(props){
 					</label>
 				</li>
 				{prjLists}
+					
 			</ul>
 			
 		</div>
