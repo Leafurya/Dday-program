@@ -8,7 +8,7 @@ function Project(props){
 	const data=props.projectData;
 	let checkedClassName="";
 	let taskEles=[];
-	let nowTask;
+	let nowTask=data.tasks;
 	var eleID=0;
 	const TaskCheck=(task,val)=>{
 		let done=true;
@@ -23,12 +23,9 @@ function Project(props){
 			data.taskDone=true;
 		}
 	}
-	console.log("data.lastTasks.length",data.lastTasks.length);
-	if(data.Day=="DAY"&&Object.keys(data.lastTasks).length!=0){
+	//console.log("data.lastTasks.length",data.lastTasks.length);
+	if(data.Day=="DAY"&&Object.keys(data?.lastTasks).length!=0){
 		nowTask=data.lastTasks;
-	}
-	else{
-		nowTask=data.tasks;
 	}
 	for(var t in nowTask){
 		checkedClassName="";
