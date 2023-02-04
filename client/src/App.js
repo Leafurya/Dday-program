@@ -8,9 +8,9 @@ import React, {useEffect,useState} from "react";
 const storageName="projects";
 let oldDate;
 let oldOldDate;
+let intervalHandle=null;
 function GetDay(){
-	//return Math.floor(Date.now()/86400000);//86400000
-	return 19394//86400000
+	return Math.floor(Date.now()/10000);//86400000
 }
 function UpdateData(data,setData){
 	localStorage.setItem(storageName,JSON.stringify(data));
@@ -145,6 +145,7 @@ function App() {
 			oldOldDate=oldDate;
 			oldDate=today;
 			localStorage.setItem("oldDate",oldDate);
+			PageCallbackFunc("Lobby");
 		}
 	}
 	useEffect(()=>{
@@ -156,13 +157,13 @@ function App() {
 			localStorage.setItem("oldDate",oldDate);
 		}
 		NextDayCallbackFunc();
-		//console.log("intervalHandle",intervalHandle);
+		console.log("intervalHandle",intervalHandle);
 		
-		// if(intervalHandle==null){
-		// 	intervalHandle=setInterval(()=>{
-		// 		NextDayCallbackFunc()
-		// 	},1000);
-		// }
+		if(intervalHandle==null){
+			intervalHandle=setInterval(()=>{
+				NextDayCallbackFunc()
+			},1000);
+		}
 		PageCallbackFunc("Lobby");
 	},[]);
 	useEffect(()=>{
@@ -172,6 +173,7 @@ function App() {
 		return (
 			<div className="App">
 				{"oldDate: "+oldOldDate}
+				<br></br>
 				{"today: "+GetDay()}
 				{nowPage}
 			</div>
