@@ -7,7 +7,7 @@ import React, {useEffect,useState} from "react";
 
 const storageName="projects";
 let oldDate;
-let oldOldDate;
+let delta;
 let intervalHandle=null;
 function GetDay(){
 	return Math.floor(Date.now()/10000);//86400000
@@ -98,6 +98,7 @@ function App() {
 		console.log("today",today);
 		console.log("oldDate",oldDate);
 		if(oldDate!=today){
+			delta="next day";
 			let d;
 			let task;
 			for(var prj in data){
@@ -122,16 +123,6 @@ function App() {
 								InitProject(d);
 								d.prjDone=true;
 							}
-							// if(d.Day<=0){
-							// 	if(d.Day==="DAY"){
-							// 		InitProject(d);
-							// 		d.prjDone=true;
-							// 	}
-							// 	else{
-							// 		d.Day="DAY";
-							// 		task=d.lastTasks;
-							// 	}
-							// }
 							break;
 					}
 					for(var t in task){
@@ -142,28 +133,27 @@ function App() {
 				
 			}
 			UpdateData(data,setData)
-			oldOldDate=oldDate;
 			oldDate=today;
 			localStorage.setItem("oldDate",oldDate);
-			PageCallbackFunc("Lobby");
+		}
+		else{
+			delta="today";
 		}
 	}
 	useEffect(()=>{
 		oldDate=localStorage.getItem("oldDate");
-		oldOldDate=localStorage.getItem("oldDate");
 		console.log("oldDate",oldDate);
 		if(oldDate==null){
 			oldDate=GetDay();
 			localStorage.setItem("oldDate",oldDate);
 		}
-		NextDayCallbackFunc();
-		console.log("intervalHandle",intervalHandle);
+		// console.log("intervalHandle",intervalHandle);
 		
-		if(intervalHandle==null){
-			intervalHandle=setInterval(()=>{
-				NextDayCallbackFunc()
-			},1000);
-		}
+		// if(intervalHandle==null){
+		// 	intervalHandle=setInterval(()=>{
+		// 		NextDayCallbackFunc()
+		// 	},1000);
+		// }
 		PageCallbackFunc("Lobby");
 	},[]);
 	useEffect(()=>{
@@ -172,9 +162,7 @@ function App() {
 	if(nowPage!=""){
 		return (
 			<div className="App">
-				{"oldDate: "+oldOldDate}
-				<br></br>
-				{"today: "+GetDay()}
+				{delta}
 				{nowPage}
 			</div>
 		);
