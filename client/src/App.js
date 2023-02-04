@@ -8,7 +8,6 @@ import React, {useEffect,useState} from "react";
 const storageName="projects";
 let oldDate;
 let delta;
-let intervalHandle=null;
 function GetDay(){
 	return Math.floor(Date.now()/10000);//86400000
 }
@@ -43,9 +42,7 @@ function App() {
 		}
 	}
 	const QuitCallbackFunc=(prjName)=>{
-		console.log(data);
 		delete data[prjName];
-		console.log(data);
 		UpdateData(data,setData);
 	}
 	const StartProjectCallbackFunc=(prjName)=>{
@@ -137,16 +134,17 @@ function App() {
 			localStorage.setItem("oldDate",oldDate);
 		}
 		else{
-			delta="today";
+			delta="-";
 		}
 	}
 	useEffect(()=>{
 		oldDate=localStorage.getItem("oldDate");
-		console.log("oldDate",oldDate);
+		console.log("localStorage",oldDate);
 		if(oldDate==null){
 			oldDate=GetDay();
 			localStorage.setItem("oldDate",oldDate);
 		}
+		//NextDayCallbackFunc();
 		// console.log("intervalHandle",intervalHandle);
 		
 		// if(intervalHandle==null){
