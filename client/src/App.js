@@ -9,7 +9,7 @@ const storageName="projects";
 let oldDate;
 let delta;
 function GetDay(){
-	return Math.floor(Date.now()/10000);//86400000
+	return Math.floor(Date.now()/86400000);//86400000
 }
 function UpdateData(data,setData){
 	localStorage.setItem(storageName,JSON.stringify(data));
