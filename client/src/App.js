@@ -136,7 +136,9 @@ function App() {
 							}
 							if(d.Day==0){
 								d.Day="DAY";
-								task=Object.keys(data.lastTasks).length>0?d.lastTasks:d.tasks;
+								if(data.lastTasks){
+									task=Object.keys(data.lastTasks).length>0?d.lastTasks:d.tasks;
+								}
 							}
 							else if(d.Day<0||d.Day=="DAY"){
 								InitProject(d);
