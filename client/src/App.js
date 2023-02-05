@@ -8,8 +8,23 @@ import React, {useEffect,useState} from "react";
 const storageName="projects";
 let oldDate;
 let delta;
+let intervalHandle;
+
+function GetTime(){
+    var today=Date.now()+32400000
+    var day=Math.floor(today/86400000)
+    today-=(day*86400000)
+    var hour=Math.floor(today/3600000)
+    today-=(hour*3600000)
+    var min=Math.floor(today/60000)
+    today-=(min*60000)
+    var sec=Math.floor(today/1000)
+    
+	return (""+day+"/"+hour+"/"+min+"/"+sec)
+}
 function GetDay(){
-	return Math.floor(Date.now()/86400000);//86400000
+	let today=Date.now()+32400000;//now ms + 9hour ms
+	return Math.floor(today/86400000);//86400000
 }
 function UpdateData(data,setData){
 	localStorage.setItem(storageName,JSON.stringify(data));
@@ -18,6 +33,8 @@ function UpdateData(data,setData){
 function App() {
 	let [data,setData]=useState(JSON.parse(localStorage.getItem(storageName)??"{}"));
 	const [nowPage,setPage]=useState("");
+	const [time,setTime]=useState(GetTime());
+	let attendance;
 	//let oldPage;
 	const PageCallbackFunc=(page,props)=>{
 		//let data=tempData;
@@ -26,7 +43,7 @@ function App() {
 		
 		switch(page){
 			case "Lobby":
-				setPage(<Lobby PageCallback={PageCallbackFunc} projects={data}></Lobby>);
+				setPage(<Lobby attendance={attendance} PageCallback={PageCallbackFunc} projects={data}></Lobby>);
 				break;
 			case "Project":
 				console.log("name", props.name);
@@ -95,6 +112,11 @@ function App() {
 		console.log("today",today);
 		console.log("oldDate",oldDate);
 		if(oldDate!=today){
+			attendance++;
+			if((today-oldDate)>1){
+				attendance=0;
+			}
+			localStorage.setItem("attendance",attendance);
 			delta="next day";
 			let d;
 			let task;
@@ -144,14 +166,19 @@ function App() {
 			oldDate=GetDay();
 			localStorage.setItem("oldDate",oldDate);
 		}
+		attendance=localStorage.getItem("attendance");
+		if(attendance==null){
+			attendance=0;
+			localStorage.setItem("attendacne",0);
+		}
 		//NextDayCallbackFunc();
 		// console.log("intervalHandle",intervalHandle);
 		
-		// if(intervalHandle==null){
-		// 	intervalHandle=setInterval(()=>{
-		// 		NextDayCallbackFunc()
-		// 	},1000);
-		// }
+		if(intervalHandle==null){
+			intervalHandle=setInterval(()=>{
+				setTime(GetTime());
+			},1000);
+		}
 		PageCallbackFunc("Lobby");
 	},[]);
 	useEffect(()=>{
@@ -160,7 +187,8 @@ function App() {
 	if(nowPage!=""){
 		return (
 			<div className="App">
-				{delta}
+				
+				{time}
 				{nowPage}
 			</div>
 		);

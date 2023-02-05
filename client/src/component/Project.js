@@ -38,9 +38,11 @@ function Project(props){
 				TaskCheck(event.target.value,event.target.checked);
 				if(event.target.checked){
 					document.querySelector("label[for="+event.target.id+"]").classList.add("checked");
+					data.stat.checkedTaskCount++;
 				}
 				else{
 					document.querySelector("label[for="+event.target.id+"]").classList.remove("checked");
+					data.stat.checkedTaskCount--;
 				}
 				console.log("data in project",data);
 				props.SaveDataCallback();

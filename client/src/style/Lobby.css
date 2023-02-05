@@ -5,7 +5,7 @@
 	overflow-y: scroll;
 	overflow-x: hidden;
 	padding:0;
-	height: 90%;
+	height: 85%;
 	margin:0;
 	transform: translateY(-50%);
 	top: 50%;
@@ -91,4 +91,13 @@
 }
 .not_start_in_prjcomp{
 	color: gray;
+}
+
+.task_stat{
+	position: absolute;
+	bottom:4px;
+	left: 10px;
+}
+.task_stat span{
+	font-size: medium;
 }

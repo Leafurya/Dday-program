@@ -149,6 +149,10 @@ function Create(props){
 					prj["Start"]=false;
 					prj["taskDone"]=false;
 					prj["prjDone"]=false;
+					prj["stat"]={
+						taskCount:Object.keys(prj["tasks"]).length,
+						checkedTaskCount:0
+					};
 					//console.log("data",data);
 					props.SaveDataCallback(data);
 				}}></input>
