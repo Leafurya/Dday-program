@@ -17,10 +17,13 @@ function GetDay(){
 // }
 let oldDate;
 function InitDate(){
-	oldDate=Number(localStorage.getItem("oldDate"));
+	oldDate=localStorage.getItem("oldDate");
 	if(oldDate==null){ //non exist data in localstorage
 		oldDate=GetDay();
 		localStorage.setItem("oldDate",oldDate); //create oldDate item
+	}
+	else{
+		oldDate=Number(oldDate);
 	}
 }
 function UpdateOldDate(dateDelta){
