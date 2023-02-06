@@ -24,7 +24,7 @@ function Create(props){
 			<div className="bottom_padding"></div>
 			<div className="function_btns">
 				<input className="function_btn" type="button" value="취소" onClick={()=>{props.PageCallback("Lobby")}}></input>
-				<CreateBtn QuitCallback={props.QuitCallback} PageCallback={props.PageCallback} dataToModify={{name:dataToModify.name}} CreateDataObj={CreateDataObj} GetElement={GetElement} GetTaskFromInput={GetTaskFromInput} SaveDataCallback={props.SaveDataCallback}></CreateBtn>
+				<CreateBtn QuitCallback={props.QuitCallback} PageCallback={props.PageCallback} dataToModify={dataToModify?.name} CreateDataObj={CreateDataObj} GetElement={GetElement} GetTaskFromInput={GetTaskFromInput} SaveDataCallback={props.SaveDataCallback}></CreateBtn>
 				{dataToModify?<DeleteBtn dataToModify={dataToModify} QuitCallback={props.QuitCallback} PageCallback={props.PageCallback}></DeleteBtn>:""}
 			</div>
 		</div>
