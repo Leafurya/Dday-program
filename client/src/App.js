@@ -73,7 +73,7 @@ function App() {
 	const NextDayCallbackFunc=()=>{
 		let dateDelta=IsNextDay();
 		if(dateDelta){
-			console.log("next day");
+			console.log("next day",dateDelta);
 			UpdateAttendance(dateDelta);
 			for(let projectName in data){
 				DailyUpdateData(data[projectName],dateDelta);

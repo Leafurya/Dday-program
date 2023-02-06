@@ -29,6 +29,7 @@ function UpdateOldDate(dateDelta){
 function IsNextDay(){
 	let today=GetDay();
 	let delta=today-oldDate;
+	console.log("delta",delta);
 	return delta;
 }
 
