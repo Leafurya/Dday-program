@@ -47,7 +47,7 @@ function TaskLists(props){
 			data.stat.checkedTaskCount++;
 		}
 	}
-	if(data.day=="DAY"&&Object.keys(data?.lastTasks).length!=0){
+	if(data.day=="DAY"&&Object.keys(data?.lastTasks)?.length!=0){
 		taskObj=data.lastTasks;
 	}
 	console.log("taskObj",taskObj);
