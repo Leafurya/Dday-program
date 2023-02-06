@@ -26,8 +26,8 @@ function CreateDataObj(projectName,projectDiscription,tasks,D,Day,lastTasks){
 	return headData;
 }
 function ResetData(data){
-	data.Day="DAY";
-	data.Start=false;
+	data.day="DAY";
+	data.start=false;
 	let task;
 	for(task in data.tasks){
 		data.tasks[task]=false;
@@ -53,14 +53,17 @@ function DailyUpdateData(projectData,dateDelta){
 					projectData.day-=dateDelta;
 					taskToInit=projectData.tasks;
 				}
-				if(projectData.day==0){
+				if(projectData.day===0){
 					projectData.day="DAY";
 					taskToInit=projectData?.lastTasks?projectData.lastTasks:projectData.tasks;
 				}
-				else if(projectData.day<0||projectData.day=="DAY"){
+				else if(projectData.day<0||projectData.day==="DAY"){
 					ResetData(projectData);
 					return;
 				}
+				break;
+			default:
+				console.log("wrong input");
 				break;
 		}
 		for(var t in taskToInit){

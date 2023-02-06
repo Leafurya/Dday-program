@@ -17,14 +17,14 @@ function GetDay(){
 // }
 let oldDate;
 function InitDate(){
-	oldDate=localStorage.getItem("oldDate");
+	oldDate=Number(localStorage.getItem("oldDate"));
 	if(oldDate==null){ //non exist data in localstorage
 		oldDate=GetDay();
 		localStorage.setItem("oldDate",oldDate); //create oldDate item
 	}
 }
-function UpdateOldDate(){
-	localStorage.setItem("oldDate",oldDate);
+function UpdateOldDate(dateDelta){
+	localStorage.setItem("oldDate",(oldDate+dateDelta));
 }
 function IsNextDay(){
 	let today=GetDay();

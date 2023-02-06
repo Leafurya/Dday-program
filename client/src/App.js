@@ -4,8 +4,8 @@ import Project from './component/Project.js';
 import Create from './component/Create.js';
 import React, {useEffect,useState} from "react";
 
-import {GetTime,GetDay,InitDate,IsNextDay} from './module/TimeModule.js'
-import {UpdateData,CreateDataObj,DailyUpdateData} from './module/DataModule.js'
+import {GetTime,UpdateOldDate,InitDate,IsNextDay} from './module/TimeModule.js'
+import {UpdateData,DailyUpdateData} from './module/DataModule.js'
 import {InitAttendance,UpdateAttendance,GetAttendance} from './module/AttendanceModule.js'
 //let prjNames;
 
@@ -41,7 +41,7 @@ function App() {
 		UpdateData(data,setData);
 	}
 	const StartProjectCallbackFunc=(prjName)=>{
-		if(data[prjName].day=="DAY"){
+		if(data[prjName].day==="DAY"){
 			alert("프로젝트 재설정 부탁드립니다.");
 		}
 		else{
@@ -73,64 +73,15 @@ function App() {
 	const NextDayCallbackFunc=()=>{
 		let dateDelta=IsNextDay();
 		if(dateDelta){
+			console.log("next day");
 			UpdateAttendance(dateDelta);
 			for(let projectName in data){
 				DailyUpdateData(data[projectName],dateDelta);
+				console.log("data[projectName]",data[projectName]);
 			}
+			UpdateData(data,setData);
+			UpdateOldDate(dateDelta);
 		}
-		console.log("dateDelta",dateDelta);
-		// let today=GetDay();
-		// console.log("today",today);
-		// console.log("oldDate",oldDate);
-		// if(oldDate!=today){
-		// 	attendance++;
-		// 	if((today-oldDate)>1){
-		// 		attendance=0;
-		// 	}
-		// 	localStorage.setItem("attendance",attendance);
-		// 	delta="next day";
-		// 	let d;
-		// 	let task;
-		// 	for(var prj in data){
-		// 		d=data[prj];
-		// 		if(d.Start){
-		// 			console.log("prj",prj);
-		// 			switch(d.D){
-		// 				case "+":
-		// 					d.Day+=(today-oldDate);
-		// 					task=d.tasks;
-		// 					break;
-		// 				case "-":
-		// 					if(d.Day>0){
-		// 						d.Day-=(today-oldDate);
-		// 						task=d.tasks;
-		// 					}
-		// 					if(d.Day==0){
-		// 						d.Day="DAY";
-		// 						if(data.lastTasks){
-		// 							task=Object.keys(data.lastTasks).length>0?d.lastTasks:d.tasks;
-		// 						}
-		// 					}
-		// 					else if(d.Day<0||d.Day=="DAY"){
-		// 						InitProject(d);
-		// 						d.prjDone=true;
-		// 					}
-		// 					break;
-		// 			}
-		// 			for(var t in task){
-		// 				task[t]=false;
-		// 			}
-		// 			d.taskDone=false;
-		// 		}
-				
-		// 	}
-		// 	UpdateData(data,setData)
-		// 	oldDate=today;
-		// 	localStorage.setItem("oldDate",oldDate);
-		// }
-		// else{
-		// 	delta="-";
-		// }
 	}
 
 	useEffect(()=>{
@@ -147,7 +98,7 @@ function App() {
 	useEffect(()=>{
 		NextDayCallbackFunc();
 	},[nowPage]);
-	if(nowPage!=""){
+	if(nowPage!==""){
 		return (
 			<div className="App">
 				
