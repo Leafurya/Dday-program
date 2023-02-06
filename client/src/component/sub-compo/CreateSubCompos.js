@@ -47,8 +47,8 @@ function InputTaskPart(props){
 	},[])
 	
 	return(
-		<div className="last_task">
-			<input className="add_task_btn col_align_re" type="button" value={props.value} onClick={()=>{
+		<div>
+			<input id="last_task" className="add_task_btn col_align_re" type="button" value={props.value} onClick={()=>{
 				GetElement(props.id).appendChild(CreateTaskInputCell(props.name,prompt("도전과제 내용을 적어주세요.")));
 				//GetTaskInput("task_inputs","task_input");
 			}}></input>
@@ -67,10 +67,10 @@ function CreateBtn(props){
 			}
 			let projectName=props.GetElement("prj_name").value;
 			let discription=props.GetElement("prj_cntnt").value;
-			let tasks=props.GetTaskFromInput("task_input");
-			let lastTasks=props.GetTaskFromInput("last_task_input"); //if lastTasks not exist, value is null
 			let D=props.GetElement("D+").checked?"+":"-";
 			let Day=(D=="+")?0:props.GetElement("prj_day").value;
+			let tasks=props.GetTaskFromInput("task_input");
+			let lastTasks=(D=="+")?null:props.GetTaskFromInput("last_task_input"); //if lastTasks not exist, value is null
 
 			let data=props.CreateDataObj(projectName,discription,tasks,D,Day,lastTasks)
 			console.log("new create data",data);
