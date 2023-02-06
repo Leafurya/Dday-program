@@ -18,9 +18,11 @@ function TypeChoicePart(props){
 		<div className="col_align_re type_choice">
 			<input defaultChecked={props.defaultCheck=="+"} id="D+" type="radio" value="D+" name="project_type" onClick={(event)=>{
 				document.getElementById("prj_day").disabled=true;
+				document.getElementById("last_task").disabled=true;
 			}}/>D+
 			<input defaultChecked={props.defaultCheck=="-"} id="D-" type="radio" value="D-" name="project_type" onClick={(event)=>{
 				document.getElementById("prj_day").disabled=false;
+				document.getElementById("last_task").disabled=true;
 			}}/>D-
 			<input disabled={props.defaultCheck=="plus"} type="number" placeholder="일수" id="prj_day" defaultValue={props.day?props.day:""}></input>
 		</div>
@@ -45,7 +47,7 @@ function InputTaskPart(props){
 	},[])
 	
 	return(
-		<div>
+		<div className="last_task">
 			<input className="add_task_btn col_align_re" type="button" value={props.value} onClick={()=>{
 				GetElement(props.id).appendChild(CreateTaskInputCell(props.name,prompt("도전과제 내용을 적어주세요.")));
 				//GetTaskInput("task_inputs","task_input");
