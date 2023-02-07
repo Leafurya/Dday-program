@@ -3,6 +3,8 @@ import Lobby from './component/Lobby.js';
 import Project from './component/Project.js';
 import Create from './component/Create.js';
 import React, {useEffect,useState} from "react";
+import {createBrowserHistory} from 'history';
+
 
 import {GetTime,UpdateOldDate,InitDate,IsNextDay} from './module/TimeModule.js'
 import {UpdateData,DailyUpdateData} from './module/DataModule.js'
@@ -10,6 +12,7 @@ import {InitAttendance,UpdateAttendance,GetAttendance} from './module/Attendance
 //let prjNames;
 
 const storageName="projects";
+const history=createBrowserHistory();
 
 let intervalHandle;
 
@@ -94,16 +97,33 @@ function App() {
 			},1000);
 		}
 		PageCallbackFunc("Lobby");
+		history.listen((location)=>{
+			if(history.action==="POP"){
+				alert("뒤로가기");
+			}
+		})
 	},[]);
 	useEffect(()=>{
 		NextDayCallbackFunc();
 	},[nowPage]);
+	// window.onpageshow=(event)=>{
+	// 	if(event.persisted||(window.performance&&window.performance.navigation.type==2)){
+	// 		alert("뒤로가기 입력")
+	// 		event.preventdefault();
+	// 	}
+	// }
 	if(nowPage!==""){
 		return (
 			<div className="App">
-				
 				{time}
 				{nowPage}
+				<div className="close_app">
+					<input type="button" value="CLOSE" onClick={
+						()=>{
+							window.close();
+						}
+					}></input>
+				</div>
 			</div>
 		);
 	}
