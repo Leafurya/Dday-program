@@ -57,3 +57,4 @@ function GetTaskFromInput(targetName){
 module.exports.CreateTaskInputCell=CreateTaskInputCell;
 module.exports.GetElement=GetElement;
 module.exports.GetTaskFromInput=GetTaskFromInput;
+module.exports.CreateElement=CreateElement;

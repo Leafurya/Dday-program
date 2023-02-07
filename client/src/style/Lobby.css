@@ -5,9 +5,9 @@
 	overflow-y: scroll;
 	overflow-x: hidden;
 	padding:0;
-	height: 93%;
+	height: 85%;
 	margin:0;
-	bottom: 0;
+	bottom: 50px;
 }
 
 .project_list_li{

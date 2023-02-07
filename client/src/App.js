@@ -3,18 +3,21 @@ import Lobby from './component/Lobby.js';
 import Project from './component/Project.js';
 import Create from './component/Create.js';
 import React, {useEffect,useState} from "react";
-import {createBrowserHistory} from 'history';
 
 
 import {GetTime,UpdateOldDate,InitDate,IsNextDay} from './module/TimeModule.js'
 import {UpdateData,DailyUpdateData} from './module/DataModule.js'
 import {InitAttendance,UpdateAttendance,GetAttendance} from './module/AttendanceModule.js'
+import { GetElement,CreateElement } from './module/CreateCompModule.js';
 //let prjNames;
 
 const storageName="projects";
-const history=createBrowserHistory();
 
 let intervalHandle;
+let closeInterval;
+let closeBtnClickCount=0;
+const closeNotiEle=CreateElement({element:"div",classList:"close_noti"});
+closeNotiEle.innerHTML="버튼을 한 번 더 누르면 앱을 종료합니다.";
 
 function App() {
 	let [data,setData]=useState(JSON.parse(localStorage.getItem(storageName)??"{}"));
@@ -97,32 +100,38 @@ function App() {
 			},1000);
 		}
 		PageCallbackFunc("Lobby");
-		history.listen((location)=>{
-			if(history.action==="POP"){
-				alert("뒤로가기");
-			}
-		})
 	},[]);
 	useEffect(()=>{
 		NextDayCallbackFunc();
 	},[nowPage]);
-	// window.onpageshow=(event)=>{
-	// 	if(event.persisted||(window.performance&&window.performance.navigation.type==2)){
-	// 		alert("뒤로가기 입력")
-	// 		event.preventdefault();
-	// 	}
-	// }
 	if(nowPage!==""){
 		return (
 			<div className="App">
 				{time}
 				{nowPage}
-				<div className="close_app">
-					<input type="button" value="CLOSE" onClick={
+				<div className="navi_btns">
+					
+					<input className="close_btn" type="button" value="CLOSE" onClick={
 						()=>{
-							window.close();
+							closeBtnClickCount++;
+							
+							if(closeBtnClickCount>=2){
+								window.close();
+							}
+							else{
+								closeNotiEle.classList="close_noti"
+								document.querySelector(".App").appendChild(closeNotiEle)
+								closeInterval=setInterval(()=>{
+									closeBtnClickCount=0;
+									closeNotiEle.classList.remove("close_noti")
+									document.querySelector(".App").removeChild(closeNotiEle)
+									clearInterval(closeInterval)
+								},1900)
+							}
+							
 						}
 					}></input>
+					<input type="button" className="information_btn" value="정보"></input>
 				</div>
 			</div>
 		);
