@@ -113,18 +113,12 @@ function App() {
 		(()=>{
 			window.addEventListener("beforeunload",preventClose);
 		})();
-		return ()=>{
-			window.removeEventListener("beforeunload",preventClose);
-		}
 	},[]);
 	useEffect(()=>{
 		(()=>{
 			window.history.pushState(null,"",window.location.href);
 			window.addEventListener("popstate",PreventGoBack);
 		})();
-		return ()=>{
-			window.removeEventListener("popstate",PreventGoBack);
-		}
 	})
 	useEffect(()=>{
 		NextDayCallbackFunc();
