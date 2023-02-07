@@ -27,6 +27,7 @@ function InitDate(){
 	}
 }
 function UpdateOldDate(dateDelta){
+	oldDate+=dateDelta;
 	localStorage.setItem("oldDate",(oldDate+dateDelta));
 }
 function IsNextDay(){

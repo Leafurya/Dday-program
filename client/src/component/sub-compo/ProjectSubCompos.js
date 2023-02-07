@@ -47,8 +47,10 @@ function TaskLists(props){
 			data.stat.checkedTaskCount++;
 		}
 	}
-	if(data.day==="DAY"&&Object.keys(data?.lastTasks)?.length!==0){
-		taskObj=data.lastTasks;
+	if(data?.lastTasks){
+		if(data.day==="DAY"&&Object.keys(data.lastTasks).length!==0){
+			taskObj=data.lastTasks;
+		}
 	}
 	console.log("taskObj",taskObj);
 	for(var task in taskObj){
