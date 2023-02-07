@@ -3,11 +3,11 @@
 	width: 100%;
 	position: absolute;
 	overflow-y: scroll;
+	overflow-x: hidden;
 	padding:0;
-	height: 90%;
+	height: 89%;
 	margin:0;
-	transform: translateY(-50%);
-	top: 50%;
+	bottom: 50px;
 }
 
 .project_list_li{
@@ -49,6 +49,7 @@
 	left: 50%;
 	top: 50%;
 	font-size: large;
+	text-align: center;
 }
 .plus_btn{
 	display: inline-block;
@@ -60,4 +61,76 @@
 	transform: translate(-50%,-50%);
 	left: 50%;
 	top: 60%;
+}
+.project_done{
+	background-image: url("./project_done.png");
+	background-size: contain;
+	background-repeat: no-repeat;
+	width: 250px;
+	height: 100px;
+	position: absolute;
+	transform: translateX(-50%);
+	left: 50%;
+	top:-5px;
+}
+.task_done{
+	background-image: url("./task_done.png");
+	background-size: contain;
+	background-repeat: no-repeat;
+	width: 130px;
+	height: 100px;
+	position: absolute;
+	right: -20px;
+	top: -10px;
+	transform: rotate(25deg);
+}
+.not_start{
+	color: gray;
+	border-style: dashed;
+}
+.not_start_in_prjcomp{
+	color: gray;
+}
+
+.task_stat{
+	position: absolute;
+	bottom:4px;
+	left: 10px;
+}
+.task_stat span{
+	font-size: medium;
+}
+
+.navi_btns input{
+	border: none;
+	font-size: large;
+	background-color:rgb(209, 209, 209);
+}
+.close_noti{
+	background-color: rgb(193, 193, 193);
+	border: 1px solid none;
+	border-radius: 10px;
+	position: absolute;
+	font-size: medium;
+	padding: 10px;
+	bottom: 100px;
+	transform: translateX(-50%);
+	left: 50%;
+	text-align: center;
+	width: 300px;
+	
+	animation-name: fade_out;
+	animation-duration: 2s;
+	animation-iteration-count: 1;
+}
+@keyframes fade_out {
+	0%{
+		opacity: .8;
+	}
+	50%{
+		opacity: .8;
+	}
+	100%{
+		opacity: 0;
+	}
 }

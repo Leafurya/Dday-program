@@ -7,8 +7,9 @@ input[type=text]{
 	border-bottom: 1px solid gray;
 }
 .borad{
-	position: relative;
-	height: 99%;
+	position: absolute;
+	height: 90%;
+	bottom: 0;
 }
 input[type=number]{
 	width: 50px;
@@ -73,11 +74,11 @@ input[type=text]:focus,input[type=number]:focus,textarea:focus{
 	margin-bottom: 10px;
 }
 .function_btns{
-	position: fixed;
+	position: absolute;
 	bottom: 0;
 	width: 100%;
 	height: 50px;
-	
+	background-color: rgb(209, 209, 209);
 }
 .function_btn:first-child:nth-last-child(2),
 .function_btn:first-child:nth-last-child(2) ~ .function_btn{
@@ -96,4 +97,9 @@ input[type=text]:focus,input[type=number]:focus,textarea:focus{
 	font-size: large;
 	background: none;
 	border: none;
+}
+.bottom_padding{
+	position:relative;
+	display: block;
+	height: 60px;
 }

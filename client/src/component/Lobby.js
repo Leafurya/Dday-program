@@ -1,29 +1,14 @@
-import React, {useState} from 'react';
 import "../style/Lobby.css";
 
+import {ProjectLists} from "./sub-compo/LobbySubCompos.js"
+import { CreateElement } from '../module/CreateCompModule.js';
+
+let closeInterval;
+let closeBtnClickCount=0;
+const closeNotiEle=CreateElement({element:"div",classList:"close_noti"});
+closeNotiEle.innerHTML="버튼을 한 번 더 누르면 앱을 종료합니다.";
+
 function Lobby(props){
-	let prjs=props.projects;
-	let prj;
-	let prjName;
-	let prjLists=[];
-	let i=0;
-	console.log("lobby props",prjs);
-	for(prjName in prjs){
-		prj=prjs[prjName];
-		prjLists.push(
-		<li className="project_list_li" key={i}><input id={"prj"+i} type="button" value={prjName} onClick={
-			(event)=>{
-				console.log(event.target)
-				props.PageCallback("Project",{name:event.target.value});
-			}
-		}></input>
-			<label className="project_list_label" htmlFor={"prj"+i}>
-				<div><span className="project_list_day">{"D"+prj.D+prj.Day}</span></div>
-				<div><span className="project_list_name">{prjName}</span></div>
-			</label>
-		</li>);
-		i++;
-	}
 	return(
 		<div>
 			<ul className="project_list_ul">
@@ -37,9 +22,31 @@ function Lobby(props){
 						<span className="plus_btn_value">+</span>
 					</label>
 				</li>
-				{prjLists}
+				<ProjectLists projects={props.projects} PageCallback={props.PageCallback}></ProjectLists>
 			</ul>
-			
+			<div className="navi_btns">
+				<input className="close_btn" type="button" value="CLOSE" onClick={
+					()=>{
+						closeBtnClickCount++;
+						if(closeBtnClickCount>=2){
+							window.close();
+						}
+						else{
+							closeNotiEle.classList="close_noti"
+							document.querySelector(".App").appendChild(closeNotiEle)
+							closeInterval=setInterval(()=>{
+								closeBtnClickCount=0;
+								closeNotiEle.classList.remove("close_noti")
+								document.querySelector(".App").removeChild(closeNotiEle)
+								clearInterval(closeInterval)
+							},1990)
+						}
+					}
+				}></input>
+				<input type="button" className="information_btn" value="정보" onClick={()=>{
+					alert("버전: alpha 1.0.0\n연속 출석 "+props.attendance+"일째");
+				}}></input>
+			</div>
 		</div>
 	)
 }

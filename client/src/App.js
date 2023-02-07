@@ -3,31 +3,28 @@ import Lobby from './component/Lobby.js';
 import Project from './component/Project.js';
 import Create from './component/Create.js';
 import React, {useEffect,useState} from "react";
+
+
+import {GetTime,UpdateOldDate,InitDate,IsNextDay} from './module/TimeModule.js'
+import {UpdateData,DailyUpdateData} from './module/DataModule.js'
+import {InitAttendance,UpdateAttendance,GetAttendance} from './module/AttendanceModule.js'
+
+//import {PreventGoBack} from './module/AppBehaivorModule.js';
 //let prjNames;
 
 const storageName="projects";
-let oldDate;
-let intervalHandle=null;
-function GetDay(){
-	return Math.floor(Date.now()/86400000);//86400000
-}
-function UpdateData(data,setData){
-	localStorage.setItem(storageName,JSON.stringify(data));
-	setData(data);
-}
+
+let intervalHandle;
+
 function App() {
-	console.log("typeof",localStorage.getItem(storageName));
 	let [data,setData]=useState(JSON.parse(localStorage.getItem(storageName)??"{}"));
 	const [nowPage,setPage]=useState("");
+	const [time,setTime]=useState(GetTime());
 	//let oldPage;
 	const PageCallbackFunc=(page,props)=>{
-		//let data=tempData;
-		console.log("page callback data",data);
-		console.log("props",props);
-		
 		switch(page){
 			case "Lobby":
-				setPage(<Lobby PageCallback={PageCallbackFunc} projects={data}></Lobby>);
+				setPage(<Lobby attendance={GetAttendance()} PageCallback={PageCallbackFunc} projects={data}></Lobby>);
 				break;
 			case "Project":
 				console.log("name", props.name);
@@ -35,7 +32,7 @@ function App() {
 				break;
 			case "Create":
 				console.log("data", data);
-				setPage(<Create QuitCallback={QuitCallbackFunc} PageCallback={PageCallbackFunc} modiData={props} SaveDataCallback={CreatePrjCallbackFunc}></Create>)
+				setPage(<Create QuitCallback={QuitCallbackFunc} PageCallback={PageCallbackFunc} dataToModify={props} SaveDataCallback={CreatePrjCallbackFunc}></Create>)
 				break;
 			default:
 				//setData("");
@@ -43,18 +40,23 @@ function App() {
 		}
 	}
 	const QuitCallbackFunc=(prjName)=>{
-		console.log(data);
 		delete data[prjName];
-		console.log(data);
+		console.log("QuitCallbackFunc prjName",prjName);
+		console.log("QuitCallbackFunc ",data);
 		UpdateData(data,setData);
 	}
 	const StartProjectCallbackFunc=(prjName)=>{
-		if(!data[prjName].Start){
-			data[prjName].Start=true;
-			UpdateData(data,setData)
-			alert(prjName+"프로젝트가 시작됐습니다.")
-			PageCallbackFunc("Project",{name:prjName});
-			return true;
+		if(data[prjName].day==="DAY"){
+			alert("프로젝트 재설정 부탁드립니다.");
+		}
+		else{
+			if(!data[prjName].start){
+				data[prjName].start=true;
+				UpdateData(data,setData)
+				alert(prjName+"프로젝트가 시작됐습니다.")
+				PageCallbackFunc("Project",{name:prjName});
+				return true;
+			}
 		}
 		return false;
 	}
@@ -74,45 +76,34 @@ function App() {
 		UpdateData(data,setData)
 	}
 	const NextDayCallbackFunc=()=>{
-		let today=GetDay();
-		console.log("today",today);
-		if(oldDate!=today){
-			let d;
-			for(var prj in data){
-				d=data[prj];
-				if(d.Start){
-					switch(d.D){
-						case "+":
-							d.Day+=(today-oldDate);
-							break;
-						case "-":
-							d.Day-=(today-oldDate);
-							break;
-					}
-				}
-				
+		let dateDelta=IsNextDay();
+		if(dateDelta){
+			console.log("next day",dateDelta);
+			UpdateAttendance(dateDelta);
+			for(let projectName in data){
+				DailyUpdateData(data[projectName],dateDelta);
+				console.log("data[projectName]",data[projectName]);
 			}
-			UpdateData(data,setData)
-			oldDate=today;
-			localStorage.setItem("oldDate",oldDate);
+			UpdateData(data,setData);
+			UpdateOldDate(dateDelta);
 		}
 	}
+
 	useEffect(()=>{
-		oldDate=localStorage.getItem("oldDate");
-		console.log("oldDate",oldDate);
-		if(oldDate==null){
-			oldDate=GetDay();
-			localStorage.setItem("oldDate",oldDate);
-		}
-		console.log("intervalHandle",intervalHandle);
-		if(intervalHandle==null){
-			intervalHandle=setInterval(()=>{
-				NextDayCallbackFunc()
-			},1000);
-		}
-		PageCallbackFunc("Lobby");
-	},[]);
-	if(nowPage!=""){
+		InitDate();
+		InitAttendance();
+		// if(intervalHandle==null){
+		// 	intervalHandle=setInterval(()=>{
+		// 		setTime(GetTime());
+		// 	},1000);
+		// }
+		PageCallbackFunc("Lobby")
+		//
+	},[])
+	useEffect(()=>{
+		NextDayCallbackFunc();
+	},[nowPage]);
+	if(nowPage!==""){
 		return (
 			<div className="App">
 				{nowPage}
