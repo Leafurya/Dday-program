@@ -26,7 +26,7 @@ function Project(props){
 			<div className={"project_board "+(project.start?"":"not_start_in_prjcomp")}>
 				<div><h1 className="col_align_re project_day">{"D"+project.D+project.day}</h1></div>
 				<div><h2 className="col_align_re project_header">{props.projectName}</h2></div>
-				<div><h4 className="col_align_re project_content">{project.cntnt}</h4></div>
+				<div><h4 className="col_align_re project_content">{project.discription}</h4></div>
 				<ul>
 				<TaskLists project={project} SaveDataCallback={props.SaveDataCallback}></TaskLists>
 				</ul>

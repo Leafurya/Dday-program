@@ -69,7 +69,7 @@ function CreateBtn(props){
 	return(
 		<input className="function_btn" type="button" defaultValue={dataToModify?"수정":"생성"} onClick={()=>{
 			if(dataToModify){
-				props.QuitCallback(dataToModify.name);
+				props.QuitCallback(dataToModify);
 			}
 			let projectName=props.GetElement("prj_name").value;
 			let discription=props.GetElement("prj_cntnt").value;
@@ -77,6 +77,18 @@ function CreateBtn(props){
 			let Day=(D=="+")?0:props.GetElement("prj_day").value;
 			let tasks=props.GetTaskFromInput("task_input");
 			let lastTasks=(D=="+")?null:props.GetTaskFromInput("last_task_input"); //if lastTasks not exist, value is null
+			if(projectName.length<=0){
+				alert("프로젝트 이름이 비어있습니다.");
+				return;
+			}
+			if(!tasks){
+				alert("도전과제가 비어있습니다.");
+				return;
+			}
+			if(D==='-'&&Day===""){
+				alert("일 수가 비어있습니다.");
+				return;
+			}
 
 			let data=props.CreateDataObj(projectName,discription,tasks,D,Day,lastTasks)
 			console.log("new create data",data);

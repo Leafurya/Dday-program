@@ -1,9 +1,3 @@
-function CreateDataObj(){
-	
-}
-function GetDeleteBtn(){
-
-}
 function GetElement(id){
 	return document.getElementById(id);
 }
@@ -36,9 +30,6 @@ function CreateTaskInputCell(name,cntnt){
 	taskCellCount++;
 	console.log("CreateTaskInputCell",div);
 	return div;
-}
-function AddTaskInput(){
-
 }
 function GetTaskFromInput(targetName){
 	let taskInputs=document.getElementsByName(targetName);

@@ -41,6 +41,8 @@ function App() {
 	}
 	const QuitCallbackFunc=(prjName)=>{
 		delete data[prjName];
+		console.log("QuitCallbackFunc prjName",prjName);
+		console.log("QuitCallbackFunc ",data);
 		UpdateData(data,setData);
 	}
 	const StartProjectCallbackFunc=(prjName)=>{
