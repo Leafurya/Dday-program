@@ -22,14 +22,24 @@ closeNotiEle.innerHTML="버튼을 한 번 더 누르면 앱을 종료합니다."
 
 function PreventGoBack(){
 	window.history.pushState(null,"",window.location.herf);
-	alert("뒤로가기 감지")
+	closeBtnClickCount++;
+	if(closeBtnClickCount>=2){
+		window.location.reload();
+		window.close();
+	}
+	else{
+		closeNotiEle.classList="close_noti"
+		document.querySelector(".App").appendChild(closeNotiEle)
+		closeInterval=setInterval(()=>{
+			closeBtnClickCount=0;
+			closeNotiEle.classList.remove("close_noti")
+			document.querySelector(".App").removeChild(closeNotiEle)
+			clearInterval(closeInterval)
+		},1900)
+	}
 }
 
 function App() {
-	const preventClose=(e)=>{
-		e.preventDefault();
-		e.returnValue="";
-	}
 	let [data,setData]=useState(JSON.parse(localStorage.getItem(storageName)??"{}"));
 	const [nowPage,setPage]=useState("");
 	const [time,setTime]=useState(GetTime());
@@ -110,9 +120,6 @@ function App() {
 			},1000);
 		}
 		PageCallbackFunc("Lobby");
-		(()=>{
-			window.addEventListener("beforeunload",preventClose);
-		})();
 	},[]);
 	useEffect(()=>{
 		(()=>{
@@ -129,7 +136,6 @@ function App() {
 				{time}
 				{nowPage}
 				<div className="navi_btns">
-					
 					<input className="close_btn" type="button" value="CLOSE" onClick={
 						()=>{
 							closeBtnClickCount++;
