@@ -25,8 +25,8 @@ function PreventGoBack(){
 	//alert("뒤로가기")
 	closeBtnClickCount++;
 	if(closeBtnClickCount>=2){
-		// window.location.reload();
-		// setTimeout(()=>{window.close()},100)
+		window.location.reload();
+		setTimeout(()=>{window.close()},100)
 	}
 	else{
 		window.location.reload();
