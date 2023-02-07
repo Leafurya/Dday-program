@@ -4,6 +4,7 @@ body{
 	height: 100%;
 	width: 100%;
 	font-size: x-large;
+	overflow:hidden;
 	font-family: 'Jeju Gothic', sans-serif;
 }
 li{
