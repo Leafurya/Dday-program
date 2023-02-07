@@ -1,54 +1,16 @@
-import React, {useState} from 'react';
 import "../style/Lobby.css";
 
-const prjDoneStamp=<span className="project_done"></span>;
-const taskDoneStamp=<span className="task_done"></span>
+import {ProjectLists} from "./sub-compo/LobbySubCompos.js"
+import { CreateElement } from '../module/CreateCompModule.js';
 
+let closeInterval;
+let closeBtnClickCount=0;
+const closeNotiEle=CreateElement({element:"div",classList:"close_noti"});
+closeNotiEle.innerHTML="버튼을 한 번 더 누르면 앱을 종료합니다.";
 
 function Lobby(props){
-	let prjs=props.projects;
-	let prj;
-	let prjName;
-	let prjLists=[];
-	let taskStat="";
-	let i=0;
-	
-	console.log("lobby props",prjs);
-	
-	for(prjName in prjs){
-		prj=prjs[prjName];
-		taskStat="";
-		if(prj.D=="+"){
-			if(!prj.Start){
-				taskStat="-%";
-			}
-			else{
-				taskStat=((prj.stat.checkedTaskCount/((prj.Day+1)*prj.stat.taskCount))*100).toFixed(1)+"%";
-			}
-		}
-		prjLists.push(
-		<li className={"project_list_li "+(prj.Start?"":"not_start")} key={i}><input id={"prj"+i} type="button" value={prjName} onClick={
-			(event)=>{
-				props.PageCallback("Project",{name:event.target.value});
-			}
-		}></input>
-			<label className="project_list_label" htmlFor={"prj"+i}>
-				<div><span className="project_list_day">{"D"+prj.D+prj.Day}{prj.prjDone?prjDoneStamp:""}</span></div>
-				<div><span className="project_list_name">{prjName}</span></div>
-				{prj.taskDone?taskDoneStamp:""}
-				<span className="task_stat">
-					<span>{prj.D=="+"?"성공률":""}</span><br></br>
-					<span>{taskStat}</span>
-				</span>
-			</label>
-		</li>);
-		i++;
-	}
 	return(
 		<div>
-			<div className="lobby_stat">
-				<span>{"연속출석 "+props.attendance+"일째"}</span>
-			</div>
 			<ul className="project_list_ul">
 				<li className="project_list_li" >
 					<input id="create_btn" type="button" value="생성" onClick={
@@ -60,9 +22,31 @@ function Lobby(props){
 						<span className="plus_btn_value">+</span>
 					</label>
 				</li>
-				{prjLists}
-					
+				<ProjectLists projects={props.projects} PageCallback={props.PageCallback}></ProjectLists>
 			</ul>
+			<div className="navi_btns">
+				<input className="close_btn" type="button" value="CLOSE" onClick={
+					()=>{
+						closeBtnClickCount++;
+						if(closeBtnClickCount>=2){
+							window.close();
+						}
+						else{
+							closeNotiEle.classList="close_noti"
+							document.querySelector(".App").appendChild(closeNotiEle)
+							closeInterval=setInterval(()=>{
+								closeBtnClickCount=0;
+								closeNotiEle.classList.remove("close_noti")
+								document.querySelector(".App").removeChild(closeNotiEle)
+								clearInterval(closeInterval)
+							},1990)
+						}
+					}
+				}></input>
+				<input type="button" className="information_btn" value="정보" onClick={()=>{
+					alert("버전: alpha 1.0.0\n연속 출석 "+props.attendance+"일째");
+				}}></input>
+			</div>
 		</div>
 	)
 }

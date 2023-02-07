@@ -19,3 +19,16 @@ li{
 textarea,input{
 	font-family: 'Jeju Gothic', sans-serif;
 }
+.navi_btns{
+	background: none;
+	border: none;
+	position: fixed;
+	left:0;
+	bottom:0;
+	
+	width: 100%;
+	height: 50px;
+
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+}
