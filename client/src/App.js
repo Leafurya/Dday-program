@@ -22,10 +22,11 @@ closeNotiEle.innerHTML="버튼을 한 번 더 누르면 앱을 종료합니다."
 
 function PreventGoBack(){
 	window.history.pushState(null,"",window.location.herf);
+	//alert("뒤로가기")
 	closeBtnClickCount++;
 	if(closeBtnClickCount>=2){
 		window.location.reload();
-		window.close();
+		setTimeout(()=>{window.close()},100)
 	}
 	else{
 		closeNotiEle.classList="close_noti"
@@ -113,20 +114,20 @@ function App() {
 	useEffect(()=>{
 		InitDate();
 		InitAttendance();
-		
 		if(intervalHandle==null){
 			intervalHandle=setInterval(()=>{
 				setTime(GetTime());
 			},1000);
 		}
-		PageCallbackFunc("Lobby");
+		PageCallbackFunc("Lobby")
+		//
 	},[]);
 	useEffect(()=>{
 		(()=>{
 			window.history.pushState(null,"",window.location.href);
 			window.addEventListener("popstate",PreventGoBack);
 		})();
-	})
+	},[])
 	useEffect(()=>{
 		NextDayCallbackFunc();
 	},[nowPage]);
@@ -135,29 +136,14 @@ function App() {
 			<div className="App">
 				{time}
 				{nowPage}
-				<div className="navi_btns">
+				{/* <div className="navi_btns">
 					<input className="close_btn" type="button" value="CLOSE" onClick={
 						()=>{
-							closeBtnClickCount++;
-							
-							if(closeBtnClickCount>=2){
-								window.close();
-							}
-							else{
-								closeNotiEle.classList="close_noti"
-								document.querySelector(".App").appendChild(closeNotiEle)
-								closeInterval=setInterval(()=>{
-									closeBtnClickCount=0;
-									closeNotiEle.classList.remove("close_noti")
-									document.querySelector(".App").removeChild(closeNotiEle)
-									clearInterval(closeInterval)
-								},1900)
-							}
-							
+							window.close();
 						}
 					}></input>
 					<input type="button" className="information_btn" value="정보"></input>
-				</div>
+				</div> */}
 			</div>
 		);
 	}
