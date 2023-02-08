@@ -4,22 +4,15 @@ import Project from './component/Project.js';
 import Create from './component/Create.js';
 import React, {useEffect,useState} from "react";
 
-
-import {GetTime,UpdateOldDate,InitDate,IsNextDay} from './module/TimeModule.js'
+import {UpdateOldDate,InitDate,IsNextDay} from './module/TimeModule.js'
 import {UpdateData,DailyUpdateData} from './module/DataModule.js'
 import {InitAttendance,UpdateAttendance,GetAttendance} from './module/AttendanceModule.js'
 
-//import {PreventGoBack} from './module/AppBehaivorModule.js';
-//let prjNames;
-
 const storageName="projects";
-
-let intervalHandle;
 
 function App() {
 	let [data,setData]=useState(JSON.parse(localStorage.getItem(storageName)??"{}"));
 	const [nowPage,setPage]=useState("");
-	const [time,setTime]=useState(GetTime());
 	//let oldPage;
 	const PageCallbackFunc=(page,props)=>{
 		switch(page){
