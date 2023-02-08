@@ -4,7 +4,7 @@ import Project from './component/Project.js';
 import Create from './component/Create.js';
 import React, {useEffect,useState} from "react";
 
-import {UpdateOldDate,InitDate,IsNextDay} from './module/TimeModule.js'
+import {UpdateOldDate,InitDate,IsNextDay,GetOldDate} from './module/TimeModule.js'
 import {UpdateData,DailyUpdateData} from './module/DataModule.js'
 import {InitAttendance,UpdateAttendance,GetAttendance} from './module/AttendanceModule.js'
 
@@ -69,29 +69,24 @@ function App() {
 		UpdateData(data,setData)
 	}
 	const NextDayCallbackFunc=()=>{
-		let dateDelta=IsNextDay();
-		if(dateDelta){
-			console.log("next day",dateDelta);
+		let today=IsNextDay();
+		console.log("today in NextDayCallbackFunc",today);
+		if(today){
+			let dateDelta=today-GetOldDate();
 			UpdateAttendance(dateDelta);
 			for(let projectName in data){
 				DailyUpdateData(data[projectName],dateDelta);
 				console.log("data[projectName]",data[projectName]);
 			}
 			UpdateData(data,setData);
-			UpdateOldDate(dateDelta);
+			UpdateOldDate(today);
 		}
 	}
 
 	useEffect(()=>{
 		InitDate();
 		InitAttendance();
-		// if(intervalHandle==null){
-		// 	intervalHandle=setInterval(()=>{
-		// 		setTime(GetTime());
-		// 	},1000);
-		// }
 		PageCallbackFunc("Lobby")
-		//
 	},[])
 	useEffect(()=>{
 		NextDayCallbackFunc();
