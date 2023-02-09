@@ -26,14 +26,21 @@ function InitDate(){
 		oldDate=Number(oldDate);
 	}
 }
-function UpdateOldDate(dateDelta){
-	localStorage.setItem("oldDate",(oldDate+dateDelta));
+function UpdateOldDate(today){
+	oldDate=today;
+	localStorage.setItem("oldDate",(oldDate));
 }
 function IsNextDay(){
 	let today=GetDay();
-	let delta=today-oldDate;
-	console.log("delta",delta);
-	return delta;
+	console.log("today",today);
+	console.log("oldDate",oldDate);
+	if(today!=oldDate){
+		return today;
+	}
+	return 0;
+}
+function GetOldDate(){
+	return oldDate;
 }
 
 module.exports.GetTime=GetTime;
@@ -41,3 +48,4 @@ module.exports.GetDay=GetDay;
 module.exports.UpdateOldDate=UpdateOldDate;
 module.exports.IsNextDay=IsNextDay;
 module.exports.InitDate=InitDate;
+module.exports.GetOldDate=GetOldDate;
