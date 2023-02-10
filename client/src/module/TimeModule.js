@@ -49,10 +49,17 @@ function GetPickedDate(date){
 	return (Math.floor(pickedDate.getTime()/86400000)+1);
 }
 
-module.exports.GetTime=GetTime;
-module.exports.GetDay=GetDay;
-module.exports.UpdateOldDate=UpdateOldDate;
-module.exports.IsNextDay=IsNextDay;
-module.exports.InitDate=InitDate;
-module.exports.GetOldDate=GetOldDate;
-module.exports.GetPickedDate=GetPickedDate;
+const _GetTime = GetTime
+export { _GetTime as GetTime }
+const _GetDay = GetDay
+export { _GetDay as GetDay }
+const _UpdateOldDate = UpdateOldDate
+export { _UpdateOldDate as UpdateOldDate }
+const _InitDate = InitDate
+export { _InitDate as InitDate }
+const _GetOldDate = GetOldDate
+export { _GetOldDate as GetOldDate }
+const _GetPickedDate = GetPickedDate
+export { _GetPickedDate as GetPickedDate }
+const _IsNextDay = IsNextDay
+export { _IsNextDay as IsNextDay }
