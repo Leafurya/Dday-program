@@ -11,8 +11,8 @@ function GetTime(){
 	return (""+day+"/"+hour+"/"+min+"/"+sec)
 }
 function GetDay(){
-	let today=Date.now()+32400000;//now ms + 9hour ms
-	return Math.floor(today/86400000);//86400000
+	let today=Date.now()+32400000;
+	return Math.floor(today/86400000);
 }
 // }
 let oldDate;
@@ -42,6 +42,12 @@ function IsNextDay(){
 function GetOldDate(){
 	return oldDate;
 }
+function GetPickedDate(date){
+	let [year,month,day]=date.split("-");
+	let pickedDate=new Date(year,month-1,day);
+	
+	return (Math.floor(pickedDate.getTime()/86400000)+1);
+}
 
 module.exports.GetTime=GetTime;
 module.exports.GetDay=GetDay;
@@ -49,3 +55,4 @@ module.exports.UpdateOldDate=UpdateOldDate;
 module.exports.IsNextDay=IsNextDay;
 module.exports.InitDate=InitDate;
 module.exports.GetOldDate=GetOldDate;
+module.exports.GetPickedDate=GetPickedDate;

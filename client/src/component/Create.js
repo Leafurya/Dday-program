@@ -5,6 +5,7 @@ import "../style/Align.css";
 import {CreateTaskInputCell,GetElement,GetTaskFromInput} from '../module/CreateCompModule.js';
 import {DeleteBtn,InputTaskPart,TypeChoicePart,CreateBtn} from "./sub-compo/CreateSubCompos.js";
 import {CreateDataObj} from "../module/DataModule";
+import {GetPickedDate} from "../module/TimeModule";
 
 function Create(props){
 	const dataToModify=props.dataToModify??null;

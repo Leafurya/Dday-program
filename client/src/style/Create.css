@@ -11,6 +11,17 @@ input[type=text]{
 	height: 90%;
 	bottom: 0;
 }
+input[type=date]::-webkit-calendar-picker-text{
+	display:none;
+}
+input[type=date]{
+	position: relative;
+	font-size: small;
+	border: none;
+	height: 100%;
+	width: 113px;
+	background: none;
+}
 input[type=number]{
 	width: 50px;
 	font-size: x-large;
@@ -23,7 +34,7 @@ textarea{
 	resize: none;
 	font-size: large;
 }
-input[type=text]:focus,input[type=number]:focus,textarea:focus{
+input[type=text]:focus,input[type=number]:focus,textarea:focus,input[type=date]:focus{
 	outline: none;
 }
 .task_input_ul{
