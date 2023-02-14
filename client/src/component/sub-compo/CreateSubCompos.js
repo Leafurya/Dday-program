@@ -1,4 +1,5 @@
 import React,{useEffect,useState} from 'react';
+import {GetPickedDate,GetOldDate} from '../../module/TimeModule';
 
 function DeleteBtn(props){
 	return(
@@ -13,24 +14,35 @@ function DeleteBtn(props){
 		}></input>
 	)
 }
+function DisableInput(val){
+	document.getElementById("prj_day").disabled=val;
+	document.getElementById("last_task_inputs_add_btn").disabled=val;
+	document.getElementById("date_picker").disabled=val;
+}
 function TypeChoicePart(props){
 	useEffect(()=>{
 		if(props.defaultCheck=="+"){
-			document.getElementById("prj_day").disabled=true;
-			document.getElementById("last_task_inputs_add_btn").disabled=true;
+			DisableInput(true);
 		}
 	},[])
 	return(
 		<div className="col_align_re type_choice">
 			<input defaultChecked={props.defaultCheck=="+"} id="D+" type="radio" value="D+" name="project_type" onClick={(event)=>{
-				document.getElementById("prj_day").disabled=true;
-				document.getElementById("last_task_inputs_add_btn").disabled=true;
+				DisableInput(true);
 			}}/>D+
 			<input defaultChecked={props.defaultCheck=="-"} id="D-" type="radio" value="D-" name="project_type" onClick={(event)=>{
-				document.getElementById("prj_day").disabled=false;
-				document.getElementById("last_task_inputs_add_btn").disabled=false;
+				DisableInput(false);
 			}}/>D-
 			<input disabled={props.defaultCheck=="plus"} type="number" placeholder="일수" id="prj_day" defaultValue={props.day?props.day:""}></input>
+			<input disabled={props.defaultCheck=="plus"} type="date" id="date_picker" onChange={(event)=>{
+				//console.log("date pick",event.target.value);
+				let dateDelta=GetPickedDate(event.target.value)-GetOldDate()
+				if(dateDelta<=0){
+					alert("오늘보다 이후의 날짜만 선택 가능합니다.")
+					return;
+				}
+				document.getElementById("prj_day").value=dateDelta;
+			}}></input>
 		</div>
 	);
 }

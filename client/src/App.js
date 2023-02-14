@@ -4,7 +4,7 @@ import Project from './component/Project.js';
 import Create from './component/Create.js';
 import React, {useEffect,useState} from "react";
 
-import {UpdateOldDate,InitDate,IsNextDay,GetOldDate} from './module/TimeModule.js'
+import {UpdateOldDate,InitDate,IsNextDay,GetOldDate} from './module/TimeModule'
 import {UpdateData,DailyUpdateData} from './module/DataModule.js'
 import {InitAttendance,UpdateAttendance,GetAttendance} from './module/AttendanceModule.js'
 

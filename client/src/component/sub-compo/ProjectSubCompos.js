@@ -30,12 +30,11 @@ function TaskLists(props){
 		for(var t in taskObj){
 			if(!taskObj[t]){
 				done=false;
+				//)
 				break;
 			}
 		}
-		if(done){
-			data.taskDone=true;
-		}
+		data.taskDone=done;
 	}
 	const MinusStat=()=>{
 		if(data?.stat){
