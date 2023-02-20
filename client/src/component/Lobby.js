@@ -2,9 +2,8 @@ import "../style/Lobby.css";
 
 import {ProjectLists} from "./sub-compo/LobbySubCompos.js"
 import { CreateElement } from '../module/CreateCompModule.js';
+import {GetAttendance} from '../module/AttendanceModule.js'
 
-let closeInterval;
-let closeBtnClickCount=0;
 const closeNotiEle=CreateElement({element:"div",classList:"close_noti"});
 closeNotiEle.innerHTML="버튼을 한 번 더 누르면 앱을 종료합니다.";
 
@@ -26,7 +25,7 @@ function Lobby(props){
 			</ul>
 			<div className="navi_btns">
 				<input type="button" className="information_btn" value="정보" onClick={()=>{
-					alert("버전: alpha 1.1.0\n연속 출석 "+props.attendance+"일째");
+					alert("버전: alpha 1.2.0\n연속 출석 "+GetAttendance()+"일째");
 				}}></input>
 			</div>
 		</div>

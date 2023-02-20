@@ -6,7 +6,7 @@ import React, {useEffect,useState} from "react";
 
 import {UpdateOldDate,InitDate,IsNextDay,GetOldDate} from './module/TimeModule'
 import {UpdateData,DailyUpdateData} from './module/DataModule.js'
-import {InitAttendance,UpdateAttendance,GetAttendance} from './module/AttendanceModule.js'
+import {InitAttendance,UpdateAttendance} from './module/AttendanceModule.js'
 
 const storageName="projects";
 
@@ -17,7 +17,7 @@ function App() {
 	const PageCallbackFunc=(page,props)=>{
 		switch(page){
 			case "Lobby":
-				setPage(<Lobby attendance={GetAttendance()} PageCallback={PageCallbackFunc} projects={data}></Lobby>);
+				setPage(<Lobby PageCallback={PageCallbackFunc} projects={data}></Lobby>);
 				break;
 			case "Project":
 				console.log("name", props.name);
