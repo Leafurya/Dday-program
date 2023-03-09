@@ -8,6 +8,7 @@ function Project(props){
 	const [refresh,pageUpdate]=useState();
 	console.log("project comp data",props.projectData)
 	const project=props.projectData;
+	
 	useEffect(()=>{
 		for(var i=0,ele=document.querySelectorAll(".when_start");i<ele.length;i++){
 			ele[i].disabled=!project.start;
@@ -16,7 +17,8 @@ function Project(props){
 			ele[i].disabled=project.start;
 		}
 		if(project.prjDone){
-			alert("프로젝트가 끝났습니다! 이제 프로젝트 설정을 변경하거나 프로젝트를 제거 할 수 있습니다.\n 수고하셨습니다!");
+			let stat=((project.stat.checkedTaskCount/project.stat.taskCount)*100).toFixed(1)+"%";
+			alert(stat+"의 성공률로 프로젝트가 끝났습니다! 이제 프로젝트 설정을 변경하거나 프로젝트를 제거 할 수 있습니다.\n 수고하셨습니다!");
 			project.prjDone=false;
 		}
 	},[refresh])
