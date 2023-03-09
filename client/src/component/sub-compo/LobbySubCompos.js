@@ -17,7 +17,7 @@ function ProjectCard(props){
 				<div><span className="project_list_name">{name}</span></div>
 				{data.taskDone?taskDoneStamp:""}
 				<span className="task_stat">
-					<span>{data.D=="+"?"성공률":""}</span><br></br>
+					<span>{"성공률"}</span><br></br>
 					<span>{props.stat}</span>
 				</span>
 			</label>
@@ -33,9 +33,7 @@ function ProjectLists(props){
 	for(let name in projects){
 		project=projects[name]
 		stat="";
-		if(project?.stat){
-			stat=(project.start?(((project.stat.checkedTaskCount/((project.day+1)*project.stat.taskCount))*100).toFixed(1)+"%"):"-%")
-		}
+		stat=(project.start?(((project.stat.checkedTaskCount/project.stat.taskCount)*100).toFixed(1)+"%"):"-%")
 		lists.push(<ProjectCard key={index} PageCallback={props.PageCallback} project={{"name":name,"data":project}} stat={stat} index={index}></ProjectCard>)
 		index++;
 	}

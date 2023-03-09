@@ -17,11 +17,9 @@ function CreateDataObj(projectName,projectDiscription,tasks,D,Day,lastTasks){
 	if(lastTasks){
 		data.lastTasks=lastTasks
 	}
-	if(D==="+"){
-		data.stat={
-			taskCount:Object.keys(tasks).length,
-			checkedTaskCount:0
-		}
+	data.stat={
+		taskCount:Object.keys(tasks).length,
+		checkedTaskCount:0
 	}
 	return headData;
 }
@@ -40,6 +38,14 @@ function ResetData(data){
 	data.prjDone=true;
 	data.taskDone=false;
 }
+	function GetTaskCount(tasks,dateDelta){
+		let result=0;
+		for(let t in tasks){
+			result+=dateDelta;
+			console.log("t",t);
+		}
+		return result;
+	}
 function DailyUpdateData(projectData,dateDelta){
 	let taskToInit;
 	if(projectData.start){
@@ -47,6 +53,7 @@ function DailyUpdateData(projectData,dateDelta){
 			case "+":
 				projectData.day+=dateDelta;
 				taskToInit=projectData.tasks;
+				projectData.stat.taskCount+=GetTaskCount(projectData.tasks,dateDelta);
 				break;
 			case "-":
 				if(projectData.day>0){
@@ -56,10 +63,18 @@ function DailyUpdateData(projectData,dateDelta){
 				if(projectData.day===0){
 					projectData.day="DAY";
 					taskToInit=projectData?.lastTasks?projectData.lastTasks:projectData.tasks;
+					projectData.stat.taskCount+=GetTaskCount(projectData.lastTasks?projectData.lastTasks:projectData.tasks,dateDelta);
 				}
 				else if(projectData.day<0||projectData.day==="DAY"){
+					if(projectData.day<0){
+						projectData.stat.taskCount+=GetTaskCount(projectData.tasks,(dateDelta+projectData.day)-1);
+						projectData.stat.taskCount+=GetTaskCount(projectData.lastTasks?projectData.lastTasks:projectData.tasks,1);
+					}
 					ResetData(projectData);
 					return;
+				}
+				else{
+					projectData.stat.taskCount+=GetTaskCount(projectData.tasks,dateDelta);
 				}
 				break;
 			default:
@@ -70,6 +85,7 @@ function DailyUpdateData(projectData,dateDelta){
 			taskToInit[t]=false;
 		}
 		projectData.taskDone=false;
+		console.log("projectData.stat.taskCount",projectData.stat.taskCount);
 	}
 }
 
