@@ -25,7 +25,7 @@ function Lobby(props){
 			</ul>
 			<div className="navi_btns">
 				<input type="button" className="information_btn" value="정보" onClick={()=>{
-					alert("버전: alpha 1.3.0\n연속 출석 "+GetAttendance()+"일째");
+					alert("버전: alpha 1.3.1\n연속 출석 "+GetAttendance()+"일째");
 				}}></input>
 			</div>
 		</div>
