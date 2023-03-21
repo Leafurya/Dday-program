@@ -1,12 +1,12 @@
 const prjDoneStamp=<span className="project_done"></span>;
-const taskDoneStamp=<span className="task_done"></span>;
+const taskDoneStamp=<span className="done_stamp"></span>;
 function ProjectCard(props){
 	let name=props.project.name;
 	let data=props.project.data;
 	let i=props.index;
 	console.log("ProjectCard",data);
 	return(
-		<li className={"project_list_li "+(data.start?"":"not_start")} key={i}>
+		<li className={"project_list_li"+(data.start?"":" not_start")+(data.taskDone?" task_done":"")} key={i}>
 			<input id={"prj"+i} type="button" value={name} onClick={
 				(event)=>{
 					props.PageCallback("Project",{name:event.target.value});

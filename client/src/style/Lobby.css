@@ -73,20 +73,25 @@
 	left: 50%;
 	top:-5px;
 }
-.task_done{
+.done_stamp{
 	background-image: url("./task_done.png");
 	background-size: contain;
 	background-repeat: no-repeat;
-	width: 130px;
-	height: 100px;
+	width: 70px;
+	height: 70px;
 	position: absolute;
-	right: -20px;
-	top: -10px;
-	transform: rotate(25deg);
+	opacity: .5;
+	transform: rotate(-25deg);
+	left: 0;
+	bottom: 0;
+}
+.task_done{
+	border: 4px double rgb(89, 45, 183);
 }
 .not_start{
 	color: gray;
 	border-style: dashed;
+	border-color: rgb(135, 58, 58);
 }
 .not_start_in_prjcomp{
 	color: gray;
