@@ -3,6 +3,7 @@ import "../style/Project.css";
 import "../style/Align.css";
 
 import {TaskLists} from './sub-compo/ProjectSubCompos.js';
+import Notice from '../module/Notice.js';
 
 function Project(props){
 	const [refresh,pageUpdate]=useState();
@@ -18,7 +19,8 @@ function Project(props){
 		}
 		if(project.prjDone){
 			let stat=((project.stat.checkedTaskCount/project.stat.taskCount)*100).toFixed(1)+"%";
-			alert(stat+"의 성공률로 프로젝트가 끝났습니다! 이제 프로젝트 설정을 변경하거나 프로젝트를 제거 할 수 있습니다.\n 수고하셨습니다!");
+			//alert(stat+"의 성공률로 프로젝트가 끝났습니다! 이제 프로젝트 설정을 변경하거나 프로젝트를 제거 할 수 있습니다.\n 수고하셨습니다!");
+			Notice.Alert(stat+"의 성공률로 프로젝트가 끝났습니다! 이제 프로젝트 설정을 변경하거나 프로젝트를 제거 할 수 있습니다.\n 수고하셨습니다!");
 			project.prjDone=false;
 		}
 	},[refresh])
@@ -35,13 +37,12 @@ function Project(props){
 			</div>
 			<div className="function_btns">
 				<input className="function_btn" type="button" value="로비" onClick={()=>{props.PageCallback("Lobby")}}></input>
-				<input className="when_start function_btn" type="button" value="포기" onClick={()=>{
-					let str=prompt('프로젝트 포기를 원하신다면 "포기하겠습니다"를 적고 확인을 눌러주십시오.\n한번 포기한 프로젝트는 복구가 불가능합니다.');
+				<input className="when_start function_btn" type="button" value="포기" onClick={async()=>{
+					let str=await Notice.Prompt('프로젝트 포기를 원하신다면<br/>"포기하겠습니다"<br/>를 적고 확인을 눌러주십시오.<br/>한번 포기한 프로젝트는 복구가 불가능합니다.');
 					console.log(str,str=="포기하겠습니다");
 					if(str=="포기하겠습니다"){
-						
 						props.QuitCallback(props.projectName);
-						alert("프로젝트를 포기하셨습니다. 수고하셨습니다.");
+						Notice.Alert("프로젝트를 포기하셨습니다. 수고하셨습니다.");
 						props.PageCallback("Lobby");
 					}
 				}}></input>

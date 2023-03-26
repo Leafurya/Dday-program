@@ -1,13 +1,15 @@
 import React,{useEffect,useState} from 'react';
 import {GetPickedDate,GetOldDate} from '../../module/TimeModule';
+import Notice from '../../module/Notice.js';
 
 function DeleteBtn(props){
 	return(
 		<input className="function_btn" type="button" value="삭제" onClick={
-			()=>{
-				if(window.confirm('프로젝트 삭제를 원하신다면 확인을 눌러주십시오.\n한번 삭제한 프로젝트는 복구가 불가능합니다.')){
+			async()=>{
+				if(await Notice.Confrim('프로젝트 삭제를 원하신다면 확인을 눌러주십시오.<br/>한번 삭제한 프로젝트는 복구가 불가능합니다.')==1){
 					props.QuitCallback(props.dataToModify.name);
-					alert("프로젝트를 삭제하였습니다.");
+					Notice.Alert("프로젝트를 삭제하였습니다.");
+					//alert("프로젝트를 삭제하였습니다.");
 					props.PageCallback("Lobby");
 				}
 			}
@@ -38,7 +40,8 @@ function TypeChoicePart(props){
 				//console.log("date pick",event.target.value);
 				let dateDelta=GetPickedDate(event.target.value)-GetOldDate()
 				if(dateDelta<=0){
-					alert("오늘보다 이후의 날짜만 선택 가능합니다.")
+					Notice.Alert("오늘보다 이후의 날짜만 선택 가능합니다.")
+					// alert("오늘보다 이후의 날짜만 선택 가능합니다.")
 					return;
 				}
 				document.getElementById("prj_day").value=dateDelta;
@@ -66,8 +69,8 @@ function InputTaskPart(props){
 	
 	return(
 		<div>
-			<input id={props.id+"_add_btn"} className="add_task_btn col_align_re" type="button" value={props.value} onClick={()=>{
-				GetElement(props.id).appendChild(CreateTaskInputCell(props.name,prompt("도전과제 내용을 적어주세요.")));
+			<input id={props.id+"_add_btn"} className="add_task_btn col_align_re" type="button" value={props.value} onClick={async()=>{
+				GetElement(props.id).appendChild(CreateTaskInputCell(props.name,await Notice.Prompt("도전과제 내용을 적어주세요.")));
 				//GetTaskInput("task_inputs","task_input");
 			}}></input>
 			<ul className="task_input_ul" id={props.id}>
@@ -90,15 +93,18 @@ function CreateBtn(props){
 			let tasks=props.GetTaskFromInput("task_input");
 			let lastTasks=(D=="+")?null:props.GetTaskFromInput("last_task_input"); //if lastTasks not exist, value is null
 			if(projectName.length<=0){
-				alert("프로젝트 이름이 비어있습니다.");
+				Notice.Alert("프로젝트 이름이 비어있습니다.");
+				//alert("프로젝트 이름이 비어있습니다.");
 				return;
 			}
 			if(!tasks){
-				alert("도전과제가 비어있습니다.");
+				Notice.Alert("도전과제가 비어있습니다.");
+				//alert("도전과제가 비어있습니다.");
 				return;
 			}
 			if(D==='-'&&Day===""){
-				alert("일 수가 비어있습니다.");
+				Notice.Alert("일 수가 비어있습니다.");
+				// alert("일 수가 비어있습니다.");
 				return;
 			}
 
