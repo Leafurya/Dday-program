@@ -2,6 +2,7 @@ import './App.css';
 import Lobby from './component/Lobby.js';
 import Project from './component/Project.js';
 import Create from './component/Create.js';
+import Notice from './module/Notice.js';
 import React, {useEffect,useState} from "react";
 
 import {UpdateOldDate,InitDate,IsNextDay,GetOldDate} from './module/TimeModule'
@@ -40,13 +41,14 @@ function App() {
 	}
 	const StartProjectCallbackFunc=(prjName)=>{
 		if(data[prjName].day==="DAY"){
-			alert("프로젝트 재설정 부탁드립니다.");
+			//alert("프로젝트 재설정 부탁드립니다.");
+			Notice.Alert("프로젝트 재설정 부탁드립니다.")
 		}
 		else{
 			if(!data[prjName].start){
 				data[prjName].start=true;
 				UpdateData(data,setData)
-				alert(prjName+"프로젝트가 시작됐습니다.")
+				Notice.Alert(prjName+"프로젝트가 시작됐습니다.")
 				PageCallbackFunc("Project",{name:prjName});
 				return true;
 			}
@@ -95,6 +97,51 @@ function App() {
 		return (
 			<div className="App">
 				{nowPage}
+				{/* <div className="notice_background">
+					<div className="confirm_platform center_align platform_base">
+						<div className="article">
+							<span className="row_align_re">
+								프로젝트 포기를 원하신다면<br/>
+								"포기하겠습니다"<br/>
+								를 적고 확인을 눌러주십시오.<br/>
+								한번 포기한 프로젝트는 복구가 불가능합니다.
+							</span>
+						</div>
+						<div className="okcancle">
+							<input type="button" value="확인"></input>
+							<input type="button" value="취소"></input>
+						</div>
+					</div>
+				</div>  */}
+				{/* <div className="notice_background">
+					<div className="alert_platform center_align platform_base">
+						<div className="article">
+							<span className="center_align_ab">
+								alert
+							</span>
+						</div>
+						<input type="button" value="확인"></input>
+					</div>
+				</div> */}
+				{/* <div className="notice_background">
+					<div className="prompt_platform center_align platform_base"> 
+						<div className="article">
+							<span className="row_align_re">
+								프로젝트 포기를 원하신다면<br/>
+								"포기하겠습니다"<br/>
+								를 적고 확인을 눌러주십시오.<br/>
+								한번 포기한 프로젝트는 복구가 불가능합니다.
+							</span>
+						</div>
+						<div>
+							<input type="text" className="col_align_re"></input>
+						</div>
+						<div className="okcancle">
+							<input type="button" value="확인"></input>
+							<input type="button" value="취소"></input>
+						</div>
+					</div>
+				</div> */}
 			</div>
 		);
 	}
