@@ -7,20 +7,24 @@ input[type=text]{
 	border-bottom: 1px solid gray;
 }
 .borad{
+	display: grid;
 	position: absolute;
-	height: 90%;
-	bottom: 0;
+	height: 100%;
+	grid-template-rows: 1fr 50px;
+}
+.borad .main_platform{
+	overflow-y: scroll;
 }
 input[type=date]::-webkit-calendar-picker-text{
 	display:none;
 }
 input[type=date]{
-	position: relative;
 	font-size: small;
 	border: none;
 	height: 100%;
 	width: 113px;
 	background: none;
+	border-bottom: 1px solid gray;
 }
 input[type=number]{
 	width: 50px;
@@ -51,7 +55,7 @@ input[type=text]:focus,input[type=number]:focus,textarea:focus,input[type=date]:
 	width: 50%;
 }
 .sub_div{
-	width: 70%;
+	width: 100%;
 	margin-top: 20px;
 }
 .sub_div div input[type=button]{
@@ -83,6 +87,7 @@ input[type=text]:focus,input[type=number]:focus,textarea:focus,input[type=date]:
 }
 .type_choice{
 	margin-bottom: 10px;
+	
 }
 .function_btns{
 	position: absolute;
@@ -109,8 +114,11 @@ input[type=text]:focus,input[type=number]:focus,textarea:focus,input[type=date]:
 	background: none;
 	border: none;
 }
-.bottom_padding{
-	position:relative;
-	display: block;
-	height: 60px;
+
+
+
+.type_choice span{
+	position: relative;
+	display: grid;
+	grid-template-columns: 1fr 2fr;
 }

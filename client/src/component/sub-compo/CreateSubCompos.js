@@ -35,17 +35,21 @@ function TypeChoicePart(props){
 			<input defaultChecked={props.defaultCheck=="-"} id="D-" type="radio" value="D-" name="project_type" onClick={(event)=>{
 				DisableInput(false);
 			}}/>D-
-			<input disabled={props.defaultCheck=="plus"} type="number" placeholder="일수" id="prj_day" defaultValue={props.day?props.day:""}></input>
-			<input disabled={props.defaultCheck=="plus"} type="date" id="date_picker" onChange={(event)=>{
-				//console.log("date pick",event.target.value);
-				let dateDelta=GetPickedDate(event.target.value)-GetOldDate()
-				if(dateDelta<=0){
-					Notice.Alert("오늘보다 이후의 날짜만 선택 가능합니다.")
-					// alert("오늘보다 이후의 날짜만 선택 가능합니다.")
-					return;
-				}
-				document.getElementById("prj_day").value=dateDelta;
-			}}></input>
+			<span>
+				<input disabled={props.defaultCheck=="plus"} type="number" placeholder="일수" id="prj_day" defaultValue={props.day?props.day:""}></input>
+				<div style={{position: "relative"}}>
+					<input className="center_align_ab" disabled={props.defaultCheck=="plus"} type="date" id="date_picker" onChange={(event)=>{
+						//console.log("date pick",event.target.value);
+						let dateDelta=GetPickedDate(event.target.value)-GetOldDate()
+						if(dateDelta<=0){
+							Notice.Alert("오늘보다 이후의 날짜만 선택 가능합니다.")
+							// alert("오늘보다 이후의 날짜만 선택 가능합니다.")
+							return;
+						}
+						document.getElementById("prj_day").value=dateDelta;
+					}}></input>
+				</div>
+			</span>
 		</div>
 	);
 }
