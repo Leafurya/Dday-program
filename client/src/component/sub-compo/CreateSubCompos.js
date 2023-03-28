@@ -31,10 +31,16 @@ function TypeChoicePart(props){
 		<div className="col_align_re type_choice">
 			<input defaultChecked={props.defaultCheck=="+"} id="D+" type="radio" value="D+" name="project_type" onClick={(event)=>{
 				DisableInput(true);
-			}}/>D+
+			}}/>
+			<label htmlFor='D+'>
+				D+
+			</label>
 			<input defaultChecked={props.defaultCheck=="-"} id="D-" type="radio" value="D-" name="project_type" onClick={(event)=>{
 				DisableInput(false);
-			}}/>D-
+			}}/>
+			<label htmlFor='D-'>
+				D-
+			</label>
 			<span>
 				<input disabled={props.defaultCheck=="plus"} type="number" placeholder="일수" id="prj_day" defaultValue={props.day?props.day:""}></input>
 				<div style={{position: "relative"}}>
@@ -50,6 +56,7 @@ function TypeChoicePart(props){
 					}}></input>
 				</div>
 			</span>
+			
 		</div>
 	);
 }

@@ -23,6 +23,7 @@ function Create(props){
 					<TypeChoicePart defaultCheck={dataToModify?dataToModify.data.D:"+"} day={dataToModify?.data.day}></TypeChoicePart>
 					<InputTaskPart CreateTaskInputCell={CreateTaskInputCell} GetElement={GetElement} value="최종 도전과제 추가" name="last_task_input" id="last_task_inputs" tasks={dataToModify?.data.lastTasks}></InputTaskPart>
 				</div>
+				<div style={{height: "50px"}}></div>
 			</div>
 			<div className="function_btns">
 				<input className="function_btn" type="button" value="취소" onClick={()=>{props.PageCallback("Lobby")}}></input>
