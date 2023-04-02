@@ -11,7 +11,7 @@ closeNotiEle.innerHTML="버튼을 한 번 더 누르면 앱을 종료합니다."
 
 function Lobby(props){
 	return(
-		<div>
+		<div className="lobby">
 			<ul className="project_list_ul">
 				<li className="project_list_li" >
 					<input id="create_btn" type="button" value="생성" onClick={
@@ -19,8 +19,8 @@ function Lobby(props){
 							props.PageCallback("Create");
 						}
 					}></input>
-					<label  className="project_list_label plus_btn" htmlFor="create_btn">
-						<span className="plus_btn_value">+</span>
+					<label  className="plus_btn label_base" htmlFor="create_btn">
+						<div className="plus_btn_value">+</div>
 					</label>
 				</li>
 				<ProjectLists projects={props.projects} PageCallback={props.PageCallback}></ProjectLists>
@@ -38,3 +38,4 @@ function Lobby(props){
 	)
 }
 export default Lobby;
+

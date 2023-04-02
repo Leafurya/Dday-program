@@ -6,7 +6,7 @@ function CloseNotice(node){
 }
 function Alert(str){
     let background=CreateElement({element:"div",classList:"notice_background"})
-    let platform=CreateElement({element:"div",classList:"alert_platform center_align platform_base"})
+    let platform=CreateElement({element:"div",classList:"alert_platform platform_base"})
     let article=CreateElement({element:"div",classList:"article"})
     let span=CreateElement({element:"span",classList:"row_align_re"})
     let input=CreateElement({element:"input",type:"button",value:"확인",onclick:()=>{
@@ -26,7 +26,7 @@ function Prompt(str){
 		let result=null
 
 		let background=CreateElement({element:"div",classList:"notice_background"})
-		let platform=CreateElement({element:"div",classList:"prompt_platform center_align platform_base"})
+		let platform=CreateElement({element:"div",classList:"prompt_platform platform_base"})
 		let article=CreateElement({element:"div",classList:"article"})
 		let span=CreateElement({element:"span",classList:"row_align_re"})
 		let text=CreateElement({element:"input",type:"text",classList:"col_align_re"})
@@ -72,7 +72,7 @@ function Confrim(str){
 		let result=0
 
 		let background=CreateElement({element:"div",classList:"notice_background"})
-		let platform=CreateElement({element:"div",classList:"confirm_platform center_align platform_base"})
+		let platform=CreateElement({element:"div",classList:"confirm_platform platform_base"})
 		let article=CreateElement({element:"div",classList:"article"})
 		let span=CreateElement({element:"span",classList:"row_align_re"})
 		let ok=CreateElement({element:"input",type:"button",value:"확인",onclick:()=>{

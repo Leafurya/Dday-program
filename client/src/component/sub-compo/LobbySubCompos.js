@@ -6,15 +6,17 @@ function ProjectCard(props){
 	let i=props.index;
 	console.log("ProjectCard",data);
 	return(
-		<li className={"project_list_li"+(data.start?"":" not_start")+(data.taskDone?" task_done":"")} key={i}>
+		<li className="project_list_li" key={i}>
 			<input id={"prj"+i} type="button" value={name} onClick={
 				(event)=>{
 					props.PageCallback("Project",{name:event.target.value});
 				}
 			}></input>
-			<label className="project_list_label" htmlFor={"prj"+i}>
-				<div><span className="project_list_day">{"D"+data.D+data.day}{data.prjDone?prjDoneStamp:""}</span></div>
-				<div><span className="project_list_name">{name}</span></div>
+			<label className={"project_list_label label_base"+(data.start?"":" not_start")+(data.taskDone?" task_done":"")} htmlFor={"prj"+i}>
+				<div className="project_list_day">{"D"+data.D+data.day}{data.prjDone?prjDoneStamp:""}</div>
+				<div className="project_list_name">{name}</div>
+				{/* <div></div>
+				<div></div> */}
 				{data.taskDone?taskDoneStamp:""}
 				<span className="task_stat">
 					<span>{"성공률"}</span><br></br>
