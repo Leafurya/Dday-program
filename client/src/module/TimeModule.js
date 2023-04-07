@@ -12,7 +12,7 @@ function GetTime(){
 }
 function GetDay(){
 	let today=Date.now()+32400000;
-	return Math.floor(today/86400000);
+	return Math.floor(today/86400000)+4;
 }
 // }
 let oldDate;
@@ -32,8 +32,8 @@ function UpdateOldDate(today){
 }
 function IsNextDay(){
 	let today=GetDay();
-	console.log("today",today);
-	console.log("oldDate",oldDate);
+	// console.log("today",today);
+	// console.log("oldDate",oldDate);
 	if(today!=oldDate){
 		return today;
 	}

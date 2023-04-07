@@ -10,7 +10,7 @@ function CreateElement(obj){
 	if(obj?.value) {ele.value=obj.value;}
 	if(obj?.classList) {ele.classList=obj.classList;}
 	if(obj?.onclick){ele.onclick=obj.onclick;}
-	console.log("ele?.value",ele);
+	//console.log("ele?.value",ele);
 	return ele;
 }
 const taskCellIdSuffix="task_input";

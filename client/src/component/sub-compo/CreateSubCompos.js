@@ -1,16 +1,19 @@
 import React,{useEffect,useState} from 'react';
 import {GetPickedDate,GetOldDate} from '../../module/TimeModule';
 import Notice from '../../module/Notice.js';
+import { SendMessage } from '../../module/SendMessageModule';
 
 function DeleteBtn(props){
 	return(
 		<input className="function_btn" type="button" value="삭제" onClick={
 			async()=>{
 				if(await Notice.Confrim('프로젝트 삭제를 원하신다면 확인을 눌러주십시오.<br/>한번 삭제한 프로젝트는 복구가 불가능합니다.')==1){
-					props.QuitCallback(props.dataToModify.name);
+					// props.QuitCallback(props.dataToModify.name);
+					SendMessage("quit_project",props.dataToModify.name)
 					Notice.Alert("프로젝트를 삭제하였습니다.");
 					//alert("프로젝트를 삭제하였습니다.");
-					props.PageCallback("Lobby");
+					// props.PageCallback("Lobby");
+					SendMessage("change_page",["Lobby"])
 				}
 			}
 		}></input>
@@ -42,7 +45,15 @@ function TypeChoicePart(props){
 				D-
 			</label>
 			<span>
-				<input disabled={props.defaultCheck=="plus"} type="number" placeholder="일수" id="prj_day" defaultValue={props.day?props.day:""}></input>
+				<input disabled={props.defaultCheck=="plus"} type="number" placeholder="일수" id="prj_day" defaultValue={props.day?props.day:""} onChange={(event)=>{
+					let date=new Date()
+					//console.log("event.target.value",Number(date.getDate())+Number(event.target.value))
+					date.setDate(Number(date.getDate())+Number(event.target.value))
+					let year=date.getFullYear()
+					let month=date.getMonth()+1
+					let dateVal=date.getDate()
+					document.querySelector("input[type=date]").value=year+"-"+(month<10?"0"+month:month)+"-"+(dateVal<10?"0"+dateVal:dateVal)
+				}}></input>
 				<div style={{position: "relative"}}>
 					<input className="center_align_ab" disabled={props.defaultCheck=="plus"} type="date" id="date_picker" onChange={(event)=>{
 						//console.log("date pick",event.target.value);
@@ -95,7 +106,8 @@ function CreateBtn(props){
 	return(
 		<input className="function_btn" type="button" defaultValue={dataToModify?"수정":"생성"} onClick={()=>{
 			if(dataToModify){
-				props.QuitCallback(dataToModify);
+				// props.QuitCallback(dataToModify);
+				SendMessage("quit_project",dataToModify)
 			}
 			let projectName=props.GetElement("prj_name").value;
 			let discription=props.GetElement("prj_cntnt").value;
@@ -119,10 +131,11 @@ function CreateBtn(props){
 				return;
 			}
 
-			let data=props.CreateDataObj(projectName,discription,tasks,D,Day,lastTasks)
+			let data=props.CreateDataObj(discription,tasks,D,Day,lastTasks)
 			console.log("new create data",data);
-			props.SaveDataCallback(data);
-			props.PageCallback("Lobby");
+			SendMessage("append_project",{name:projectName,data:data})
+			// props.SaveDataCallback(data);
+			// props.PageCallback("Lobby");
 		}}></input>
 	)
 }

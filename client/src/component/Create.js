@@ -6,6 +6,7 @@ import {CreateTaskInputCell,GetElement,GetTaskFromInput} from '../module/CreateC
 import {DeleteBtn,InputTaskPart,TypeChoicePart,CreateBtn} from "./sub-compo/CreateSubCompos.js";
 import {CreateDataObj} from "../module/DataModule";
 import {GetPickedDate} from "../module/TimeModule";
+import { SendMessage } from '../module/SendMessageModule';
 
 function Create(props){
 	const dataToModify=props.dataToModify??null;
@@ -26,9 +27,9 @@ function Create(props){
 				<div style={{height: "50px"}}></div>
 			</div>
 			<div className="function_btns">
-				<input className="function_btn" type="button" value="취소" onClick={()=>{props.PageCallback("Lobby")}}></input>
-				<CreateBtn  QuitCallback={props.QuitCallback} PageCallback={props.PageCallback} dataToModify={dataToModify?.name} CreateDataObj={CreateDataObj} GetElement={GetElement} GetTaskFromInput={GetTaskFromInput} SaveDataCallback={props.SaveDataCallback}></CreateBtn>
-				{dataToModify?<DeleteBtn  dataToModify={dataToModify} QuitCallback={props.QuitCallback} PageCallback={props.PageCallback}></DeleteBtn>:""}
+				<input className="function_btn" type="button" value="취소" onClick={()=>{SendMessage("change_page",["Lobby"])}}></input>
+				<CreateBtn dataToModify={dataToModify?.name} CreateDataObj={CreateDataObj} GetElement={GetElement} GetTaskFromInput={GetTaskFromInput}></CreateBtn>
+				{dataToModify?<DeleteBtn  dataToModify={dataToModify}></DeleteBtn>:""}
 			</div>
 		</div>
 	)

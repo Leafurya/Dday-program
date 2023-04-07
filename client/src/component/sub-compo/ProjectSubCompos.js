@@ -1,60 +1,51 @@
+import { SendMessage } from "../../module/SendMessageModule";
 
+function ClickTask(prjName,tasks,task,val){
+	let done=true
+	console.log(typeof(val),val)
+	//tasks[task]=val
+	SendMessage("set_tasks",[prjName,task,val])
+	for(var t in tasks){
+		if(!tasks[t]){
+			done=false;
+			break;
+		}
+	}
+	SendMessage("set_data",[prjName,"taskDone",done])
+}
 function TaskItem(props){
-	let eleID=props.index;
+	let eleID=props.index
+	let tasks=props.tasks
+	let task=props.task
+
 	return(
 		<li key={eleID}>
-			<input className='when_start' type="checkbox" id={"task"+eleID} defaultChecked={props.taskChecked} value={props.taskValue} onChange={(event)=>{
-				props.TaskCheck(event.target.value,event.target.checked);
+			<input className='when_start' type="checkbox" id={"task"+eleID} defaultChecked={tasks[task]} value={task} onChange={(event)=>{
+				ClickTask(props.projectName,tasks,event.target.value,event.target.checked);
 				if(event.target.checked){
 					document.querySelector("label[for="+event.target.id+"]").classList.add("checked");
-					props.PlusStat();
+					// props.PlusStat();
+					SendMessage("set_stat",[props.projectName,"plus_checkedTaskCount"])
 				}
 				else{
 					document.querySelector("label[for="+event.target.id+"]").classList.remove("checked");
-					props.MinusStat();
+					// props.MinusStat();
+					SendMessage("set_stat",[props.projectName,"minus_checkedTaskCount"])
 				}
-				props.SaveDataCallback();
+				SendMessage("save_data")
 			}}></input>
-			<label className={'col_align_re '+props.checkedClassName} htmlFor={"task"+eleID}>{props.taskValue}</label>
+			<label className={'col_align_re'+(tasks[task]?" checked":"")} htmlFor={"task"+eleID}>{task}</label>
 		</li>
 	)
 }
 function TaskLists(props){
-	let data=props.project;
-	let index=0;
+	const tasks=props.tasks;
 	let lists=[];
-	let taskObj=data.tasks;
-	const TaskCheck=(task,val)=>{
-		let done=true;
-		taskObj[task]=val;
-		for(var t in taskObj){
-			if(!taskObj[t]){
-				done=false;
-				//)
-				break;
-			}
-		}
-		data.taskDone=done;
-	}
-	const MinusStat=()=>{
-		if(data?.stat){
-			data.stat.checkedTaskCount--;
-		}
-	}
-	const PlusStat=()=>{
-		if(data?.stat){
-			data.stat.checkedTaskCount++;
-		}
-	}
-	if(data?.lastTasks){
-		if(data.day==="DAY"&&Object.keys(data.lastTasks).length!==0){
-			taskObj=data.lastTasks;
-		}
-	}
-	console.log("taskObj",taskObj);
-	for(var task in taskObj){
-		lists.push(<TaskItem key={index} PlusStat={PlusStat} MinusStat={MinusStat} SaveDataCallback={props.SaveDataCallback} TaskCheck={TaskCheck} checkedClassName={taskObj[task]?"checked":""} index={index} taskValue={task} taskChecked={taskObj[task]}></TaskItem>)
-		index++;
+	let index=0
+	
+	console.log("taskObj",tasks);
+	for(var task in tasks){
+		lists.push(<TaskItem projectName={props.projectName} index={index++} tasks={tasks} task={task} key={task}></TaskItem>)//TaskCheck={TaskCheck} checkedClassName={taskObj[task]?"checked":""} index={index}  taskChecked={taskObj[task]}
 	}
 
 	return lists;

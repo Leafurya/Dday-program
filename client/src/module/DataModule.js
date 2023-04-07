@@ -1,27 +1,90 @@
+class Stat{
+	constructor(taskCount){
+		this.taskCount=taskCount
+		this.checkedTaskCount=0
+	}
+}
+class DPlus{
+	constructor(day,discription,tasks){
+		this.version=1
+		this.D="+"
+		this.start=false
+		this.tasks=tasks
+		this.day=day
+		this.discription=discription
+		this.stat=new Stat(Object.keys(tasks).length)
+		this.prjDone=false
+		this.taskDone=false
+	}
+}
+class DMinus{
+	constructor(day,discription,tasks,lastTasks){
+		this.version=1
+		this.D="-"
+		this.start=false
+		this.tasks=tasks
+		this.day=day
+		this.discription=discription
+		this.stat=new Stat(Object.keys(tasks).length)
+		this.prjDone=false
+		this.taskDone=false
+
+		if(lastTasks){
+			this.lastTasks=lastTasks
+		}
+	}
+}
+function ChangeDataFormat(data){
+	let tData={...data}
+	switch(data.D){
+		case "+":
+			data=new DPlus(tData.day,tData.discription,tData.tasks)
+			data.start=tData.start
+			data.stat=tData.stat
+			break;
+		case "-":
+			data=new DMinus()
+			break;
+	}
+}
+
 function UpdateData(data,setData){
 	localStorage.setItem("projects",JSON.stringify(data));
 	setData(data);
 }
-function CreateDataObj(projectName,projectDiscription,tasks,D,Day,lastTasks){
-	let headData={};
-	let data={
-		"discription":projectDiscription,
-		"tasks":tasks,
-		"D":D,
-		"day":Day,
-		"start":false,
-		"taskDone":false,
-		"prjDone":false,
+// function CreateDataObj(projectName,projectDiscription,tasks,D,Day,lastTasks){
+// 	let headData={};
+// 	let data={
+// 		"discription":projectDiscription,
+// 		"tasks":tasks,
+// 		"D":D,
+// 		"day":Day,
+// 		"start":false,
+// 		"taskDone":false,
+// 		"prjDone":false,
+// 	}
+// 	headData[projectName]=data;
+// 	if(lastTasks){
+// 		data.lastTasks=lastTasks
+// 	}
+// 	data.stat={
+// 		taskCount:Object.keys(tasks).length,
+// 		checkedTaskCount:0
+// 	}
+// 	return headData;
+// }
+function CreateDataObj(discription,tasks,D,day,lastTasks){
+	let data
+	switch(D){
+		case "+":
+			data=new DPlus(day,discription,tasks)
+			break
+		case "-":
+			data=new DMinus(day,discription,tasks,lastTasks)
+			break
 	}
-	headData[projectName]=data;
-	if(lastTasks){
-		data.lastTasks=lastTasks
-	}
-	data.stat={
-		taskCount:Object.keys(tasks).length,
-		checkedTaskCount:0
-	}
-	return headData;
+	console.log("CreateDataObj",data)
+	return data
 }
 function ResetData(data){
 	data.day="DAY";
