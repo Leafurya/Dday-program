@@ -21,7 +21,14 @@ function DeleteBtn(props){
 }
 function DisableInput(val){
 	document.getElementById("prj_day").disabled=val;
-	document.getElementById("last_task_inputs_add_btn").disabled=val;
+	if(val){
+		document.querySelector(".last_task_input").classList.add("disabled")
+		document.querySelector(".type_choice > span").classList.add("disabled_background")
+	}
+	else{
+		document.querySelector(".last_task_input").classList.remove("disabled")
+		document.querySelector(".type_choice > span").classList.remove("disabled_background")
+	}
 	document.getElementById("date_picker").disabled=val;
 }
 function TypeChoicePart(props){
@@ -31,7 +38,7 @@ function TypeChoicePart(props){
 		}
 	},[])
 	return(
-		<div className="col_align_re type_choice">
+		<div className="type_choice">
 			<input defaultChecked={props.defaultCheck=="+"} id="D+" type="radio" value="D+" name="project_type" onClick={(event)=>{
 				DisableInput(true);
 			}}/>
@@ -84,17 +91,26 @@ function InputTaskPart(props){
 					console.log("CreateTaskInputCell(props.name,taskKey)",CreateTaskInputCell(props.name,taskKey));
 					GetElement(props.id).appendChild(CreateTaskInputCell(props.name,taskKey))
 				}
-				perventionDuplication++;
+				perventionDuplication++; 
 			}
 		}
 	},[])
 	
 	return(
-		<div>
-			<input id={props.id+"_add_btn"} className="add_task_btn col_align_re" type="button" value={props.value} onClick={async()=>{
+		<div className={'task_div '+props.name}>
+			<label>
+				<input type="text" placeholder='도전과제'></input>
+				<input type="button" value="추가" onClick={(event)=>{
+					let textInput=event.target.parentElement.childNodes[0]
+					GetElement(props.id).appendChild(CreateTaskInputCell(props.name,textInput.value));
+					textInput.value=""
+					textInput.focus()
+				}}></input>
+			</label>
+			{/* <input id={props.id+"_add_btn"} className="add_task_btn" type="button" value={props.value} onClick={async()=>{
 				GetElement(props.id).appendChild(CreateTaskInputCell(props.name,await Notice.Prompt("도전과제 내용을 적어주세요.")));
 				//GetTaskInput("task_inputs","task_input");
-			}}></input>
+			}}></input> */}
 			<ul className="task_input_ul" id={props.id}>
 				{console.log("return taskInputs",taskInputs)}
 			</ul>
@@ -104,7 +120,7 @@ function InputTaskPart(props){
 function CreateBtn(props){
 	let dataToModify=props.dataToModify;
 	return(
-		<input className="function_btn" type="button" defaultValue={dataToModify?"수정":"생성"} onClick={()=>{
+		<input className="function_btn" type="button" defaultValue="저장" onClick={()=>{
 			if(dataToModify){
 				// props.QuitCallback(dataToModify);
 				SendMessage("quit_project",dataToModify)

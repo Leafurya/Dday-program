@@ -14,16 +14,16 @@ function Create(props){
 	return(
 		<div className="borad">
 			<div className="main_platform">
-				<h1 className="col_align_re">프로젝트 {dataToModify?"수정":"생성"}</h1>
-				<input className="col_align_re" id="prj_name" type="text" placeholder="프로젝트 이름" defaultValue={dataToModify?dataToModify.name:""}></input>
-				<textarea rows="5" className="col_align_re" id="prj_cntnt" placeholder="프로젝트 내용" defaultValue={dataToModify?dataToModify.data.discription:""}></textarea>
-				<div className='col_align_re sub_div'>
-				<InputTaskPart CreateTaskInputCell={CreateTaskInputCell} GetElement={GetElement} value="도전과제 추가" name="task_input" id="task_inputs" tasks={dataToModify?.data.tasks}></InputTaskPart>
-				</div>
-				<div className="col_align_re sub_div">
+				<h1>프로젝트 {dataToModify?"수정":"생성"}</h1>
+				<input id="prj_name" type="text" placeholder="프로젝트 이름" defaultValue={dataToModify?dataToModify.name:""}></input>
+				<textarea rows="5" id="prj_cntnt" placeholder="프로젝트 내용" defaultValue={dataToModify?dataToModify.data.discription:""}></textarea>
+				{/* <div className='sub_div'> */}
+					<InputTaskPart CreateTaskInputCell={CreateTaskInputCell} GetElement={GetElement} value="도전과제 추가" name="task_input" id="task_inputs" tasks={dataToModify?.data.tasks}></InputTaskPart>
+				{/* </div> */}
+				{/* <div className="sub_div"> */}
 					<TypeChoicePart defaultCheck={dataToModify?dataToModify.data.D:"+"} day={dataToModify?.data.day}></TypeChoicePart>
 					<InputTaskPart CreateTaskInputCell={CreateTaskInputCell} GetElement={GetElement} value="최종 도전과제 추가" name="last_task_input" id="last_task_inputs" tasks={dataToModify?.data.lastTasks}></InputTaskPart>
-				</div>
+				{/* </div> */}
 				<div style={{height: "50px"}}></div>
 			</div>
 			<div className="function_btns">

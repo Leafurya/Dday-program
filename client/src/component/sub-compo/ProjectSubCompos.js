@@ -34,7 +34,7 @@ function TaskItem(props){
 				}
 				SendMessage("save_data")
 			}}></input>
-			<label className={'col_align_re'+(tasks[task]?" checked":"")} htmlFor={"task"+eleID}>{task}</label>
+			<label className={(tasks[task]?" checked":"")} htmlFor={"task"+eleID}>{task}</label>
 		</li>
 	)
 }

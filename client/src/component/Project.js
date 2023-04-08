@@ -34,11 +34,11 @@ function Project(props){
 	},[refresh])
 	console.log("refresh");
 	return(
-		<div>
+		<div className="borad">
 			<div className={"project_board "+(project.start?"":"not_start_in_prjcomp")}>
-				<div><h1 className="col_align_re project_day">{"D"+project.D+project.day}</h1></div>
-				<div><h2 className="col_align_re project_header">{prjName}</h2></div>
-				<div><h4 className="col_align_re project_content">{project.discription}</h4></div>
+				<div><h1 className="project_day">{"D"+project.D+project.day}</h1></div>
+				<div><h2 className="project_header">{prjName}</h2></div>
+				<div><h4 className="project_content">{project.discription}</h4></div>
 				<ul>
 				<TaskLists projectName={prjName} tasks={nowTasks}></TaskLists>
 				</ul>
