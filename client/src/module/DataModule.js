@@ -174,9 +174,4 @@ function DailyUpdateData(projectData,dateDelta){
 	}
 }
 
-// module.exports.ChangeDataFormat=ChangeDataFormat
-// module.exports.LoadData=LoadData
-// module.exports.CreateDataObj=CreateDataObj
-// module.exports.UpdateData=UpdateData
-// module.exports.DailyUpdateData=DailyUpdateData
 export{LoadData,CreateDataObj,UpdateData,DailyUpdateData}
