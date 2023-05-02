@@ -6,7 +6,7 @@ import Notice from './module/Notice.js';
 import React, {useEffect,useState} from "react";
 
 import {UpdateOldDate,InitDate,IsNextDay,GetOldDate} from './module/TimeModule'
-import {UpdateData,DailyUpdateData} from './module/DataModule.js'
+import {UpdateData,DailyUpdateData,LoadData} from './module/DataModule.js'
 import {InitAttendance,UpdateAttendance} from './module/AttendanceModule.js'
 import { SetSendMessage } from './module/SendMessageModule';
 
@@ -14,7 +14,8 @@ const storageName="projects";
 let onDataChanged=null
 
 function App() {
-	const [data,setData]=useState(JSON.parse(localStorage.getItem(storageName)??{}));
+	// const [data,setData]=useState(JSON.parse(localStorage.getItem(storageName)??{}));
+	const [data,setData]=useState(LoadData());
 	const [nowPage,setPage]=useState("");
 	// let data
 	//let oldPage;
@@ -61,7 +62,7 @@ function App() {
 	const SendMessage=(msg,param)=>{
 		let tData
 		console.log("msg param",msg,param)
-		console.log("SendMessage data",data)
+		// console.log("SendMessage data",data)
 		switch(msg){
 			case "change_page":
 				let page=param[0]
@@ -86,6 +87,7 @@ function App() {
 				tData={...data}
 				tData[param[0]][param[1]]=param[2]
 				setData(tData)
+				localStorage.setItem("projects",JSON.stringify(data))
 				break
 			case "set_stat":
 				tData={...data}
@@ -99,6 +101,7 @@ function App() {
 						break
 				}
 				setData(tData)
+				localStorage.setItem("projects",JSON.stringify(data))
 				break
 			case "set_tasks":
 				tData={...data}
@@ -202,16 +205,10 @@ function App() {
 		SetSendMessage(SendMessage)
 		InitDate();
 		InitAttendance();
-		//PageCallbackFunc("Lobby")
 		SendMessage("change_page",["Lobby"])
 	},[])
 	useEffect(()=>{
-		NextDayCallbackFunc();
-		SetSendMessage(SendMessage)
-		console.log("nowPage useEffect",nowPage)
-	},[nowPage])
-	useEffect(()=>{
-		console.log("setData useEffect",data)
+		console.log("data useEffect",data)
 		SetSendMessage(SendMessage)
 		console.log("onDataChanged",onDataChanged)
 		if(onDataChanged){
@@ -219,6 +216,11 @@ function App() {
 			onDataChanged=null
 		}
 	},[data])
+	useEffect(()=>{
+		NextDayCallbackFunc();
+		SetSendMessage(SendMessage)
+		console.log("nowPage useEffect",nowPage)
+	},[nowPage])
 	if(nowPage!==""){
 		return (
 			<div className="App">

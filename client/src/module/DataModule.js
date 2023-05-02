@@ -1,3 +1,5 @@
+const _nowDataVersion=1
+const storageName="projects";
 class Stat{
 	constructor(taskCount){
 		this.taskCount=taskCount
@@ -6,7 +8,7 @@ class Stat{
 }
 class DPlus{
 	constructor(day,discription,tasks){
-		this.version=1
+		this.version=_nowDataVersion
 		this.D="+"
 		this.start=false
 		this.tasks=tasks
@@ -19,7 +21,7 @@ class DPlus{
 }
 class DMinus{
 	constructor(day,discription,tasks,lastTasks){
-		this.version=1
+		this.version=_nowDataVersion
 		this.D="-"
 		this.start=false
 		this.tasks=tasks
@@ -36,18 +38,38 @@ class DMinus{
 }
 function ChangeDataFormat(data){
 	let tData={...data}
-	switch(data.D){
-		case "+":
-			data=new DPlus(tData.day,tData.discription,tData.tasks)
-			data.start=tData.start
-			data.stat=tData.stat
-			break;
-		case "-":
-			data=new DMinus()
-			break;
+	let result=data
+	if(data.version!=_nowDataVersion){
+		switch(data.version){
+			default:
+				switch(data.D){
+					case "+":
+						result=new DPlus(tData.day,tData.discription,tData.tasks)
+						result.start=tData.start
+						result.stat=tData.stat
+						break;
+						case "-":
+						result=new DMinus(tData.day,tData.discription,tData.tasks,tData.lastTasks)
+						result.start=tData.start
+						result.stat=tData.stat
+						result.prjDone=tData.prjDone
+						break;
+				}
+				break
+		}
 	}
+	return result
 }
-
+function LoadData(){
+	// const [data,setData]=useState(JSON.parse(localStorage.getItem(storageName)??{}));
+	let data=JSON.parse(localStorage.getItem(storageName)??"{}")
+	Object.keys(data).map((key)=>{
+		data[key]=ChangeDataFormat(data[key])
+	})
+	localStorage.setItem("projects",JSON.stringify(data));
+	console.log(data)
+	return data
+}
 function UpdateData(data,setData){
 	localStorage.setItem("projects",JSON.stringify(data));
 	setData(data);
@@ -152,6 +174,8 @@ function DailyUpdateData(projectData,dateDelta){
 	}
 }
 
-module.exports.CreateDataObj=CreateDataObj;
-module.exports.UpdateData=UpdateData;
-module.exports.DailyUpdateData=DailyUpdateData;
+module.exports.ChangeDataFormat=ChangeDataFormat
+module.exports.LoadData=LoadData
+module.exports.CreateDataObj=CreateDataObj
+module.exports.UpdateData=UpdateData
+module.exports.DailyUpdateData=DailyUpdateData
