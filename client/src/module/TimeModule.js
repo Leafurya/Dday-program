@@ -12,7 +12,7 @@ function GetTime(){
 }
 function GetDay(){
 	let today=Date.now()+32400000;
-	return Math.floor(today/86400000)+2;
+	return Math.floor(today/86400000);
 }
 // }
 let oldDate;
