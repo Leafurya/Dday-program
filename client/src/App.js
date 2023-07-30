@@ -106,7 +106,7 @@ function App() {
 			case "set_tasks":
 				tData={...data}
 				console.log("tData.day",tData[param[0]].day)
-				if(tData[param[0]].day==="DAY"){
+				if(tData[param[0]].day==="DAY"&&tData[param[0]].lastTasks){
 					tData[param[0]].lastTasks[param[1]]=param[2]
 				}
 				else{
