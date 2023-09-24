@@ -35,7 +35,7 @@ function Lobby(){
 		<div className="borad">
 			<ul className="project_list_ul">
 				<li className="project_list_li" >
-					<StyledLink to={'/CreateProject'}>
+					<StyledLink to={'/Create'}>
 						<div className="plus_btn label_base">
 							<div className="plus_btn_value">+</div>
 						</div>

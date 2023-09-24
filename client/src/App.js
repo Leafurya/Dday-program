@@ -22,10 +22,10 @@ function App() {
 	const [nowPage,setPage]=useState("");
 	// let data
 	//let oldPage;
-	console.log("compoManager",compoManager	)
 	compoManager.App={
 		data:data
 	}
+	console.log("compoManager",compoManager	)
 	const ChangePage=(page,props)=>{
 		switch(page){
 			case "Lobby":
@@ -234,7 +234,7 @@ function App() {
 				<BrowserRouter>
 					<Routes>
 						<Route path="/" element={<Lobby/>}></Route>
-						<Route path="/CreateProject" element={<Create/>}></Route>
+						<Route path="/Create" element={<Create/>}></Route>
 						<Route path="/Project" element={<Project/>}></Route>
 					</Routes>
 				</BrowserRouter>

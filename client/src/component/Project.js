@@ -6,6 +6,7 @@ import {TaskLists} from './sub-compo/ProjectSubCompos.js';
 import Notice from '../module/Notice.js';
 import { SendMessage } from '../module/SendMessageModule';
 import { useSearchParams } from 'react-router-dom';
+import { StyledLink } from '../module/GlobalModule';
 
 function Project(props){
 	const [params,SetParams]=useSearchParams()
@@ -60,10 +61,12 @@ function Project(props){
 						window.history.back()
 					}
 				}}></input>
-				<input className="when_ready function_btn" type="button" value="수정" onClick={()=>{
-					//props.PageCallback("Create",{name:prjName,data:project});
-					SendMessage("change_page",["Create",{name:prjName,data:project}])
-				}}></input>
+				<StyledLink to={`/Create?name=${prjName}`}>
+					<input className="when_ready function_btn" type="button" value="수정" onClick={()=>{
+						//props.PageCallback("Create",{name:prjName,data:project});
+						// SendMessage("change_page",["Create",{name:prjName,data:project}])
+					}}></input>
+				</StyledLink>
 				<input className="when_ready function_btn" type="button" value="시작" onClick={()=>{
 					//if(props.StartProjectCallback(prjName)){
 					if(SendMessage("start_project",prjName)){

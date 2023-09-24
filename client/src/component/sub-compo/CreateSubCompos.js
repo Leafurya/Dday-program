@@ -9,11 +9,12 @@ function DeleteBtn(props){
 			async()=>{
 				if(await Notice.Confrim('프로젝트 삭제를 원하신다면 확인을 눌러주십시오.<br/>한번 삭제한 프로젝트는 복구가 불가능합니다.')==1){
 					// props.QuitCallback(props.dataToModify.name);
-					SendMessage("quit_project",props.dataToModify.name)
+					SendMessage("quit_project",props.dataToModify)
 					Notice.Alert("프로젝트를 삭제하였습니다.");
 					//alert("프로젝트를 삭제하였습니다.");
 					// props.PageCallback("Lobby");
-					SendMessage("change_page",["Lobby"])
+					// SendMessage("change_page",["Lobby"])
+					window.history.go(-1)
 				}
 			}
 		}></input>
