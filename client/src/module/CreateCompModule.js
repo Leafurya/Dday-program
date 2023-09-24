@@ -10,13 +10,13 @@ function CreateElement(obj){
 	if(obj?.value) {ele.value=obj.value;}
 	if(obj?.classList) {ele.classList=obj.classList;}
 	if(obj?.onclick){ele.onclick=obj.onclick;}
-	console.log("ele?.value",ele);
+	//console.log("ele?.value",ele);
 	return ele;
 }
 const taskCellIdSuffix="task_input";
 let taskCellCount=0;
 function CreateTaskInputCell(name,cntnt){
-	let div=CreateElement({element:"div",classList:"task_input_div",id:taskCellCount+taskCellIdSuffix})
+	let div=CreateElement({element:"li",classList:"task_input_div",id:taskCellCount+taskCellIdSuffix})
 	let input=CreateElement({element:"input",name:name,value:cntnt,type:"text"})
 	let delBtn=CreateElement({element:"input",name:(taskCellCount++)+"task_input",value:"-",type:"button",
 		onclick:(event)=>{

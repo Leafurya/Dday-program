@@ -1,15 +1,15 @@
 .project_board{
-	position: absolute;
-	transform: translateX(-50%);
-	left: 50%;
-	width: 90%;
-	top: 30px;
+	flex:1;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
 }
 .project_day{
 	font-size: 3em;
 	margin-bottom: 0;
 }
 .project_header,.project_content{
+	display: block;
 	overflow-wrap: break-word;
 	margin-bottom: 0;
 	text-align: center;
@@ -18,14 +18,21 @@
 	padding: 0;
 	border: 1px solid gray;
 	border-radius: 10px;
+	width: 90%;
 }
 .project_board ul li{
 	margin: 25px 0 25px 0;
-
+	padding: 0 20px;
 }
 .project_board ul input{
 	display: none;
 }
 .checked{
 	text-decoration: line-through;
+}
+
+.project_board ul li label{
+	display: block;
+	word-break: break-all;
+	text-align: center;
 }
