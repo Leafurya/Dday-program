@@ -3,12 +3,14 @@ import Lobby from './component/Lobby.js';
 import Project from './component/Project.js';
 import Create from './component/Create.js';
 import Notice from './module/Notice.js';
-import React, {useEffect,useState} from "react";
+import React, {useCallback, useEffect,useMemo,useRef,useState} from "react";
 
 import {UpdateOldDate,InitDate,IsNextDay,GetOldDate} from './module/TimeModule'
 import {UpdateData,DailyUpdateData,LoadData} from './module/DataModule.js'
 import {InitAttendance,UpdateAttendance} from './module/AttendanceModule.js'
 import { SetSendMessage } from './module/SendMessageModule';
+import { compoManager } from './module/GlobalModule';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 const storageName="projects";
 let onDataChanged=null
@@ -16,9 +18,13 @@ let onDataChanged=null
 function App() {
 	// const [data,setData]=useState(JSON.parse(localStorage.getItem(storageName)??{}));
 	const [data,setData]=useState(LoadData());
+	console.log("data",data)
 	const [nowPage,setPage]=useState("");
 	// let data
 	//let oldPage;
+	compoManager.App={
+		data:data
+	}
 	const ChangePage=(page,props)=>{
 		switch(page){
 			case "Lobby":
@@ -39,7 +45,7 @@ function App() {
 	}
 	const QuitCallbackFunc=(prjName)=>{
 		delete data[prjName];
-		UpdateData(data,setData);
+		UpdateData(data);
 	}
 	const StartProjectCallbackFunc=(prjName)=>{
 		if(data[prjName].day==="DAY"){
@@ -50,8 +56,8 @@ function App() {
 			if(!data[prjName].start){
 				let tData={...data}
 				tData[prjName].start=true;
-				setData(tData)
-				UpdateData(data,setData)
+				setData(tData)//setData(tData)
+				UpdateData(data)
 				Notice.Alert(prjName+"프로젝트가 시작됐습니다.")
 				ChangePage("Project",prjName);
 				return true;
@@ -68,7 +74,8 @@ function App() {
 				let page=param[0]
 				let props=param[1]
 				// console.log("page",page,props)
-				ChangePage(page,props)
+				// ChangePage(page,props)
+				console.log("change page is not used anymore")
 				break
 			case "get_data":
 				let result=param?data[param]:data
@@ -81,11 +88,12 @@ function App() {
 			case "start_project":
 				return StartProjectCallbackFunc(param)
 			case "save_data":
-				UpdateData(data,setData)
+				UpdateData(data)
 				break
 			case "set_data":
 				tData={...data}
 				tData[param[0]][param[1]]=param[2]
+				//setData(tData)
 				setData(tData)
 				localStorage.setItem("projects",JSON.stringify(data))
 				break
@@ -100,7 +108,7 @@ function App() {
 						tData[param[0]].stat.checkedTaskCount--
 						break
 				}
-				setData(tData)
+				setData(tData)//setData(tData)
 				localStorage.setItem("projects",JSON.stringify(data))
 				break
 			case "set_tasks":
@@ -112,7 +120,7 @@ function App() {
 				else{
 					tData[param[0]].tasks[param[1]]=param[2]
 				}
-				setData(tData)
+				setData(tData)//setData(tData)
 				break
 			case "append_project":
 				AppendProject(param)
@@ -175,15 +183,17 @@ function App() {
 		// console.log(name in data)
 		let tData={...data}
 		onDataChanged=()=>{
-			ChangePage("Lobby")
+			// ChangePage("Lobby")
+			window.history.back()
 		}
 		if(!(name in tData)){
 			//var newData={...data};
 			tData[name]=newData
 			console.log("tData",tData)
 			localStorage.setItem(storageName,JSON.stringify(tData))
-			setData(tData)
+			setData(tData)//setData(tData)
 			console.log("append done")
+			window.history.back()
 		}
 	}
 	const NextDayCallbackFunc=()=>{
@@ -196,89 +206,42 @@ function App() {
 				DailyUpdateData(data[projectName],dateDelta);
 				console.log("data[projectName]",data[projectName]);
 			}
-			UpdateData(data,setData);
+			UpdateData(data);
 			UpdateOldDate(today);
 		}
 	}
-
+	SetSendMessage(SendMessage)
 	useEffect(()=>{
-		SetSendMessage(SendMessage)
+		// SetSendMessage(SendMessage)
 		InitDate();
 		InitAttendance();
-		SendMessage("change_page",["Lobby"])
+		// SendMessage("change_page",["Lobby"])
 	},[])
 	useEffect(()=>{
 		console.log("data useEffect",data)
-		SetSendMessage(SendMessage)
+		// SetSendMessage(SendMessage)
 		console.log("onDataChanged",onDataChanged)
 		if(onDataChanged){
 			onDataChanged()
 			onDataChanged=null
 		}
 	},[data])
-	useEffect(()=>{
-		NextDayCallbackFunc();
-		SetSendMessage(SendMessage)
-		console.log("nowPage useEffect",nowPage)
-	},[nowPage])
-	if(nowPage!==""){
+	console.log("app compo")
+	if(data){
 		return (
 			<div className="App">
-				{nowPage}
-				{/* <div className="notice_background">
-					<div className="confirm_platform center_align platform_base">
-						<div className="article">
-							<span className="row_align_re">
-								프로젝트 포기를 원하신다면<br/>
-								"포기하겠습니다"<br/>
-								를 적고 확인을 눌러주십시오.<br/>
-								한번 포기한 프로젝트는 복구가 불가능합니다.
-							</span>
-						</div>
-						<div className="okcancle">
-							<input type="button" value="확인"></input>
-							<input type="button" value="취소"></input>
-						</div>
-					</div>
-				</div>  */}
-				{/* <div className="notice_background">
-					<div className="alert_platform center_align platform_base">
-						<div className="article">
-							<span className="center_align_ab">
-								alert
-							</span>
-						</div>
-						<input type="button" value="확인"></input>
-					</div>
-				</div> */}
-				{/* <div className="notice_background">
-					<div className="prompt_platform center_align platform_base"> 
-						<div className="article">
-							<span className="row_align_re">
-								프로젝트 포기를 원하신다면<br/>
-								"포기하겠습니다"<br/>
-								를 적고 확인을 눌러주십시오.<br/>
-								한번 포기한 프로젝트는 복구가 불가능합니다.
-							</span>
-						</div>
-						<div>
-							<input type="text" className="col_align_re"></input>
-						</div>
-						<div className="okcancle">
-							<input type="button" value="확인"></input>
-							<input type="button" value="취소"></input>
-						</div>
-					</div>
-				</div> */}
-			</div>
-		);
-	}
-    else{
-		return(
-			<div>
-				Loading...
+				<BrowserRouter>
+					<Routes>
+						<Route path="/" element={<Lobby/>}></Route>
+						<Route path="/CreateProject" element={<Create/>}></Route>
+						<Route path="/Project" element={<Project/>}></Route>
+					</Routes>
+				</BrowserRouter>
 			</div>
 		)
+	}
+	else{
+		return "roading"
 	}
 }
 

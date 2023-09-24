@@ -67,12 +67,12 @@ function LoadData(){
 		data[key]=ChangeDataFormat(data[key])
 	})
 	localStorage.setItem("projects",JSON.stringify(data));
-	console.log(data)
+	console.log("LoadData",data)
 	return data
 }
-function UpdateData(data,setData){
+function UpdateData(data){
 	localStorage.setItem("projects",JSON.stringify(data));
-	setData(data);
+	// setData(data);
 }
 // function CreateDataObj(projectName,projectDiscription,tasks,D,Day,lastTasks){
 // 	let headData={};

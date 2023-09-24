@@ -2,31 +2,56 @@ import "../style/Lobby.css";
 
 import {ProjectLists} from "./sub-compo/LobbySubCompos.js"
 import { CreateElement } from '../module/CreateCompModule.js';
-import {GetAttendance} from '../module/AttendanceModule.js'
+import {GetAttendance, UpdateAttendance} from '../module/AttendanceModule.js'
 import Notice from '../module/Notice.js';
 import { SendMessage } from '../module/SendMessageModule';
-
+import { Link } from "react-router-dom";
+import styled from "styled-components";
+import { StyledLink, compoManager } from "../module/GlobalModule";
+import { GetOldDate, IsNextDay, UpdateOldDate } from "../module/TimeModule";
+import { DailyUpdateData, UpdateData } from "../module/DataModule";
 
 const closeNotiEle=CreateElement({element:"div",classList:"close_noti"});
 closeNotiEle.innerHTML="버튼을 한 번 더 누르면 앱을 종료합니다.";
 
-function Lobby(props){
+function Lobby(){
+	console.log("loddy render")
+	let today=IsNextDay();
+	let {data,setData}=compoManager.App
+	console.log("lobby",data)
+	// console.log("today in NextDayCallbackFunc",today);
+	if(today){
+		let dateDelta=today-GetOldDate();
+		UpdateAttendance(dateDelta);
+		for(let projectName in data){
+			DailyUpdateData(data[projectName],dateDelta);
+			console.log("data[projectName]",data[projectName]);
+		}
+		UpdateData(data);
+		UpdateOldDate(today);
+	}
 	return(
 		<div className="borad">
 			<ul className="project_list_ul">
 				<li className="project_list_li" >
-					<input id="create_btn" type="button" value="생성" onClick={
-						()=>{
-							// props.PageCallback("Create");
-							SendMessage("change_page",["Create"])
-							// SendMessage("msgtest")
-						}
-					}></input>
-					<label  className="plus_btn label_base" htmlFor="create_btn">
-						<div className="plus_btn_value">+</div>
-					</label>
+					<StyledLink to={'/CreateProject'}>
+						<div className="plus_btn label_base">
+							<div className="plus_btn_value">+</div>
+						</div>
+						{/* <input id="create_btn" type="button" value="생성" onClick={
+							()=>{
+								// props.PageCallback("Create");
+								//SendMessage("change_page",["Create"])
+								// SendMessage("msgtest")
+							}
+						}></input>
+						<label  className="plus_btn label_base" htmlFor="create_btn">
+							<div className="plus_btn_value">+</div>
+						</label> */}
+						{/* <div className="plus_btn_value">+</div> */}
+					</StyledLink>
 				</li>
-				<ProjectLists></ProjectLists>
+				<ProjectLists projects={data}></ProjectLists>
 			</ul>
 			<div className="navi_btns">
 				<input type="button" className="information_btn" value="정보" onClick={()=>{

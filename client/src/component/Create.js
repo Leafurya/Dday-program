@@ -27,7 +27,7 @@ function Create(props){
 				<div style={{height: "50px"}}></div>
 			</div>
 			<div className="function_btns">
-				<input className="function_btn" type="button" value="취소" onClick={()=>{SendMessage("change_page",["Lobby"])}}></input>
+				<input className="function_btn" type="button" value="취소" onClick={()=>{window.history.back()}}></input>
 				<CreateBtn dataToModify={dataToModify?.name} CreateDataObj={CreateDataObj} GetElement={GetElement} GetTaskFromInput={GetTaskFromInput}></CreateBtn>
 				{dataToModify?<DeleteBtn  dataToModify={dataToModify}></DeleteBtn>:""}
 			</div>

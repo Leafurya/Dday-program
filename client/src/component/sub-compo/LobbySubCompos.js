@@ -1,3 +1,4 @@
+import { StyledLink } from '../../module/GlobalModule';
 import { SendMessage } from '../../module/SendMessageModule';
 
 const prjDoneStamp=<span className="project_done"></span>;
@@ -13,30 +14,31 @@ function ProjectCard(props){
 
 	return(
 		<li className="project_list_li" key={id}>
-			<input id={id} type="button" value={name} onClick={
-				(event)=>{
-					//props.PageCallback("Project",{name:event.target.value});
-					SendMessage("change_page",["Project",event.target.value])
-				}
-			}></input>
-			<label className={"project_list_label label_base"+(data.start?"":" not_start")+(data.taskDone?" task_done":"")} htmlFor={id}>
-				<div className="project_list_day">{"D"+data.D+data.day}{data.prjDone?prjDoneStamp:""}</div>
-				<div className="project_list_name">{name}</div>
-				{/* <div></div>
-				<div></div> */}
-				{data.taskDone?taskDoneStamp:""}
-				<span className="task_stat">
-					<span>{"성공률"}</span><br></br>
-					<span>{stat}</span>
-				</span>
-			</label>
+			<StyledLink to={`/Project?name=${name}`}>
+				<input id={id} type="button" value={name} onClick={
+					(event)=>{
+						//props.PageCallback("Project",{name:event.target.value});
+						// SendMessage("change_page",["Project",event.target.value])
+					}
+				}></input>
+				<label className={"project_list_label label_base"+(data.start?"":" not_start")+(data.taskDone?" task_done":"")} htmlFor={id}>
+					<div className="project_list_day">{"D"+data.D+data.day}{data.prjDone?prjDoneStamp:""}</div>
+					<div className="project_list_name">{name}</div>
+					{/* <div></div>
+					<div></div> */}
+					{data.taskDone?taskDoneStamp:""}
+					<span className="task_stat">
+						<span>{"성공률"}</span><br></br>
+						<span>{stat}</span>
+					</span>
+				</label>
+			</StyledLink>
 		</li>
 	)
 }
 
-function ProjectLists(props){
+function ProjectLists({projects}){
 	let lists=[]
-	const projects=SendMessage("get_data")
 	// console.log("ProjectLists",projects)
 
 	Object.keys(projects).map((prjName)=>{

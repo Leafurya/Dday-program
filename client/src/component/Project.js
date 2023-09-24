@@ -5,9 +5,11 @@ import "../style/Align.css";
 import {TaskLists} from './sub-compo/ProjectSubCompos.js';
 import Notice from '../module/Notice.js';
 import { SendMessage } from '../module/SendMessageModule';
+import { useSearchParams } from 'react-router-dom';
 
 function Project(props){
-	const prjName=props.projectName
+	const [params,SetParams]=useSearchParams()
+	const prjName=params.get('name')
 	const [refresh,pageUpdate]=useState();
 	const project=SendMessage("get_data",prjName)
 	console.log("project comp data",project)
@@ -45,7 +47,7 @@ function Project(props){
 				</ul>
 			</div>
 			<div className="function_btns">
-				<input className="function_btn" type="button" value="로비" onClick={()=>{SendMessage("change_page",["Lobby"])}}></input>
+				<input className="function_btn" type="button" value="로비" onClick={()=>{window.history.back()}}></input>
 				<input className="when_start function_btn" type="button" value="포기" onClick={async()=>{
 					let str=await Notice.Prompt('프로젝트 포기를 원하신다면<br/>"포기하겠습니다"<br/>를 적고 확인을 눌러주십시오.<br/>한번 포기한 프로젝트는 복구가 불가능합니다.');
 					console.log(str,str=="포기하겠습니다");
@@ -54,7 +56,8 @@ function Project(props){
 						SendMessage("quit_project",prjName)
 						Notice.Alert("프로젝트를 포기하셨습니다. 수고하셨습니다.");
 						//props.PageCallback("Lobby");
-						SendMessage("change_page",["Lobby"])
+						// SendMessage("change_page",["Lobby"])
+						window.history.back()
 					}
 				}}></input>
 				<input className="when_ready function_btn" type="button" value="수정" onClick={()=>{
