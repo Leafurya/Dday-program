@@ -9,8 +9,8 @@ import {UpdateOldDate,InitDate,IsNextDay,GetOldDate} from './module/TimeModule'
 import {UpdateData,DailyUpdateData,LoadData} from './module/DataModule.js'
 import {InitAttendance,UpdateAttendance} from './module/AttendanceModule.js'
 import { SetSendMessage } from './module/SendMessageModule';
-import { compoManager } from './module/GlobalModule';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { compoManager } from './module/GlobalModule';
 
 const storageName="projects";
 let onDataChanged=null
@@ -22,6 +22,7 @@ function App() {
 	const [nowPage,setPage]=useState("");
 	// let data
 	//let oldPage;
+	console.log("compoManager",compoManager	)
 	compoManager.App={
 		data:data
 	}

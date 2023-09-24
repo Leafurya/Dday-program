@@ -1,11 +1,11 @@
 const { Link } = require("react-router-dom");
 const { default: styled } = require("styled-components");
 
-let StyledLink=styled(Link)`
+const StyledLink=styled(Link)`
 	text-decoration:none;
 	color:black;
 `
-let compoManager={}
+const compoManager={}
 
-module.exports.StyledLink=StyledLink
-module.exports.compoManager=compoManager
+// module.exports.StyledLink=StyledLink
+export {StyledLink,compoManager}

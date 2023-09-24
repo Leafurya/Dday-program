@@ -7,9 +7,10 @@ import Notice from '../module/Notice.js';
 import { SendMessage } from '../module/SendMessageModule';
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import { StyledLink, compoManager } from "../module/GlobalModule";
+import { StyledLink,compoManager } from "../module/GlobalModule";
 import { GetOldDate, IsNextDay, UpdateOldDate } from "../module/TimeModule";
 import { DailyUpdateData, UpdateData } from "../module/DataModule";
+// import compoManager from "../module/ComponentManager";
 
 const closeNotiEle=CreateElement({element:"div",classList:"close_noti"});
 closeNotiEle.innerHTML="버튼을 한 번 더 누르면 앱을 종료합니다.";
