@@ -1,16 +1,18 @@
 import { StyledLink } from '../../module/GlobalModule';
 import { SendMessage } from '../../module/SendMessageModule';
+import projectBundle from '../../module/global/DataBundle';
 
 const prjDoneStamp=<span className="project_done"></span>;
 const taskDoneStamp=<span className="done_stamp"></span>;
 
-function ProjectCard(props){
-	let name=props.project.name;
-	let data=props.project.data;
-	console.log("ProjectCard",data);
+function ProjectCard({project}){
+	let {name,start,taskDone,D,day,prjDone}=project
+	// let name=project.name;
+	// let data=project.data;
+	console.log("ProjectCard",project);
 	let id=Date.now()+Math.random()
 
-	let stat=(data.start?(((data.stat.checkedTaskCount/data.stat.taskCount)*100).toFixed(1)+"%"):"-%")
+	let stat=(start?(((project.stat.checkedTaskCount/project.stat.taskCount)*100).toFixed(1)+"%"):"-%")
 
 	return(
 		<li className="project_list_li" key={id}>
@@ -21,12 +23,12 @@ function ProjectCard(props){
 						// SendMessage("change_page",["Project",event.target.value])
 					}
 				}></input>
-				<label className={"project_list_label label_base"+(data.start?"":" not_start")+(data.taskDone?" task_done":"")} htmlFor={id}>
-					<div className="project_list_day">{"D"+data.D+data.day}{data.prjDone?prjDoneStamp:""}</div>
+				<label className={"project_list_label label_base"+(start?"":" not_start")+(taskDone?" task_done":"")} htmlFor={id}>
+					<div className="project_list_day">{"D"+D+day}{prjDone?prjDoneStamp:""}</div>
 					<div className="project_list_name">{name}</div>
 					{/* <div></div>
 					<div></div> */}
-					{data.taskDone?taskDoneStamp:""}
+					{taskDone?taskDoneStamp:""}
 					<span className="task_stat">
 						<span>{"성공률"}</span><br></br>
 						<span>{stat}</span>
@@ -37,13 +39,12 @@ function ProjectCard(props){
 	)
 }
 
-function ProjectLists({projects}){
+function ProjectLists(){
 	let lists=[]
 	// console.log("ProjectLists",projects)
 
-	Object.keys(projects).map((prjName)=>{
-		let project=projects[prjName]
-		lists.push(<ProjectCard key={prjName} project={{"name":prjName,"data":project}}></ProjectCard>)
+	Object.values(projectBundle.data).map((project)=>{
+		lists.push(<ProjectCard key={project.name} project={project}></ProjectCard>)
 	})
 	return lists;
 }

@@ -29,15 +29,15 @@ class Project{
 	}
 }
 class ProjectBundle{
+	#storageName="projects"
 	constructor(){
 		//data load
-		this.storageName="projects"
-		let temp=JSON.parse(localStorage.getItem(storageName)??"{}")
+		let temp=JSON.parse(localStorage.getItem(this.#storageName)??"{}")
 		this.data={}
 		Object.keys(temp).map((name)=>{
 			this.data[name]=new Project(name,temp[name])
 		})
-		// this.data=JSON.parse(localStorage.getItem(storageName)??"{}")
+		// this.data=JSON.parse(localStorage.getItem(this.storageName)??"{}")
 	}
 	GetProject(prjName){
 		return this.data[prjName]
@@ -46,7 +46,7 @@ class ProjectBundle{
 		return (prjName in this.data)
 	}
 	Save(){
-		localStorage.setItem(storageName,JSON.stringify(this.data))
+		localStorage.setItem(this.#storageName,JSON.stringify(this.data))
 	}
 	Append(prjName,data){
 		if(this.IsExist(prjName)){
@@ -67,4 +67,5 @@ class ProjectBundle{
 	}
 }
 const projectBundle=new ProjectBundle()
+console.log(projectBundle)
 export default projectBundle
