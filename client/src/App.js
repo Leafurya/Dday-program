@@ -12,38 +12,12 @@ import { SetSendMessage } from './module/SendMessageModule';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { compoManager } from './module/GlobalModule';
 
-const storageName="projects";
 let onDataChanged=null
 
 function App() {
-	// const [data,setData]=useState(JSON.parse(localStorage.getItem(storageName)??{}));
-	const [data,setData]=useState(LoadData());
 	console.log("data",data)
 	const [nowPage,setPage]=useState("");
-	// let data
-	//let oldPage;
-	compoManager.App={
-		data:data
-	}
-	console.log("compoManager",compoManager	)
-	const ChangePage=(page,props)=>{
-		switch(page){
-			case "Lobby":
-				setPage(<Lobby></Lobby>);
-				break;
-			case "Project":
-				console.log("name", props);
-				setPage(<Project projectName={props}></Project>);
-				break;
-			case "Create":
-				console.log("dataToModify", props);
-				setPage(<Create dataToModify={props}></Create>)
-				break;
-			default:
-				//setData("");
-				break;
-		}
-	}
+	
 	const QuitCallbackFunc=(prjName)=>{
 		delete data[prjName];
 		UpdateData(data);
@@ -216,9 +190,11 @@ function App() {
 		// SetSendMessage(SendMessage)
 		InitDate();
 		InitAttendance();
+		
 		// SendMessage("change_page",["Lobby"])
 	},[])
 	useEffect(()=>{
+		
 		console.log("data useEffect",data)
 		// SetSendMessage(SendMessage)
 		console.log("onDataChanged",onDataChanged)

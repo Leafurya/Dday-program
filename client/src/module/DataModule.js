@@ -48,7 +48,7 @@ function ChangeDataFormat(data){
 						result.start=tData.start
 						result.stat=tData.stat
 						break;
-						case "-":
+					case "-":
 						result=new DMinus(tData.day,tData.discription,tData.tasks,tData.lastTasks)
 						result.start=tData.start
 						result.stat=tData.stat
@@ -63,15 +63,17 @@ function ChangeDataFormat(data){
 function LoadData(){
 	// const [data,setData]=useState(JSON.parse(localStorage.getItem(storageName)??{}));
 	let data=JSON.parse(localStorage.getItem(storageName)??"{}")
-	Object.keys(data).map((key)=>{
-		data[key]=ChangeDataFormat(data[key])
-	})
+	console.log("pre loaddata",data)
+	// Object.keys(data).map((key)=>{
+	// 	data[key]=ChangeDataFormat(data[key])
+	// })
 	localStorage.setItem("projects",JSON.stringify(data));
 	console.log("LoadData",data)
 	return data
 }
 function UpdateData(data){
 	localStorage.setItem("projects",JSON.stringify(data));
+	console.log("update data",data)
 	// setData(data);
 }
 // function CreateDataObj(projectName,projectDiscription,tasks,D,Day,lastTasks){
