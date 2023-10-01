@@ -16,9 +16,6 @@ class Project{
 		this.lastTasks=data.lastTasks
 	}
 	Start(){
-		if(this.day){
-			
-		}
 		this.start=true
 	}
 	Quit(){
