@@ -2,14 +2,20 @@ import React,{useEffect,useState} from 'react';
 import {GetPickedDate,GetOldDate} from '../../module/TimeModule';
 import Notice from '../../module/Notice.js';
 import { SendMessage } from '../../module/SendMessageModule';
+import { CreateTaskInputCell, GetElement, GetTaskFromInput } from '../../module/CreateCompModule';
+import { CreateDataObj } from '../../module/DataModule';
+import projectBundle from '../../module/global/DataBundle';
+import { redirect, useNavigate } from 'react-router-dom';
 
-function DeleteBtn(props){
+function DeleteBtn({prjName}){
 	return(
 		<input className="function_btn" type="button" value="삭제" onClick={
 			async()=>{
 				if(await Notice.Confrim('프로젝트 삭제를 원하신다면 확인을 눌러주십시오.<br/>한번 삭제한 프로젝트는 복구가 불가능합니다.')==1){
 					// props.QuitCallback(props.dataToModify.name);
-					SendMessage("quit_project",props.dataToModify)
+					// SendMessage("quit_project",props.dataToModify)
+					projectBundle.Quit(prjName)
+					projectBundle.Save()
 					Notice.Alert("프로젝트를 삭제하였습니다.");
 					//alert("프로젝트를 삭제하였습니다.");
 					// props.PageCallback("Lobby");
@@ -82,8 +88,6 @@ function TypeChoicePart(props){
 function InputTaskPart(props){
 	let perventionDuplication=1;
 	let taskInputs=[];
-	let CreateTaskInputCell=props.CreateTaskInputCell;
-	let GetElement=props.GetElement;
 	console.log("InputTaskPart props",props);
 	useEffect(()=>{
 		if(props?.tasks){
@@ -118,20 +122,21 @@ function InputTaskPart(props){
 		</div>
 	);
 }
-function CreateBtn(props){
-	let dataToModify=props.dataToModify;
+function CreateBtn({dataToModify}){
+	// let dataToModify=props.dataToModify;
+	const navigate=useNavigate()
 	return(
 		<input className="function_btn" type="button" defaultValue="저장" onClick={()=>{
-			if(dataToModify){
-				// props.QuitCallback(dataToModify);
-				SendMessage("quit_project",dataToModify)
-			}
-			let projectName=props.GetElement("prj_name").value;
-			let discription=props.GetElement("prj_cntnt").value;
-			let D=props.GetElement("D+").checked?"+":"-";
-			let Day=(D=="+")?0:props.GetElement("prj_day").value;
-			let tasks=props.GetTaskFromInput("task_input");
-			let lastTasks=(D=="+")?null:props.GetTaskFromInput("last_task_input"); //if lastTasks not exist, value is null
+			// if(dataToModify){
+			// 	// props.QuitCallback(dataToModify);
+			// 	// SendMessage("quit_project",dataToModify)
+			// }
+			let projectName=GetElement("prj_name").value;
+			let discription=GetElement("prj_cntnt").value;
+			let D=GetElement("D+").checked?"+":"-";
+			let Day=(D=="+")?0:GetElement("prj_day").value;
+			let tasks=GetTaskFromInput("task_input");
+			let lastTasks=(D=="+")?null:GetTaskFromInput("last_task_input"); //if lastTasks not exist, value is null
 			if(projectName.length<=0){
 				Notice.Alert("프로젝트 이름이 비어있습니다.");
 				//alert("프로젝트 이름이 비어있습니다.");
@@ -148,9 +153,24 @@ function CreateBtn(props){
 				return;
 			}
 
-			let data=props.CreateDataObj(discription,tasks,D,Day,lastTasks)
+			let data=CreateDataObj(discription,tasks,D,Day,lastTasks)
+			if(dataToModify){
+				projectBundle.Remove(dataToModify)
+			}
+			if(!projectBundle.Append(projectName,data)){
+				Notice.Alert("같은 이름의 프로젝트가 존재합니다.");
+				console.log("exist same project")
+				return
+			}
+			projectBundle.Save()
 			console.log("new create data",data);
-			SendMessage("append_project",{name:projectName,data:data})
+			// navigate(``)
+			if(projectName===dataToModify){
+				navigate(-1)
+				return
+			}
+			navigate(`/Project?name=${projectName}`,{replace:true})
+			// SendMessage("append_project",{name:projectName,data:data})
 			// props.SaveDataCallback(data);
 			// props.PageCallback("Lobby");
 		}}></input>

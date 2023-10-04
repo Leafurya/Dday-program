@@ -1,52 +1,71 @@
-import { SendMessage } from "../../module/SendMessageModule";
+// import { SendMessage } from "../../module/SendMessageModule";
+import { findAllByTestId } from "@testing-library/react";
+import projectBundle from "../../module/global/DataBundle";
 
-function ClickTask(prjName,tasks,task,val){
-	let done=true
-	console.log(typeof(val),val)
-	//tasks[task]=val
-	SendMessage("set_tasks",[prjName,task,val])
-	for(var t in tasks){
-		if(!tasks[t]){
-			done=false;
-			break;
-		}
-	}
-	SendMessage("set_data",[prjName,"taskDone",done])
-}
-function TaskItem(props){
-	let eleID=props.index
-	let tasks=props.tasks
-	let task=props.task
+// function ClickTask(prjName,tasks,task,val){
+// 	let done=true
+// 	console.log(typeof(val),val)
+// 	//tasks[task]=val
+// 	SendMessage("set_tasks",[prjName,task,val])
+// 	for(var t in tasks){
+// 		if(!tasks[t]){
+// 			done=false;
+// 			break;
+// 		}
+// 	}
+// 	SendMessage("set_data",[prjName,"taskDone",done])
+// }
+// function TaskItem({index,tasks,task,projectName}){
 
-	return(
-		<li key={eleID}>
-			<input className='when_start' type="checkbox" id={"task"+eleID} defaultChecked={tasks[task]} value={task} onChange={(event)=>{
-				ClickTask(props.projectName,tasks,event.target.value,event.target.checked);
-				if(event.target.checked){
-					document.querySelector("label[for="+event.target.id+"]").classList.add("checked");
-					// props.PlusStat();
-					SendMessage("set_stat",[props.projectName,"plus_checkedTaskCount"])
-				}
-				else{
-					document.querySelector("label[for="+event.target.id+"]").classList.remove("checked");
-					// props.MinusStat();
-					SendMessage("set_stat",[props.projectName,"minus_checkedTaskCount"])
-				}
-				SendMessage("save_data")
-			}}></input>
-			<label className={(tasks[task]?" checked":"")} htmlFor={"task"+eleID}>{task}</label>
-		</li>
-	)
-}
-function TaskLists(props){
-	const tasks=props.tasks;
+// 	return(
+// 		<li key={index}>
+// 			<input className='when_start' type="checkbox" id={"task"+index} defaultChecked={tasks[task]} value={task} onChange={(event)=>{
+// 				ClickTask(projectName,tasks,event.target.value,event.target.checked);
+// 				if(event.target.checked){
+// 					document.querySelector("label[for="+event.target.id+"]").classList.add("checked");
+// 					// PlusStat();
+// 					SendMessage("set_stat",[projectName,"plus_checkedTaskCount"])
+// 				}
+// 				else{
+// 					document.querySelector("label[for="+event.target.id+"]").classList.remove("checked");
+// 					// MinusStat();
+// 					SendMessage("set_stat",[projectName,"minus_checkedTaskCount"])
+// 				}
+// 				SendMessage("save_data")
+// 			}}></input>
+// 			<label className={(tasks[task]?" checked":"")} htmlFor={"task"+index}>{task}</label>
+// 		</li>
+// 	)
+// }
+function TaskLists({project}){
 	let lists=[];
-	let index=0
-	
+	let tasks=project.GetNowTasks()
 	console.log("taskObj",tasks);
-	for(var task in tasks){
-		lists.push(<TaskItem projectName={props.projectName} index={index++} tasks={tasks} task={task} key={task}></TaskItem>)//TaskCheck={TaskCheck} checkedClassName={taskObj[task]?"checked":""} index={index}  taskChecked={taskObj[task]}
-	}
+	Object.keys(tasks).map((task,index)=>{
+		lists.push(
+			<li key={index}>
+				<input className='when_start' type="checkbox" id={"task"+index} defaultChecked={tasks[task]} value={task} onChange={(event)=>{
+					project.taskDone=tasks.Set(task,event.target.checked)
+					// ClickTask(projectName,tasks,event.target.value,event.target.checked);
+					if(event.target.checked){
+						document.querySelector("label[for="+event.target.id+"]").classList.add("checked");
+						project.stat.checkedTaskCount++
+						// PlusStat();
+						// SendMessage("set_stat",[projectName,"plus_checkedTaskCount"])
+					}
+					else{
+						document.querySelector("label[for="+event.target.id+"]").classList.remove("checked");
+						project.stat.checkedTaskCount--
+						// MinusStat();
+						// SendMessage("set_stat",[projectName,"minus_checkedTaskCount"])
+					}
+					projectBundle.Save()
+					// SendMessage("save_data")
+				}}></input>
+				<label className={(tasks[task]?" checked":"")} htmlFor={"task"+index}>{task}</label>
+			</li>
+		)
+	})
 
 	return lists;
 }

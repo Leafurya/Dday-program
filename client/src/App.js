@@ -9,9 +9,10 @@ import {UpdateOldDate,InitDate,IsNextDay,GetOldDate} from './module/TimeModule'
 import {UpdateData,DailyUpdateData,LoadData} from './module/DataModule.js'
 import {InitAttendance,UpdateAttendance} from './module/AttendanceModule.js'
 import { SetSendMessage } from './module/SendMessageModule';
-import { BrowserRouter, Link, Route, Routes, useLocation } from 'react-router-dom';
 import { compoManager } from './module/GlobalModule';
 import projectBundle from './module/global/DataBundle';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { Switch } from 'react-router-dom';
 
 function App() {
 	let data=1
@@ -207,11 +208,12 @@ function App() {
 	// },[data])
 	// console.log("app compo")
 	if(data){
+		console.log("if")
 		return (
 			<div className="App">
 				<BrowserRouter>
 					<Routes>
-						<Route path="/" element={<Lobby/>}></Route>
+						<Route  path="/" element={<Lobby/>}></Route>
 						<Route path="/Create" element={<Create/>}></Route>
 						<Route path="/Project" element={<Project/>}></Route>
 					</Routes>
@@ -220,6 +222,7 @@ function App() {
 		)
 	}
 	else{
+		console.log("else")
 		return "loading"
 	}
 }

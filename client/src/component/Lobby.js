@@ -17,12 +17,8 @@ const closeNotiEle=CreateElement({element:"div",classList:"close_noti"});
 closeNotiEle.innerHTML="버튼을 한 번 더 누르면 앱을 종료합니다.";
 
 function Lobby(){
-	let location=useLocation()
-	useEffect(()=>{
-		console.log(location)
-	},[location])
-	console.log("loddy render")
 	let today=IsNextDay();
+	console.log("lobby")
 
 	// console.log("today in NextDayCallbackFunc",today);
 	// if(today){
