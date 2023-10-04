@@ -58,7 +58,7 @@ function Project(props){
 		<div className="borad">
 			<TopNavigator></TopNavigator>
 			<div className={"project_board "+(project.start?"":"not_start_in_prjcomp")}>
-				<div><h1 className="project_day">{"D"+project.D+project.day}</h1></div>
+				<div><h1 className="project_day">{"D"+project.D+project.GetDay()}</h1></div>
 				<div><h2 className="project_header">{prjName}</h2></div>
 				<div><h4 className="project_content">{project.discription}</h4></div>
 				<ul>
@@ -67,7 +67,7 @@ function Project(props){
 				</ul>
 			</div>
 			<div className="function_btns">
-				<input className="function_btn" type="button" value="로비" onClick={()=>{window.history.back()}}></input>
+				{/* <input className="function_btn" type="button" value="로비" onClick={()=>{window.history.back()}}></input> */}
 				<input className="when_start function_btn" type="button" value="포기" onClick={async()=>{
 					let str=await Notice.Prompt('프로젝트 포기를 원하신다면<br/>"포기하겠습니다"<br/>를 적고 확인을 눌러주십시오.<br/>한번 포기한 프로젝트는 복구가 불가능합니다.');
 					console.log(str,str=="포기하겠습니다");

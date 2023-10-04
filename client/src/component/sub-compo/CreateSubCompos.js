@@ -8,6 +8,7 @@ import projectBundle from '../../module/global/DataBundle';
 import { redirect, useNavigate } from 'react-router-dom';
 
 function DeleteBtn({prjName}){
+	const navigate=useNavigate()
 	return(
 		<input className="function_btn" type="button" value="삭제" onClick={
 			async()=>{
@@ -20,7 +21,7 @@ function DeleteBtn({prjName}){
 					//alert("프로젝트를 삭제하였습니다.");
 					// props.PageCallback("Lobby");
 					// SendMessage("change_page",["Lobby"])
-					window.history.go(-1)
+					navigate(-2)
 				}
 			}
 		}></input>
@@ -72,6 +73,7 @@ function TypeChoicePart(props){
 					<input className="center_align_ab" disabled={props.defaultCheck=="plus"} type="date" id="date_picker" onChange={(event)=>{
 						//console.log("date pick",event.target.value);
 						let dateDelta=GetPickedDate(event.target.value)-GetOldDate()
+						console.log("date pick",GetPickedDate(event.target.value),GetOldDate(),dateDelta)
 						if(dateDelta<=0){
 							Notice.Alert("오늘보다 이후의 날짜만 선택 가능합니다.")
 							// alert("오늘보다 이후의 날짜만 선택 가능합니다.")

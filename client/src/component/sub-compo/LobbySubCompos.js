@@ -24,7 +24,7 @@ function ProjectCard({project}){
 					}
 				}></input>
 				<label className={"project_list_label label_base"+(start?"":" not_start")+(taskDone?" task_done":"")} htmlFor={id}>
-					<div className="project_list_day">{"D"+D+day}{prjDone?prjDoneStamp:""}</div>
+					<div className="project_list_day">{"D"+D+project.GetDay()}{prjDone?prjDoneStamp:""}</div>
 					<div className="project_list_name">{name}</div>
 					{/* <div></div>
 					<div></div> */}

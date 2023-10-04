@@ -8,29 +8,26 @@ import { SendMessage } from '../module/SendMessageModule';
 import { Link, useLocation } from "react-router-dom";
 import styled from "styled-components";
 import { StyledLink,compoManager } from "../module/GlobalModule";
-import { GetOldDate, IsNextDay, UpdateOldDate } from "../module/TimeModule";
+import { GetOldDate, InitDate, IsNextDay, UpdateOldDate } from "../module/TimeModule";
 import { DailyUpdateData, UpdateData } from "../module/DataModule";
 import { useEffect } from "react";
+import projectBundle from "../module/global/DataBundle";
 // import compoManager from "../module/ComponentManager";
 
-const closeNotiEle=CreateElement({element:"div",classList:"close_noti"});
-closeNotiEle.innerHTML="버튼을 한 번 더 누르면 앱을 종료합니다.";
+// const closeNotiEle=CreateElement({element:"div",classList:"close_noti"});
+// closeNotiEle.innerHTML="버튼을 한 번 더 누르면 앱을 종료합니다.";
 
 function Lobby(){
 	let today=IsNextDay();
-	console.log("lobby")
 
 	// console.log("today in NextDayCallbackFunc",today);
-	// if(today){
-	// 	let dateDelta=today-GetOldDate();
-	// 	UpdateAttendance(dateDelta);
-	// 	for(let projectName in data){
-	// 		DailyUpdateData(data[projectName],dateDelta);
-	// 		console.log("data[projectName]",data[projectName]);
-	// 	}
-	// 	UpdateData(data);
-	// 	UpdateOldDate(today);
-	// }
+	if(today){
+		let dateDelta=today-GetOldDate();
+		UpdateAttendance(dateDelta);
+		projectBundle.DailyUpdate(dateDelta)
+		projectBundle.Save()
+		UpdateOldDate(today);
+	}
 	return(
 		<div className="borad">
 			<ul className="project_list_ul">

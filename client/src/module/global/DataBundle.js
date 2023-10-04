@@ -1,6 +1,7 @@
 class Tasks{
 	constructor(data){
 		if(data){
+			console.log("constructor",data)
 			Object.keys(data).map((task)=>{
 				this[task]=data[task]
 			})
@@ -18,6 +19,14 @@ class Tasks{
 		}
 
 		return done
+	}
+	GetTaskCount(){
+		return Object.keys(this).length
+	}
+	Reset(){
+		for(var t in this){
+			this[t]=false
+		}
 	}
 }
 class Project{
@@ -38,7 +47,8 @@ class Project{
 		this.lastTasks=new Tasks(data.lastTasks)
 	}
 	Start(){
-		if(this.day==="DAY"||this.start){
+		console.log("this.day",this.day)
+		if(this.day<=0||this.start){
 			//alert("프로젝트 재설정 부탁드립니다.");
 			// Notice.Alert("프로젝트 재설정 부탁드립니다.")
 			return false
@@ -53,16 +63,36 @@ class Project{
 
 			
 	}
-	End(){
-
+	IsLastTaskExist(){
+		return (this.lastTasks.GetTaskCount()>0?true:false)
 	}
 	GetNowTasks(){
 		if(this?.lastTasks){
-			if(this.day==="DAY"&&Object.keys(this.lastTasks).length!==0){
+			if(this.day<=0&&Object.keys(this.lastTasks).length!==0){
 				return this.lastTasks;
 			}
 		}
 		return this.tasks
+	}
+	GetDay(){
+		switch(this.D){
+			case "+":{
+				return this.day
+			}
+			case "-":{
+				return (this.day>0?(""+this.day):"DAY")
+			}
+		}
+	}
+	Reset(){
+		this.day=0
+		this.start=false
+		this.tasks.Reset()
+		if(this.IsLastTaskExist()){
+			this.lastTasks.Reset()
+		}
+		this.prjDone=true
+		this.taskDone=false
 	}
 }
 class ProjectBundle{
@@ -105,6 +135,37 @@ class ProjectBundle{
 	Quit(name){
 		delete this.data[name]
 		this.Save()
+	}
+	DailyUpdate(dateDelta){
+		let nowTask
+		Object.values(this.data).map((data)=>{
+			if(data.start){
+				nowTask=data.GetNowTasks()
+				switch(data.D){
+					case "+":{
+						data.day+=dateDelta
+						data.stat.taskCount+=(nowTask.GetTaskCount()*dateDelta)
+						break
+					}
+					case "-":{
+						data.day-=dateDelta
+
+						if(data.day<0){
+							data.stat.taskCount+=(data.tasks.GetTaskCount()*(dateDelta+data.day-1))
+							data.stat.taskCount+=(data.IsLastTaskExist()?(data.lastTasks.GetTaskCount()):(data.tasks.GetTaskCount()))
+							data.Reset()
+							return
+						}
+						else{
+							data.stat.taskCount+=(nowTask.GetTaskCount()*dateDelta)
+						}
+						break
+					}
+				}
+				nowTask.Reset()
+				data.taskDone=false
+			}
+		})
 	}
 }
 const projectBundle=new ProjectBundle()

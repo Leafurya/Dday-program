@@ -1,8 +1,8 @@
 class Test{
 	constructor(){
 		this.a={
-			b:1,
-			c:2
+			b:{a:1},
+			c:{a:2}
 		}
 		this["z"]=1
 	}
@@ -10,34 +10,20 @@ class Test{
 		return this.a
 	}
 	print(){
-		console.log(this)
+		console.log(Object.keys(this))
 	}
 	quit(){
-		delete this
+		Object.values(this.a).map((data)=>{
+			data.a=4
+		})
 	}
 }
-class Empty{
-	constructor(){
-		if(false){
-			this.a=1
-		}
-		return undefined
-	}
-}
-function Change(obj){
-	Object.keys(obj).map((key)=>{
-		obj[key]=0
-	})
-}
-var t=new Test()
-console.log(t)
-var tt=t.get()
-tt.b=4
-console.log(t)
-Change(tt)
-console.log(t)
-console.log(Object.keys(t))
-console.log(new Empty())
-t.print()
-t.quit()
-console.log(t)
+var test=new Test()
+console.log(test)
+test.quit()
+console.log(test)
+test.print()
+console.log(undefined||"hello")
+console.log(null||"hello")
+console.log(false||"hello")
+console.log(true||"hello")

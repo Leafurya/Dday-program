@@ -207,8 +207,11 @@ function App() {
 	// 	}
 	// },[data])
 	// console.log("app compo")
+	useEffect(()=>{
+		InitAttendance()
+		InitDate()
+	},[])
 	if(data){
-		console.log("if")
 		return (
 			<div className="App">
 				<BrowserRouter>
@@ -222,7 +225,6 @@ function App() {
 		)
 	}
 	else{
-		console.log("else")
 		return "loading"
 	}
 }

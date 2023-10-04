@@ -1,3 +1,4 @@
+const devDateDelta=0
 function GetTime(){
     var today=Date.now()+32400000
     var day=Math.floor(today/86400000)
@@ -12,7 +13,7 @@ function GetTime(){
 }
 function GetDay(){
 	let today=Date.now()+32400000;
-	return Math.floor(today/86400000);
+	return Math.floor(today/86400000)+devDateDelta;
 }
 // }
 let oldDate;
@@ -46,7 +47,7 @@ function GetPickedDate(date){
 	let [year,month,day]=date.split("-");
 	let pickedDate=new Date(year,month-1,day);
 	
-	return (Math.floor(pickedDate.getTime()/86400000)+1);
+	return (Math.floor(pickedDate.getTime()/86400000)+devDateDelta+1);
 }
 
 const _GetTime = GetTime
