@@ -10,13 +10,11 @@ import {UpdateData,DailyUpdateData,LoadData} from './module/DataModule.js'
 import {InitAttendance,UpdateAttendance} from './module/AttendanceModule.js'
 import { SetSendMessage } from './module/SendMessageModule';
 import { compoManager } from './module/GlobalModule';
-import projectBundle from './module/global/DataBundle';
+import projectBundle, { InitBundle, ProjectBundle } from './module/global/DataBundle';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import { Switch } from 'react-router-dom';
 
 function App() {
-	let data=1
-	console.log("app",projectBundle)
+	
 	
 	// console.log("data",data)
 	// const [nowPage,setPage]=useState("");
@@ -207,11 +205,17 @@ function App() {
 	// 	}
 	// },[data])
 	// console.log("app compo")
+	// InitBundle()
+	// projectBundle.Init()
+	const [re,setRe]=useState([])
 	useEffect(()=>{
 		InitAttendance()
 		InitDate()
+		projectBundle.Init()
+		setRe([])
 	},[])
-	if(data){
+	console.log("app",projectBundle)
+	if(Object.keys(projectBundle).length){
 		return (
 			<div className="App">
 				<BrowserRouter>

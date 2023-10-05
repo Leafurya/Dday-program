@@ -1,7 +1,6 @@
 class Tasks{
 	constructor(data){
 		if(data){
-			console.log("constructor",data)
 			Object.keys(data).map((task)=>{
 				this[task]=data[task]
 			})
@@ -33,13 +32,13 @@ class Project{
 	constructor(name,data){
 		// this.data=data
 
-
 		this.name=name
-		this.version=data.nowDataVersion
+		this.version=data.version
 		this.D=data.D
-		this.start=data.start
+		this.start=data.start??data.start
 		this.tasks=new Tasks(data.tasks)
-		this.day=data.day
+		this.day=Number(data.day)
+		
 		this.discription=data.discription
 		this.stat=data.stat
 		this.prjDone=data.prjDone
@@ -48,7 +47,7 @@ class Project{
 	}
 	Start(){
 		console.log("this.day",this.day)
-		if(this.day<=0||this.start){
+		if((this.D==="-"&&this.day<=0)||this.start){
 			//alert("프로젝트 재설정 부탁드립니다.");
 			// Notice.Alert("프로젝트 재설정 부탁드립니다.")
 			return false
@@ -60,8 +59,6 @@ class Project{
 		// Notice.Alert(prjName+"프로젝트가 시작됐습니다.")
 		// PageCallbackFunc("Project",{name:prjName});
 		return true;
-
-			
 	}
 	IsLastTaskExist(){
 		return (this.lastTasks.GetTaskCount()>0?true:false)
@@ -95,16 +92,18 @@ class Project{
 		this.taskDone=false
 	}
 }
-class ProjectBundle{
+export class ProjectBundle{
 	#storageName="projects"
 	constructor(){
-		//data load
-		let temp=JSON.parse(localStorage.getItem(this.#storageName)??"{}")
+		
+	}
+	Init(){
+		let jsonString=localStorage.getItem(this.#storageName)??"{}"
+		let holyValue=JSON.parse(jsonString)
 		this.data={}
-		Object.keys(temp).map((name)=>{
-			this.data[name]=new Project(name,temp[name])
+		Object.keys(holyValue).map((name)=>{
+			this.data[name]=new Project(name,holyValue[name])
 		})
-		// this.data=JSON.parse(localStorage.getItem(this.storageName)??"{}")
 	}
 	GetProject(prjName){
 		return this.data[prjName]
@@ -168,6 +167,10 @@ class ProjectBundle{
 		})
 	}
 }
-const projectBundle=new ProjectBundle()
-console.log(projectBundle)
+let projectBundle=new ProjectBundle()
+// export function InitBundle(){
+// 	projectBundle=new ProjectBundle()
+// }
+// InitBundle()
+// console.log(projectBundle)
 export default projectBundle

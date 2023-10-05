@@ -36,7 +36,7 @@ class DMinus{
 		}
 	}
 }
-function ChangeDataFormat(data){
+function ChangeDataFormat(data){ //안씀
 	let tData={...data}
 	let result=data
 	if(data.version!=_nowDataVersion){
@@ -60,7 +60,7 @@ function ChangeDataFormat(data){
 	}
 	return result
 }
-function LoadData(){
+function LoadData(){ //안씀
 	// const [data,setData]=useState(JSON.parse(localStorage.getItem(storageName)??{}));
 	let data=JSON.parse(localStorage.getItem(storageName)??"{}")
 	console.log("pre loaddata",data)
@@ -71,7 +71,7 @@ function LoadData(){
 	console.log("LoadData",data)
 	return data
 }
-function UpdateData(data){
+function UpdateData(data){ //안씀
 	localStorage.setItem("projects",JSON.stringify(data));
 	console.log("update data",data)
 	// setData(data);
@@ -110,7 +110,7 @@ function CreateDataObj(discription,tasks,D,day,lastTasks){
 	console.log("CreateDataObj",data)
 	return data
 }
-function ResetData(data){
+function ResetData(data){ //안씀
 	data.day="DAY";
 	data.start=false;
 	let task;
@@ -133,7 +133,7 @@ function ResetData(data){
 		}
 		return result;
 	}
-function DailyUpdateData(projectData,dateDelta){
+function DailyUpdateData(projectData,dateDelta){ //안씀
 	let taskToInit;
 	if(projectData.start){
 		switch(projectData.D){

@@ -1,0 +1,21 @@
+{
+	"테스트": {
+		"version": 1,
+		"D": "-",
+		"start": true,
+		"tasks": {
+			"과제": false
+		},
+		"day": "1",
+		"discription": "프로젝트",
+		"stat": {
+			"taskCount": 1,
+			"checkedTaskCount": 0
+		},
+		"prjDone": false,
+		"taskDone": false,
+		"lastTasks": {
+			"마지막": false
+		}
+	}
+}
