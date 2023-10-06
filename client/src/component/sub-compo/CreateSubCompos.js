@@ -1,11 +1,10 @@
-import React,{useEffect,useState} from 'react';
+import React,{useEffect} from 'react';
 import {GetPickedDate,GetOldDate} from '../../module/TimeModule';
 import Notice from '../../module/Notice.js';
-import { SendMessage } from '../../module/SendMessageModule';
 import { CreateTaskInputCell, GetElement, GetTaskFromInput } from '../../module/CreateCompModule';
 import { CreateDataObj } from '../../module/DataModule';
 import projectBundle from '../../module/global/DataBundle';
-import { redirect, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 function DeleteBtn({prjName}){
 	const navigate=useNavigate()
@@ -13,14 +12,9 @@ function DeleteBtn({prjName}){
 		<input className="function_btn" type="button" value="삭제" onClick={
 			async()=>{
 				if(await Notice.Confrim('프로젝트 삭제를 원하신다면 확인을 눌러주십시오.<br/>한번 삭제한 프로젝트는 복구가 불가능합니다.')==1){
-					// props.QuitCallback(props.dataToModify.name);
-					// SendMessage("quit_project",props.dataToModify)
 					projectBundle.Quit(prjName)
 					projectBundle.Save()
 					Notice.Alert("프로젝트를 삭제하였습니다.");
-					//alert("프로젝트를 삭제하였습니다.");
-					// props.PageCallback("Lobby");
-					// SendMessage("change_page",["Lobby"])
 					navigate(-2)
 				}
 			}
@@ -62,7 +56,7 @@ function TypeChoicePart(props){
 			<span>
 				<input disabled={props.defaultCheck=="plus"} type="number" placeholder="일수" id="prj_day" defaultValue={props.day?props.day:""} onChange={(event)=>{
 					let date=new Date()
-					//console.log("event.target.value",Number(date.getDate())+Number(event.target.value))
+					
 					date.setDate(Number(date.getDate())+Number(event.target.value))
 					let year=date.getFullYear()
 					let month=date.getMonth()+1
@@ -71,12 +65,11 @@ function TypeChoicePart(props){
 				}}></input>
 				<div style={{position: "relative"}}>
 					<input className="center_align_ab" disabled={props.defaultCheck=="plus"} type="date" id="date_picker" onChange={(event)=>{
-						//console.log("date pick",event.target.value);
+						
 						let dateDelta=GetPickedDate(event.target.value)-GetOldDate()
 						console.log("date pick",GetPickedDate(event.target.value),GetOldDate(),dateDelta)
 						if(dateDelta<=0){
 							Notice.Alert("오늘보다 이후의 날짜만 선택 가능합니다.")
-							// alert("오늘보다 이후의 날짜만 선택 가능합니다.")
 							return;
 						}
 						document.getElementById("prj_day").value=dateDelta;
@@ -89,8 +82,7 @@ function TypeChoicePart(props){
 }
 function InputTaskPart(props){
 	let perventionDuplication=1;
-	let taskInputs=[];
-	console.log("InputTaskPart props",props);
+	
 	useEffect(()=>{
 		if(props?.tasks){
 			if(perventionDuplication===1){
@@ -114,25 +106,15 @@ function InputTaskPart(props){
 					textInput.focus()
 				}}></input>
 			</label>
-			{/* <input id={props.id+"_add_btn"} className="add_task_btn" type="button" value={props.value} onClick={async()=>{
-				GetElement(props.id).appendChild(CreateTaskInputCell(props.name,await Notice.Prompt("도전과제 내용을 적어주세요.")));
-				//GetTaskInput("task_inputs","task_input");
-			}}></input> */}
 			<ul className="task_input_ul" id={props.id}>
-				{console.log("return taskInputs",taskInputs)}
 			</ul>
 		</div>
 	);
 }
 function CreateBtn({dataToModify}){
-	// let dataToModify=props.dataToModify;
 	const navigate=useNavigate()
 	return(
 		<input className="function_btn" type="button" defaultValue="저장" onClick={()=>{
-			// if(dataToModify){
-			// 	// props.QuitCallback(dataToModify);
-			// 	// SendMessage("quit_project",dataToModify)
-			// }
 			let projectName=GetElement("prj_name").value;
 			let discription=GetElement("prj_cntnt").value;
 			let D=GetElement("D+").checked?"+":"-";
@@ -141,17 +123,14 @@ function CreateBtn({dataToModify}){
 			let lastTasks=(D=="+")?null:GetTaskFromInput("last_task_input"); //if lastTasks not exist, value is null
 			if(projectName.length<=0){
 				Notice.Alert("프로젝트 이름이 비어있습니다.");
-				//alert("프로젝트 이름이 비어있습니다.");
 				return;
 			}
 			if(!tasks){
 				Notice.Alert("도전과제가 비어있습니다.");
-				//alert("도전과제가 비어있습니다.");
 				return;
 			}
 			if(D==='-'&&Day===""){
 				Notice.Alert("일 수가 비어있습니다.");
-				// alert("일 수가 비어있습니다.");
 				return;
 			}
 
@@ -165,16 +144,12 @@ function CreateBtn({dataToModify}){
 				return
 			}
 			projectBundle.Save()
-			console.log("new create data",data);
-			// navigate(``)
+			
 			if(projectName===dataToModify){
 				navigate(-1)
 				return
 			}
 			navigate(`/Project?name=${projectName}`,{replace:true})
-			// SendMessage("append_project",{name:projectName,data:data})
-			// props.SaveDataCallback(data);
-			// props.PageCallback("Lobby");
 		}}></input>
 	)
 }

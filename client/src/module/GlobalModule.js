@@ -5,7 +5,4 @@ const StyledLink=styled(Link)`
 	text-decoration:none;
 	color:black;
 `
-const compoManager={}
-
-// module.exports.StyledLink=StyledLink
-export {StyledLink,compoManager}
+export {StyledLink}
