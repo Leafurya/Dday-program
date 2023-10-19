@@ -40,8 +40,8 @@ function App() {
 	}
 }
 function ShowNotification(){
-	Notification.requestPermission((result)=>{
-		if(result==="granted"){
+	// Notification.requestPermission((result)=>{
+		// if(result==="granted"){
 			navigator.serviceWorker.ready.then((registration)=>{
 				registration.showNotification("noti sample",{
 					body:"body",
@@ -50,8 +50,8 @@ function ShowNotification(){
 					tag:"noti tag"
 				})
 			})
-		}
-	})
+		// }
+	// })
 }
 
 export default App;
