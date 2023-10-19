@@ -58,7 +58,6 @@ function Prompt(str){
 		text.focus()
 
 		let interval=setInterval(()=>{
-			//console.log("D")
 			if(typeof(result)==="string"){
 				resolve(result)
 				clearInterval(interval)
@@ -97,7 +96,6 @@ function Confrim(str){
 		document.querySelector(".App").append(background)
 
 		let interval=setInterval(()=>{
-			//console.log("D")
 			if(result){
 				resolve(result)
 				clearInterval(interval)
@@ -107,9 +105,9 @@ function Confrim(str){
 }
 
 const Notice={
-    Alert:Alert,
-    Prompt:Prompt,
-	Confrim:Confrim
+    Alert,
+    Prompt,
+	Confrim
 }
 
 export default Notice

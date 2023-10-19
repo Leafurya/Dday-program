@@ -46,18 +46,10 @@ class Project{
 		this.lastTasks=new Tasks(data.lastTasks)
 	}
 	Start(){
-		console.log("this.day",this.day)
 		if((this.D==="-"&&this.day<=0)||this.start){
-			//alert("프로젝트 재설정 부탁드립니다.");
-			// Notice.Alert("프로젝트 재설정 부탁드립니다.")
 			return false
 		}
-		// if(this.start){
-		// 	return false;
-		// }
 		this.start=true
-		// Notice.Alert(prjName+"프로젝트가 시작됐습니다.")
-		// PageCallbackFunc("Project",{name:prjName});
 		return true;
 	}
 	IsLastTaskExist(){
@@ -168,9 +160,4 @@ export class ProjectBundle{
 	}
 }
 let projectBundle=new ProjectBundle()
-// export function InitBundle(){
-// 	projectBundle=new ProjectBundle()
-// }
-// InitBundle()
-// console.log(projectBundle)
 export default projectBundle
