@@ -70,13 +70,17 @@ self.addEventListener('message', (event) => {
 });
 
 // Any other custom service worker logic can go here.
-self.addEventListener('activated',(e)=>{
-	self.clients.claim()
-	setInterval(() => {
-		ShowNotification()
-		console.log("background")
-	}, 3000);
-})
+// self.addEventListener('activated',(e)=>{
+// 	self.clients.claim()
+// 	setInterval(() => {
+// 		ShowNotification()
+// 		console.log("background")
+// 	}, 3000);
+// })
+setInterval(() => {
+	ShowNotification()
+	console.log("background")
+}, 3000);
 function ShowNotification(){
 	// Notification.requestPermission((result)=>{
 		// if(result==="granted"){

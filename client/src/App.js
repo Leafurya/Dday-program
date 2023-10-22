@@ -9,6 +9,30 @@ import {InitAttendance} from './module/AttendanceModule.js'
 import projectBundle from './module/global/DataBundle';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
+// Import the functions you need from the SDKs you need
+import { initializeApp } from "firebase/app";
+import { getAnalytics } from "firebase/analytics";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
+
+// Your web app's Firebase configuration
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+  apiKey: "AIzaSyAkHhMK0XzCao6sAoG8hfglLtYd9zxS40I",
+  authDomain: "dday-38612.firebaseapp.com",
+  projectId: "dday-38612",
+  storageBucket: "dday-38612.appspot.com",
+  messagingSenderId: "1077048953916",
+  appId: "1:1077048953916:web:04bc21c7e0f189a3ae0739",
+  measurementId: "G-Q7N9YZYMJP"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
+
+
+
 function App() {
 	const [re,setRe]=useState([])
 	useEffect(()=>{
