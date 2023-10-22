@@ -78,20 +78,27 @@ self.addEventListener('message', (event) => {
 // 	}, 3000);
 // })
 setInterval(() => {
-	ShowNotification()
+	navigator.serviceWorker.ready.then((registration)=>{
+		registration.showNotification("noti sample",{
+			body:"body",
+			icon:"./logo.svg",
+			vibrate:[100,100,200,200,300,300],
+			tag:"noti tag"
+		})
+	})
 	console.log("background")
 }, 3000);
-function ShowNotification(){
-	// Notification.requestPermission((result)=>{
-		// if(result==="granted"){
-			navigator.serviceWorker.ready.then((registration)=>{
-				registration.showNotification("noti sample",{
-					body:"body",
-					icon:"./logo.svg",
-					vibrate:[100,100,200,200,300,300],
-					tag:"noti tag"
-				})
-			})
-		// }
-	// })
-}
+// function ShowNotification(){
+// 	// Notification.requestPermission((result)=>{
+// 		// if(result==="granted"){
+// 			navigator.serviceWorker.ready.then((registration)=>{
+// 				registration.showNotification("noti sample",{
+// 					body:"body",
+// 					icon:"./logo.svg",
+// 					vibrate:[100,100,200,200,300,300],
+// 					tag:"noti tag"
+// 				})
+// 			})
+// 		// }
+// 	// })
+// }
