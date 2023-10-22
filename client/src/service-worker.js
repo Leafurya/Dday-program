@@ -12,6 +12,7 @@ import { ExpirationPlugin } from 'workbox-expiration';
 import { precacheAndRoute, createHandlerBoundToURL } from 'workbox-precaching';
 import { registerRoute } from 'workbox-routing';
 import { StaleWhileRevalidate } from 'workbox-strategies';
+import { ShowNotification } from './App';
 
 clientsClaim();
 
@@ -78,14 +79,15 @@ self.addEventListener('message', (event) => {
 // 	}, 3000);
 // })
 setInterval(() => {
-	navigator.serviceWorker.ready.then((registration)=>{
-		registration.showNotification("noti sample",{
-			body:"body",
-			icon:"./logo.svg",
-			vibrate:[100,100,200,200,300,300],
-			tag:"noti tag"
-		})
-	})
+	// navigator.serviceWorker.ready.then((registration)=>{
+	// 	registration.showNotification("noti sample",{
+	// 		body:"body",
+	// 		icon:"./logo.svg",
+	// 		vibrate:[100,100,200,200,300,300],
+	// 		tag:"noti tag"
+	// 	})
+	// })
+	ShowNotification()
 	console.log("background")
 }, 3000);
 // function ShowNotification(){

@@ -64,18 +64,18 @@ function App() {
 	}
 }
 
-function ShowNotification(){
-		// Notification.requestPermission((result)=>{
-			// if(result==="granted"){
-				navigator.serviceWorker.ready.then((registration)=>{
-					registration.showNotification("noti sample",{
-						body:"body",
-						icon:"./logo.svg",
-						vibrate:[100,100,200,200,300,300],
-						tag:"noti tag"
-					})
+export function ShowNotification(){
+	Notification.requestPermission((result)=>{
+		if(result==="granted"){
+			navigator.serviceWorker.ready.then((registration)=>{
+				registration.showNotification("noti sample",{
+					body:"body",
+					icon:"./logo.svg",
+					vibrate:[100,100,200,200,300,300],
+					tag:"noti tag"
 				})
-			// }
-		// })
-	}
+			})
+		}
+	})
+}
 export default App;
