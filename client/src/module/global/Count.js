@@ -1,9 +1,9 @@
 let count=0
-function count(){
+function Count(){
 	count++
 }
 function getCount(){
 	return count
 }
 
-export {count,getCount}
+export {Count,getCount}
