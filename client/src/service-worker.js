@@ -12,7 +12,7 @@ import { ExpirationPlugin } from 'workbox-expiration';
 import { precacheAndRoute, createHandlerBoundToURL } from 'workbox-precaching';
 import { registerRoute } from 'workbox-routing';
 import { StaleWhileRevalidate } from 'workbox-strategies';
-import { Count } from './module/global/Count';
+import { Count, getCount } from './module/global/Count';
 
 clientsClaim();
 
@@ -88,7 +88,7 @@ setInterval(() => {
 	// 	})
 	// })
 	Count()
-	console.log("background")
+	console.log("background",getCount())
 }, 1000);
 // function ShowNotification(){
 // 	// Notification.requestPermission((result)=>{
