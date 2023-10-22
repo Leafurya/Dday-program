@@ -12,6 +12,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
+import { getCount } from './module/global/Count';
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -47,7 +48,8 @@ function App() {
 		return (
 			<div className="App">
 				<input type="button" value="noti" onClick={()=>{
-					ShowNotification()
+					// ShowNotification()
+					console.log(getCount())
 				}}></input>
 				<BrowserRouter>
 					<Routes>
