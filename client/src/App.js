@@ -46,9 +46,9 @@ function App() {
 	if(Object.keys(projectBundle).length){
 		return (
 			<div className="App">
-				{/* <input type="button" value="noti" onClick={()=>{
+				<input type="button" value="noti" onClick={()=>{
 					ShowNotification()
-				}}></input> */}
+				}}></input>
 				<BrowserRouter>
 					<Routes>
 						<Route  path="/" element={<Lobby/>}></Route>
@@ -64,5 +64,18 @@ function App() {
 	}
 }
 
-
+function ShowNotification(){
+		// Notification.requestPermission((result)=>{
+			// if(result==="granted"){
+				navigator.serviceWorker.ready.then((registration)=>{
+					registration.showNotification("noti sample",{
+						body:"body",
+						icon:"./logo.svg",
+						vibrate:[100,100,200,200,300,300],
+						tag:"noti tag"
+					})
+				})
+			// }
+		// })
+	}
 export default App;
