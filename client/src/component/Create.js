@@ -14,7 +14,7 @@ function Create({}){
 	const dataToModify=prjName?projectBundle.GetProject(prjName):null
 	return(
 		<div className="borad">
-			<TopNavigator></TopNavigator>
+			<TopNavigator title={dataToModify?"프로젝트 수정":"프로젝트 생성"}></TopNavigator>
 			<div className="main_platform">
 				<h1>프로젝트 {dataToModify?"수정":"생성"}</h1>
 				<input id="prj_name" type="text" placeholder="프로젝트 이름" defaultValue={prjName??""}></input>
@@ -25,7 +25,7 @@ function Create({}){
 				<div style={{height: "50px"}}></div>
 			</div>
 			<div className="function_btns">
-				<input className="function_btn" type="button" value="취소" onClick={()=>{window.history.back()}}></input>
+				<input className="function_btn" type="button" value="뒤로" onClick={()=>{window.history.back()}}></input>
 				<CreateBtn dataToModify={prjName}></CreateBtn>
 				{dataToModify?<DeleteBtn prjName={prjName}></DeleteBtn>:""}
 			</div>

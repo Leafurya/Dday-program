@@ -48,6 +48,9 @@ function Project(props){
 				</ul>
 			</div>
 			<div className="function_btns">
+				<input className='function_btn' type="button" value="뒤로" onClick={()=>{
+					window.history.back()
+				}}></input>
 				<input className="when_start function_btn" type="button" value="포기" onClick={async()=>{
 					let str=await Notice.Prompt('프로젝트 포기를 원하신다면<br/>"포기하겠습니다"<br/>를 적고 확인을 눌러주십시오.<br/>한번 포기한 프로젝트는 복구가 불가능합니다.');
 					if(str=="포기하겠습니다"){
