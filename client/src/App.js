@@ -49,7 +49,11 @@ function App() {
 		InitDate()
 		projectBundle.Init()
 		setRe([])
-		CreateNotification("tag","title",Date.now())
+		Notification.requestPermission((result)=>{
+			if(result==="granted"){
+				CreateNotification("tag","title",Date.now())
+			}
+		})
 	},[])
 	
 	console.log("app",projectBundle)
