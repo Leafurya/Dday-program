@@ -22,10 +22,6 @@ function App() {
 	if(Object.keys(projectBundle).length){
 		return (
 			<div className="App">
-				<input type="button" value="noti" onClick={()=>{
-					// ShowNotification()
-					console.log(getCount())
-				}}></input>
 				<BrowserRouter>
 					<Routes>
 						<Route  path="/" element={<Lobby/>}></Route>
