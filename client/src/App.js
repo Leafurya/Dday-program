@@ -38,7 +38,7 @@ const CreateNotification=async(tag, title, timestamp)=>{
 	registration.showNotification(title,{
 		tag:tag,
 		body:"time stamp",
-		showTrigger:timestamp+30*1000//new TimestampTrigger(timestamp+30*1000)
+		showTrigger:new TimestampTrigger(timestamp+30*1000)
 	})
 }
 
