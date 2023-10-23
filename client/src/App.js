@@ -32,7 +32,15 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
 
-
+const CreateNotification=async(tag, title, timestamp)=>{
+	const registration=await navigator.serviceWorker.getRegistration()
+	console.log(registration)
+	registration.showNotification(title,{
+		tag:tag,
+		body:"time stamp",
+		showTrigger:timestamp+30*1000//new TimestampTrigger(timestamp+30*1000)
+	})
+}
 
 function App() {
 	const [re,setRe]=useState([])
@@ -41,6 +49,7 @@ function App() {
 		InitDate()
 		projectBundle.Init()
 		setRe([])
+		CreateNotification("tag","title",Date.now())
 	},[])
 	
 	console.log("app",projectBundle)
