@@ -15,6 +15,7 @@
 
 	overflow-y: scroll;
 	overflow-x: hidden;
+
 }
 
 
@@ -30,7 +31,7 @@
 	flex-direction: column;
 	align-items: center;
 	justify-content: center;
-	background-color: #775cd2;
+	background-color: #7965bd;
 	margin: 15px;
 }
 
@@ -111,9 +112,8 @@
 	border: 4px double rgb(89, 45, 183);
 }
 .not_start{
-	color: gray;
-	border-style: dashed;
-	border-color: rgb(135, 58, 58);
+	color: rgb(184, 184, 184);
+	border-bottom: 2px solid rgb(184, 184, 184);
 }
 .not_start_in_prjcomp{
 	color: gray;

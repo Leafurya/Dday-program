@@ -21,6 +21,7 @@
 .project_board{
 	display: flex;
 	flex-direction: column;
+	/* background: linear-gradient(#947fda 30%, #fff) */
 }
 .project_day{
 	font-size: 3em;
@@ -32,10 +33,19 @@
 	margin:0;
 	font-size: large;
 	font-weight: 100;
+	
 }
 .project_board > div{
 	flex:1;
 	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 100%;
+	/* box-shadow: -7px -7px 16px 0px #5b5a5b; */
+}
+.project_board > div > div{
+	display: flex;
+	flex-direction: column;
 	justify-content: center;
 	align-items: center;
 }
@@ -45,14 +55,17 @@
 	flex:1;
 	margin:0;
 	overflow-y: scroll;
-	box-shadow: -7px -7px 16px 0px #5b5a5b;
 	padding: 0 15px;
 	box-sizing: border-box;
+
+	border: none;
+	background-color: #947fda;
+	box-shadow: -7px -7px 16px 0px #5b5a5b;
 }
 .project_board ul li{
 	margin: 25px 0 25px 0;
 	padding: 5px 20px;
-	border-bottom: 1px solid rgb(190, 190, 190);
+	border-bottom: 1px dotted white;
 }
 .project_board ul input{
 	display: none;

@@ -9,12 +9,48 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import projectBundle from '../module/global/DataBundle';
 import TopNavigator from './TopNavigator';
 
+function FunctionBtns({prjName,pageUpdate,start,project}){
+	const navigate=useNavigate()
+	let btns=[
+		<input className='function_btn' type="button" value="뒤로" onClick={()=>{
+			window.history.back()
+		}}></input>,
+		start?<input className="when_start function_btn" type="button" value="포기" onClick={async()=>{
+			let str=await Notice.Prompt('프로젝트 포기를 원하신다면<br/>"포기하겠습니다"<br/>를 적고 확인을 눌러주십시오.<br/>한번 포기한 프로젝트는 복구가 불가능합니다.');
+			if(str=="포기하겠습니다"){
+				projectBundle.Quit(prjName)
+				Notice.Alert("프로젝트를 포기하셨습니다. 수고하셨습니다.");
+				window.history.back()
+			}
+		}}></input>:"",
+		start?"":<input className="when_ready function_btn" type="button" value="수정" onClick={()=>{
+			navigate(`/Create?name=${prjName}`)
+		}}></input>,
+		start?"":<input className="when_ready function_btn" type="button" value="시작" onClick={()=>{
+			if(project.Start()){
+				projectBundle.Save()
+				Notice.Alert(prjName+"프로젝트가 시작됐습니다.")
+				pageUpdate([])
+			}
+			else{
+				Notice.Alert("프로젝트 재설정 부탁드립니다.")
+			}
+		}}></input>
+	]
+	return (
+		<div className="function_btns">
+			{btns}
+		</div>
+	)
+}
 function Project(props){
 	const [param,setParam]=useSearchParams()
 	const prjName=param.get('name')
-	const [refresh,pageUpdate]=useState();
+	const [refresh,pageUpdate]=useState([]);
 	const project=projectBundle.GetProject(prjName)
-	const navigate=useNavigate()
+
+	let value=(project.stat.checkedTaskCount/project.stat.taskCount)*100
+	let stat=(project.start?((value).toFixed(1)+"%"):"-%")
 
 	useEffect(()=>{
 		if(project){
@@ -39,7 +75,7 @@ function Project(props){
 	}
 	return(
 		<div className="borad">
-			<TopNavigator title={prjName}></TopNavigator>
+			<TopNavigator title={prjName} sub={project.start?`성공률 ${stat}`:"시작 대기중"}></TopNavigator>
 			<div className={"main_platform project_board "+(project.start?"":"not_start_in_prjcomp")}>
 				<div>
 					<div>
@@ -48,10 +84,11 @@ function Project(props){
 					</div>
 				</div>
 				<ul>
-					<TaskLists project={project}></TaskLists>
+					<TaskLists project={project} pageUpdate={pageUpdate}></TaskLists>
 				</ul>
 			</div>
-			<div className="function_btns">
+			<FunctionBtns prjName={prjName} project={project} start={project.start} pageUpdate={pageUpdate}></FunctionBtns>
+			{/* <div className="function_btns">
 				<input className='function_btn' type="button" value="뒤로" onClick={()=>{
 					window.history.back()
 				}}></input>
@@ -76,7 +113,7 @@ function Project(props){
 						Notice.Alert("프로젝트 재설정 부탁드립니다.")
 					}
 				}}></input>
-			</div>
+			</div> */}
 		</div>
 	)
 }

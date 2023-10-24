@@ -39,6 +39,17 @@ function ProjectCard({project}){
 	let value=(project.stat.checkedTaskCount/project.stat.taskCount)*100
 	let stat=(start?((value).toFixed(1)+"%"):"-%")
 	let tasks=project.GetNowTasks()
+	let state
+
+	if(prjDone){
+		state="프로젝트 끝"
+	}
+	else if(!start){
+		state="시작 대기중..."
+	}
+	else{
+		state=`성공률 ${stat}`
+	}
 	
 	return(
 		<li className="project_list_li" key={id}>
@@ -49,15 +60,16 @@ function ProjectCard({project}){
 				}></input>
 				{/* style={GetProgressGraph((tasks.CountChecked()/tasks.GetTaskCount())*100)}(taskDone?" task_done":"") */}
 
-				<label className={"project_list_label label_base"+(start?"":" not_start")} htmlFor={id}>
+				<label className={"base_style project_list_label label_base "} htmlFor={id}>
 					{/* <Progress stat={(tasks.CountChecked()/tasks.GetTaskCount())*100}></Progress> */}
 					<div style={{display:"flex",flexDirection:"column"}}>
-						<div className="project_list_day base_style">{"D"+D+project.GetDay()}{prjDone?prjDoneStamp:""}</div>
-						<div className="task_stat base_style">
-							<span>{`성공률 ${stat}`}</span>
+						<div className="project_list_day ">{"D"+D+project.GetDay()}</div>
+						{/* {prjDone?prjDoneStamp:""} */}
+						<div className="task_stat ">
+							<span>{state}</span>
 						</div>
 					</div>
-					<div className="project_list_name base_style">
+					<div className="project_list_name ">
 						<span>{name}</span>
 					</div>
 					{/* {taskDone?taskDoneStamp:""} */}

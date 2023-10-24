@@ -105,7 +105,7 @@ input[type=text]:focus,input[type=number]:focus,textarea:focus,input[type=date]:
 	border: none;
 	flex: 1;
 	color: #e8e9ec;
-	background-color: #775cd2;
+	background-color: #7965bd;
 	box-sizing: border-box;
 	margin:10px;
 }

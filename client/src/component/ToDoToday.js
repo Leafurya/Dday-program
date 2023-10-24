@@ -6,14 +6,20 @@ import { useNavigate } from 'react-router-dom';
 import { GetAttendance } from '../module/AttendanceModule';
 
 export default ({})=>{
+	let {stat}=todoList
 	const navigate=useNavigate()
+	let value=(stat.checkedTaskCount/stat.taskCount)*100
+	let _stat=((isNaN(value)?"0.0":(value.toFixed(1)))+"%")
+
 	return(
 		<div className="borad">
-			<TopNavigator title="오늘 할 일" stat={0}></TopNavigator>
+			<TopNavigator title="오늘 할 일" sub={`성공률 ${_stat}`}></TopNavigator>
 			<div className={"main_platform project_board"}>
 				<div>
-					<div><h2 className='base_style'>꾸준함의 힘</h2></div>
-					<div className='base_style'>{`연속 출석 ${GetAttendance()}일째`}</div>
+					<div>
+						<h1 className="project_day base_style" style={{fontSize:"2em"}}>꾸준함의 힘</h1>
+						<h4 className="project_content base_style">{`연속 출석 ${GetAttendance()}일째`}</h4>
+					</div>
 				</div>
 				{/* <div><h4 className="project_content base_style"></h4></div> */}
 				<ul>
