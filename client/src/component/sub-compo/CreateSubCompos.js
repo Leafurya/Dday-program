@@ -6,6 +6,8 @@ import { CreateDataObj } from '../../module/DataModule';
 import projectBundle from '../../module/global/DataBundle';
 import { useNavigate } from 'react-router-dom';
 
+import "../../style/Template.css"
+
 function DeleteBtn({prjName}){
 	const navigate=useNavigate()
 	return(
@@ -44,7 +46,7 @@ function TypeChoicePart(props){
 			<input defaultChecked={props.defaultCheck=="+"} id="D+" type="radio" value="D+" name="project_type" onClick={(event)=>{
 				DisableInput(true);
 			}}/>
-			<label htmlFor='D+'>
+			<label className='base_style' htmlFor='D+'>
 				D+
 			</label>
 			<input defaultChecked={props.defaultCheck=="-"} id="D-" type="radio" value="D-" name="project_type" onClick={(event)=>{

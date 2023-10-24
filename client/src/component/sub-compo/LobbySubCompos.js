@@ -1,17 +1,45 @@
 import { StyledLink } from '../../module/GlobalModule';
 import projectBundle from '../../module/global/DataBundle';
 import todoList from '../../module/global/ToDo';
-import ToDoToday from '../ToDoToday';
+
+import "../../style/Template.css"
 
 const prjDoneStamp=<span className="project_done"></span>;
 const taskDoneStamp=<span className="done_stamp"></span>;
 
+function Progress({stat}){
+	return(
+		<div style={
+			{
+				position:"absolute",
+				backgroundColor:"rgba(200,200,200,.5)",
+				width:`${stat}%`,
+				height:"100%",
+				left:0
+			}
+		}></div>
+	)
+}
+function GetProgressGraph(stat){
+	if(stat===0){
+		return{
+			backgroundColor:"rgba(0,0,0,0)",
+		}
+	}
+	return{
+		background: `linear-gradient(to right,rgba(50,10,255,.3) ${stat}%,rgba(1,1,1,0) ${100-stat}%)`,
+		// backgroundSize:`${stat}% 100%`,
+		// backgroundRepeat:"no-repeat",
+		// backgroundColor:"rgba(200,200,200,.5)",
+	}
+}
 function ProjectCard({project}){
 	let {name,start,taskDone,D,prjDone}=project
 	let id=Date.now()+Math.random()
-
-	let stat=(start?(((project.stat.checkedTaskCount/project.stat.taskCount)*100).toFixed(1)+"%"):"-%")
-
+	let value=(project.stat.checkedTaskCount/project.stat.taskCount)*100
+	let stat=(start?((value).toFixed(1)+"%"):"-%")
+	let tasks=project.GetNowTasks()
+	
 	return(
 		<li className="project_list_li" key={id}>
 			<StyledLink to={`/Project?name=${name}`}>
@@ -19,14 +47,21 @@ function ProjectCard({project}){
 					(event)=>{
 					}
 				}></input>
-				<label className={"project_list_label label_base"+(start?"":" not_start")+(taskDone?" task_done":"")} htmlFor={id}>
-					<div className="project_list_day">{"D"+D+project.GetDay()}{prjDone?prjDoneStamp:""}</div>
-					<div className="project_list_name">{name}</div>
-					{taskDone?taskDoneStamp:""}
-					<span className="task_stat">
-						<span>{"성공률"}</span><br></br>
-						<span>{stat}</span>
-					</span>
+				{/* style={GetProgressGraph((tasks.CountChecked()/tasks.GetTaskCount())*100)}(taskDone?" task_done":"") */}
+
+				<label className={"project_list_label label_base"+(start?"":" not_start")} htmlFor={id}>
+					{/* <Progress stat={(tasks.CountChecked()/tasks.GetTaskCount())*100}></Progress> */}
+					<div style={{display:"flex",flexDirection:"column"}}>
+						<div className="project_list_day base_style">{"D"+D+project.GetDay()}{prjDone?prjDoneStamp:""}</div>
+						<div className="task_stat base_style">
+							<span>{`성공률 ${stat}`}</span>
+						</div>
+					</div>
+					<div className="project_list_name base_style">
+						<span>{name}</span>
+					</div>
+					{/* {taskDone?taskDoneStamp:""} */}
+					
 				</label>
 			</StyledLink>
 		</li>
@@ -42,14 +77,13 @@ function ToDoCard({}){
 		<li className="project_list_li" key={id}>
 			<StyledLink to={`/ToDoToday`}>
 				<input id={id} type="button" onClick={(event)=>{}}></input>
-				<label className={"project_list_label label_base"+(done?" task_done":"")} htmlFor={id}>
-					<h2>오늘 할 일</h2>
+				<label className={"todo_style label_base"+(done?" task_done":"")} htmlFor={id}>
+					<h2 className='base_style'>오늘 할 일</h2>
 					{/* <div className="project_list_name">{name}</div> */}
-					{done?taskDoneStamp:""}
-					<span className="task_stat">
-						<span>{"성공률"}</span><br></br>
-						<span>{_stat}</span>
-					</span>
+					{/* {done?taskDoneStamp:""} */}
+					<div className="task_stat base_style">
+						<span>{`성공률 ${_stat}`}</span>
+					</div>
 				</label>
 			</StyledLink>
 		</li>

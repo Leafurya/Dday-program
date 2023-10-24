@@ -9,10 +9,13 @@ export default ({})=>{
 	const navigate=useNavigate()
 	return(
 		<div className="borad">
-			<TopNavigator title="오늘 할 일"></TopNavigator>
+			<TopNavigator title="오늘 할 일" stat={0}></TopNavigator>
 			<div className={"main_platform project_board"}>
-				<div><h2>꾸준함의 힘</h2></div>
-				<div><h4 className="project_content">{"연속 출석 "+GetAttendance()+"일째"}</h4></div>
+				<div>
+					<div><h2 className='base_style'>꾸준함의 힘</h2></div>
+					<div className='base_style'>{`연속 출석 ${GetAttendance()}일째`}</div>
+				</div>
+				{/* <div><h4 className="project_content base_style"></h4></div> */}
 				<ul>
 					<TaskLists project={todoList}></TaskLists>
 				</ul>

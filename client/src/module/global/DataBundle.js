@@ -27,6 +27,15 @@ export class Tasks{
 			this[t]=false
 		}
 	}
+	CountChecked(){
+		let result=0
+		for(var t in this){
+			if(this[t]){
+				result++
+			}
+		}
+		return result
+	}
 }
 class Project{
 	constructor(name,data){

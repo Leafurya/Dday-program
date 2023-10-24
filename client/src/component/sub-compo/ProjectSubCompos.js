@@ -21,12 +21,12 @@ function TaskLists({project}){
 					projectBundle.Save()
 					todoList.Save()
 				}}></input>
-				<label className={(tasks[task]?" checked":"")} htmlFor={"task"+index}>{task}</label>
+				<label className={"base_style"+(tasks[task]?" checked":"")} htmlFor={"task"+index}>{task}</label>
 			</li>
 		)
 	})
 	if(!lists.length){
-		lists.push(<li key={0}>오늘 뭐하지?</li>)
+		lists.push(<li key={0} style={{textAlign:"center"}}>오늘 뭐하지?</li>)
 	}
 
 	return lists;

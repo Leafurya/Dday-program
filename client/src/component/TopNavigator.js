@@ -1,13 +1,15 @@
 import React from "react"
 import "../style/TopNavi.css";
 
-export default ({title})=>{
+export default ({title,stat})=>{
 	return(
 		<div className="top_navi">
-			<input type="button" value="<" onClick={()=>{
-				window.history.back()
-			}}></input>
-			<h1 className="title">{title}</h1>
+			<div className={"todo_style label_base"} htmlFor={1}>
+				<h2 className='base_style'>{title}</h2>
+				<div className="task_stat base_style">
+					<span>{`성공률 ${stat}`}</span>
+				</div>
+			</div>
 		</div>
 	)
 }

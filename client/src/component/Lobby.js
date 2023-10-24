@@ -22,20 +22,20 @@ function Lobby(){
 	return(
 		<div className="borad">
 			<ul className="project_list_ul">
-				<li className="project_list_li" >
+				{/* <li className="project_list_li" >
 					<StyledLink to={'/Create'}>
 						<div className="plus_btn label_base">
-							<div className="plus_btn_value">+</div>
+							<div className="plus_btn_value base_style">+</div>
 						</div>
 					</StyledLink>
-				</li>
+				</li> */}
 				<ProjectLists></ProjectLists>
 			</ul>
-			{/* <div className="navi_btns">
-				<input type="button" className="information_btn" value="정보" onClick={()=>{
-					Notice.Alert("버전: alpha 2.4.3<br/>연속 출석 "+GetAttendance()+"일째")
-				}}></input>
-			</div> */}
+			<StyledLink to={'/Create'}>
+				<div className="plus_btn label_base">
+					<div className="plus_btn_value base_style">+</div>
+				</div>
+			</StyledLink>
 		</div>
 	)
 }
