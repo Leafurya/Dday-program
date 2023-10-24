@@ -1,4 +1,5 @@
 import React, {useEffect,useState} from 'react';
+import "../style/BaseStyle.css"
 import "../style/Project.css";
 import "../style/Align.css";
 
@@ -38,8 +39,8 @@ function Project(props){
 	}
 	return(
 		<div className="borad">
-			<TopNavigator></TopNavigator>
-			<div className={"project_board "+(project.start?"":"not_start_in_prjcomp")}>
+			<TopNavigator title="프로젝트"></TopNavigator>
+			<div className={"main_platform project_board "+(project.start?"":"not_start_in_prjcomp")}>
 				<div><h1 className="project_day">{"D"+project.D+project.GetDay()}</h1></div>
 				<div><h2 className="project_header">{prjName}</h2></div>
 				<div><h4 className="project_content">{project.discription}</h4></div>

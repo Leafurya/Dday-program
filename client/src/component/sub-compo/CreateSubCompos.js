@@ -80,15 +80,19 @@ function TypeChoicePart(props){
 		</div>
 	);
 }
-function InputTaskPart(props){
+function InputTaskPart({id,name,tasks}){
 	let perventionDuplication=1;
 	
 	useEffect(()=>{
-		if(props?.tasks){
+		if(tasks){
 			if(perventionDuplication===1){
-				for(let taskKey in props.tasks){
-					console.log("CreateTaskInputCell(props.name,taskKey)",CreateTaskInputCell(props.name,taskKey));
-					GetElement(props.id).appendChild(CreateTaskInputCell(props.name,taskKey))
+				for(let taskKey in tasks){
+					let inputCell=CreateTaskInputCell(name,taskKey)
+					if(tasks[taskKey]){
+						inputCell.input.disabled=true
+						inputCell.delBtn.disabled=true
+					}
+					GetElement(id).appendChild(inputCell.div)
 				}
 				perventionDuplication++; 
 			}
@@ -96,17 +100,17 @@ function InputTaskPart(props){
 	},[])
 	
 	return(
-		<div className={'task_div '+props.name}>
+		<div className={'task_div '+name}>
 			<label>
 				<input type="text" placeholder='도전과제'></input>
 				<input type="button" value="추가" onClick={(event)=>{
 					let textInput=event.target.parentElement.childNodes[0]
-					GetElement(props.id).appendChild(CreateTaskInputCell(props.name,textInput.value));
+					GetElement(id).appendChild(CreateTaskInputCell(name,textInput.value).div);
 					textInput.value=""
 					textInput.focus()
 				}}></input>
 			</label>
-			<ul className="task_input_ul" id={props.id}>
+			<ul className="task_input_ul" id={id}>
 			</ul>
 		</div>
 	);

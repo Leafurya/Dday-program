@@ -1,4 +1,5 @@
 import projectBundle from "../../module/global/DataBundle";
+import todoList from "../../module/global/ToDo";
 
 function TaskLists({project}){
 	let lists=[];
@@ -18,11 +19,15 @@ function TaskLists({project}){
 						project.stat.checkedTaskCount--
 					}
 					projectBundle.Save()
+					todoList.Save()
 				}}></input>
 				<label className={(tasks[task]?" checked":"")} htmlFor={"task"+index}>{task}</label>
 			</li>
 		)
 	})
+	if(!lists.length){
+		lists.push(<li key={0}>오늘 뭐하지?</li>)
+	}
 
 	return lists;
 }

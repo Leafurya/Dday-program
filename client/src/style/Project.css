@@ -1,12 +1,26 @@
-.project_board{
+/* .borad{
+	display: flex;
+	height: 100%;
+	flex-direction: column;
+	width: 100%;
+} */
+/* .project_board{
 	flex:1;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-}
+	overflow-y: scroll;
+	flex: 1 0 auto;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	flex-wrap: nowrap;
+	height:500px;
+	padding: 50px 0;
+} */
 .project_day{
 	font-size: 3em;
-	margin-bottom: 0;
+	margin:0;
 }
 .project_header,.project_content{
 	display: block;

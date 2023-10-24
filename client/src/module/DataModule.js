@@ -1,5 +1,5 @@
 const _nowDataVersion=1
-class Stat{
+export class Stat{
 	constructor(taskCount){
 		this.taskCount=taskCount
 		this.checkedTaskCount=0

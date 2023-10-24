@@ -1,4 +1,4 @@
-class Tasks{
+export class Tasks{
 	constructor(data){
 		if(data){
 			Object.keys(data).map((task)=>{

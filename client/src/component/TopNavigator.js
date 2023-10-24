@@ -7,7 +7,7 @@ export default ({title})=>{
 			<input type="button" value="<" onClick={()=>{
 				window.history.back()
 			}}></input>
-			<span className="title">{title}</span>
+			<h1 className="title">{title}</h1>
 		</div>
 	)
 }

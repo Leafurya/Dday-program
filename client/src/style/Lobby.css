@@ -5,7 +5,7 @@
 }
 .project_list_ul{
 	margin: 0;
-	padding: 0;
+	padding: 0 0 20px 0;
 	width: 100%;
 
 	display: flex;

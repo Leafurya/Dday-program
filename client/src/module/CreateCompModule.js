@@ -28,7 +28,7 @@ function CreateTaskInputCell(name,cntnt){ //씀
 	div.appendChild(delBtn);
 
 	taskCellCount++;
-	return div;
+	return {div,input,delBtn};
 }
 function GetTaskFromInput(targetName){ //씀
 	let taskInputs=document.getElementsByName(targetName);
