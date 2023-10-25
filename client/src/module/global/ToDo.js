@@ -19,7 +19,8 @@ class ToDoList{
 		localStorage.setItem(this.#storageName,JSON.stringify(this))
 	}
 	DailyUpdate(){
-		this.data={}
+		this.data=new Tasks({})
+		this.stat=new Stat(0)
 		this.Save()
 	}
 	GetNowTasks(){

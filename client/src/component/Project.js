@@ -75,7 +75,7 @@ function Project(props){
 	}
 	return(
 		<div className="borad">
-			<TopNavigator title={prjName} sub={project.start?`성공률 ${stat}`:"시작 대기중"}></TopNavigator>
+			<TopNavigator title={prjName} sub={project.start?`성공률 ${stat}`:"시작 대기중..."}></TopNavigator>
 			<div className={"main_platform project_board "+(project.start?"":"not_start_in_prjcomp")}>
 				<div>
 					<div>

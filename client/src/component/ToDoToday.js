@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import TopNavigator from './TopNavigator';
 import { TaskLists } from './sub-compo/ProjectSubCompos';
 import todoList from '../module/global/ToDo';
@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { GetAttendance } from '../module/AttendanceModule';
 
 export default ({})=>{
+	const [refresh,pageUpdate]=useState([]);
 	let {stat}=todoList
 	const navigate=useNavigate()
 	let value=(stat.checkedTaskCount/stat.taskCount)*100
@@ -23,7 +24,7 @@ export default ({})=>{
 				</div>
 				{/* <div><h4 className="project_content base_style"></h4></div> */}
 				<ul>
-					<TaskLists project={todoList}></TaskLists>
+					<TaskLists project={todoList} pageUpdate={pageUpdate}></TaskLists>
 				</ul>
 			</div>
 			<div className="function_btns">
