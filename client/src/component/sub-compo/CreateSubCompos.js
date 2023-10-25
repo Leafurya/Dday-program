@@ -1,4 +1,4 @@
-import React,{useEffect} from 'react';
+import React,{useEffect, useState} from 'react';
 import {GetPickedDate,GetOldDate} from '../../module/TimeModule';
 import Notice from '../../module/Notice.js';
 import { CreateTaskInputCell, GetElement, GetTaskFromInput } from '../../module/CreateCompModule';
@@ -35,39 +35,61 @@ function DisableInput(val){
 	}
 	document.getElementById("date_picker").disabled=val;
 }
-function TypeChoicePart(props){
+function TypeChoice({prj}){
+	const [data,setData]=useState({
+		type:(prj?.D)??"+",
+		day:(prj?.day)??0
+	})
+	let {type,day}=data
 	useEffect(()=>{
-		if(props.defaultCheck=="+"){
-			DisableInput(true);
+		let dayInput=document.getElementById("prj_day")
+		if(dayInput){
+			dayInput.focus()
+			dayInput.value=''
+			dayInput.value=data.day
 		}
-	},[])
+	},[data])
 	return(
-		<div className="type_choice">
-			<input defaultChecked={props.defaultCheck=="+"} id="D+" type="radio" value="D+" name="project_type" onClick={(event)=>{
-				DisableInput(true);
-			}}/>
-			<label className='base_style' htmlFor='D+'>
-				D+
-			</label>
-			<input defaultChecked={props.defaultCheck=="-"} id="D-" type="radio" value="D-" name="project_type" onClick={(event)=>{
-				DisableInput(false);
-			}}/>
-			<label htmlFor='D-'>
-				D-
-			</label>
-			<span>
-				<input disabled={props.defaultCheck=="plus"} type="number" placeholder="일수" id="prj_day" defaultValue={props.day?props.day:""} onChange={(event)=>{
-					let date=new Date()
-					
-					date.setDate(Number(date.getDate())+Number(event.target.value))
-					let year=date.getFullYear()
-					let month=date.getMonth()+1
-					let dateVal=date.getDate()
-					document.querySelector("input[type=date]").value=year+"-"+(month<10?"0"+month:month)+"-"+(dateVal<10?"0"+dateVal:dateVal)
-				}}></input>
-				<div style={{position: "relative"}}>
-					<input className="center_align_ab" disabled={props.defaultCheck=="plus"} type="date" id="date_picker" onChange={(event)=>{
-						
+		<div className='base_style day_pick'>
+			<div>
+				<h1>D</h1>
+				<select defaultValue={type} className='base_style' name="type" id="type" onChange={(e)=>{
+					setData({...data,type:e.target.value})
+				}}>
+					<option vaule="+">+</option>
+					<option vaule="-">-</option>
+				</select>
+				<span className='day_input'>
+					{
+						type==="+"?(
+							<h1>0</h1>
+						):(
+							<span>
+								<label htmlFor='prj_day'>
+									{day}
+								</label>
+								<input className='base_style' type="number" id="prj_day" defaultValue={day} onChange={(event)=>{
+									let date=new Date()
+									console.log(Number(event.target.value))
+									date.setDate(Number(date.getDate())+Number(event.target.value))
+									let year=date.getFullYear()
+									let month=date.getMonth()+1
+									let dateVal=date.getDate()
+									document.querySelector("input[type=date]").value=year+"-"+(month<10?"0"+month:month)+"-"+(dateVal<10?"0"+dateVal:dateVal)
+									setData({...data,day:Number(event.target.value)})
+									event.target.focus()
+								}}></input>
+							</span>
+						)
+					}
+				</span>
+			</div>
+			{
+				type==="+"?(
+					<div>
+					</div>
+				):(
+					<input className='base_style' type="date" id="date_picker" onChange={(event)=>{
 						let dateDelta=GetPickedDate(event.target.value)-GetOldDate()
 						console.log("date pick",GetPickedDate(event.target.value),GetOldDate(),dateDelta)
 						if(dateDelta<=0){
@@ -76,12 +98,58 @@ function TypeChoicePart(props){
 						}
 						document.getElementById("prj_day").value=dateDelta;
 					}}></input>
-				</div>
-			</span>
-			
+				)
+			}
 		</div>
-	);
+	)
 }
+// function TypeChoicePart(props){
+// 	useEffect(()=>{
+// 		if(props.defaultCheck=="+"){
+// 			DisableInput(true);
+// 		}
+// 	},[])
+// 	return(
+// 		<div className="type_choice">
+// 			<input defaultChecked={props.defaultCheck=="+"} id="D+" type="radio" value="D+" name="project_type" onClick={(event)=>{
+// 				DisableInput(true);
+// 			}}/>
+// 			<label className='base_style' htmlFor='D+'>
+// 				D+
+// 			</label>
+// 			<input defaultChecked={props.defaultCheck=="-"} id="D-" type="radio" value="D-" name="project_type" onClick={(event)=>{
+// 				DisableInput(false);
+// 			}}/>
+// 			<label htmlFor='D-'>
+// 				D-
+// 			</label>
+// 			<span>
+// 				<input disabled={props.defaultCheck=="plus"} type="number" placeholder="일수" id="prj_day" defaultValue={props.day?props.day:""} onChange={(event)=>{
+// 					let date=new Date()
+					
+// 					date.setDate(Number(date.getDate())+Number(event.target.value))
+// 					let year=date.getFullYear()
+// 					let month=date.getMonth()+1
+// 					let dateVal=date.getDate()
+// 					document.querySelector("input[type=date]").value=year+"-"+(month<10?"0"+month:month)+"-"+(dateVal<10?"0"+dateVal:dateVal)
+// 				}}></input>
+// 				<div style={{position: "relative"}}>
+// 					<input className="center_align_ab" disabled={props.defaultCheck=="plus"} type="date" id="date_picker" onChange={(event)=>{
+						
+// 						let dateDelta=GetPickedDate(event.target.value)-GetOldDate()
+// 						console.log("date pick",GetPickedDate(event.target.value),GetOldDate(),dateDelta)
+// 						if(dateDelta<=0){
+// 							Notice.Alert("오늘보다 이후의 날짜만 선택 가능합니다.")
+// 							return;
+// 						}
+// 						document.getElementById("prj_day").value=dateDelta;
+// 					}}></input>
+// 				</div>
+// 			</span>
+			
+// 		</div>
+// 	);
+// }
 function InputTaskPart({id,name,tasks}){
 	let perventionDuplication=1;
 	
@@ -159,5 +227,5 @@ function CreateBtn({dataToModify}){
 		}}></input>
 	)
 }
-
+const TypeChoicePart=TypeChoice
 export {CreateBtn,DeleteBtn,TypeChoicePart,InputTaskPart};

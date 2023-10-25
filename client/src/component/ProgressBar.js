@@ -11,7 +11,7 @@ import "../style/Progressbar.css"
 			)
 		}
 		return(
-			<div className='bar_base' style={{background: `linear-gradient(to right,white ${progress}%,rgb(121 101 189) ${100-progress}%)`}}></div>
+			<div className='bar_base' style={{background: `linear-gradient(to right,white ${progress}%,rgb(121 101 189) ${progress}%)`}}></div>
 		)
 	}
 	return(
