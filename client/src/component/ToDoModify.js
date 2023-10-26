@@ -32,7 +32,7 @@ export default ({})=>{
 		<div className="borad">
 			<TopNavigator title="오늘 할 일"></TopNavigator>
 			<div className="main_platform">
-				<InputTaskPart value="도전과제 추가" name="task_input" id="task_inputs" tasks={todoList.data}></InputTaskPart>
+				<InputTaskPart prj={{tasks:todoList.data}}></InputTaskPart>
 			</div>
 			<div className="function_btns">
 				<input className="function_btn" type="button" value="뒤로" onClick={()=>{window.history.back()}}></input>
