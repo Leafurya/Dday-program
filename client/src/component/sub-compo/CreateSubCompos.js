@@ -54,7 +54,7 @@ function TypeChoice({prj}){
 		<div className='base_style day_pick'>
 			<div>
 				<h1>D</h1>
-				<select defaultValue={type} className='base_style' name="type" id="type" onChange={(e)=>{
+				<select defaultValue={type} className='base_style' name="type" id="prj_type" onChange={(e)=>{
 					setData({...data,type:e.target.value})
 					shareVar.InputTaskPart.setType(e.target.value)
 				}}>
@@ -287,7 +287,7 @@ function CreateBtn({dataToModify}){
 		<input className="function_btn" type="button" defaultValue="저장" onClick={()=>{
 			let projectName=GetElement("prj_name").value;
 			let discription=GetElement("prj_cntnt").value;
-			let D=GetElement("D+").checked?"+":"-";
+			let D=GetElement("prj_type").value
 			let Day=(D=="+")?0:GetElement("prj_day").value;
 			let tasks=GetTaskFromInput("task_input");
 			let lastTasks=(D=="+")?null:GetTaskFromInput("last_task_input"); //if lastTasks not exist, value is null

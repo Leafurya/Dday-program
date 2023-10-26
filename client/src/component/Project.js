@@ -12,10 +12,10 @@ import TopNavigator from './TopNavigator';
 function FunctionBtns({prjName,pageUpdate,start,project}){
 	const navigate=useNavigate()
 	let btns=[
-		<input className='function_btn' type="button" value="뒤로" onClick={()=>{
+		<input key={1} className='function_btn' type="button" value="뒤로" onClick={()=>{
 			window.history.back()
 		}}></input>,
-		start?<input className="when_start function_btn" type="button" value="포기" onClick={async()=>{
+		start?<input key={2} className="when_start function_btn" type="button" value="포기" onClick={async()=>{
 			let str=await Notice.Prompt('프로젝트 포기를 원하신다면<br/>"포기하겠습니다"<br/>를 적고 확인을 눌러주십시오.<br/>한번 포기한 프로젝트는 복구가 불가능합니다.');
 			if(str=="포기하겠습니다"){
 				projectBundle.Quit(prjName)
@@ -23,10 +23,10 @@ function FunctionBtns({prjName,pageUpdate,start,project}){
 				window.history.back()
 			}
 		}}></input>:"",
-		start?"":<input className="when_ready function_btn" type="button" value="수정" onClick={()=>{
+		start?"":<input key={3} className="when_ready function_btn" type="button" value="수정" onClick={()=>{
 			navigate(`/Create?name=${prjName}`)
 		}}></input>,
-		start?"":<input className="when_ready function_btn" type="button" value="시작" onClick={()=>{
+		start?"":<input key={4} className="when_ready function_btn" type="button" value="시작" onClick={()=>{
 			if(project.Start()){
 				projectBundle.Save()
 				Notice.Alert(prjName+"프로젝트가 시작됐습니다.")
