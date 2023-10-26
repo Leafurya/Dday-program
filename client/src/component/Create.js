@@ -19,14 +19,52 @@ function Create({}){
 			<div className="main_platform">
 				<div className='info_part'>
 					<input id="prj_name" type="text" placeholder="프로젝트 이름" defaultValue={prjName??""}></input>
-					<TypeChoicePart defaultCheck={dataToModify?dataToModify.D:"+"} day={dataToModify?.day}></TypeChoicePart>
+					<TypeChoicePart prj={dataToModify}></TypeChoicePart>
 					<textarea rows="5" id="prj_cntnt" placeholder="프로젝트 내용" defaultValue={dataToModify?dataToModify.discription:""}></textarea>
 				</div>
 				<div className='task_part'>
-					<ul>
-
-					</ul>
+					<InputTaskPart prj={dataToModify}></InputTaskPart>
+					{/* <div className='task_tabmenu'>
+						<input type="radio" name="menu" id="tabmenu1" onClick={()=>{
+							console.log("1")
+						}}/>
+						<label className='tab_radio_label' htmlFor="tabmenu1">menu1</label>
+						<input type="radio" name="menu" id="tabmenu2" onClick={()=>{
+							console.log("2")
+						}}/>
+						<label className='tab_radio_label' htmlFor="tabmenu2">menu2</label>
+					</div>
+					<input type="button" onClick={()=>{
+						let ele=document.querySelectorAll("input[type=radio]")
+						console.log(ele[0].checked)
+						console.log(ele[1].checked)
+					}}></input> */}
 				</div>
+				{/* <div class="tabmenu out-tabmenu">
+					<ul>
+						<li id="tab1" class="btnCon"> 
+							<input type="radio" defaultChecked={true} name="tabmenu" id="tabmenu1" onClick={()=>{
+								console.log("1 click")
+							}}/>
+							<label for="tabmenu1">menu1</label>
+							<div class="tabCon" >
+								
+								Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+							
+							</div>
+							
+						</li>
+						<li id="tab2" class="btnCon">
+							<input type="radio" name="tabmenu" id="tabmenu2" onClick={()=>{
+								console.log("2 click")
+							}}/>
+							<label for="tabmenu2">menu2</label>
+							<div class="tabCon" >It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).</div>
+							
+						</li>
+					</ul>
+				</div> */}
+				
 			</div>
 			{/* <div className="main_platform">
 				<input id="prj_name" type="text" placeholder="프로젝트 이름" defaultValue={prjName??""}></input>

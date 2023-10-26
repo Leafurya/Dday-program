@@ -1,4 +1,4 @@
-import React,{useEffect, useState} from 'react';
+import React,{useEffect, useRef, useState} from 'react';
 import {GetPickedDate,GetOldDate} from '../../module/TimeModule';
 import Notice from '../../module/Notice.js';
 import { CreateTaskInputCell, GetElement, GetTaskFromInput } from '../../module/CreateCompModule';
@@ -35,6 +35,7 @@ function DisableInput(val){
 	}
 	document.getElementById("date_picker").disabled=val;
 }
+let shareVar={}
 function TypeChoice({prj}){
 	const [data,setData]=useState({
 		type:(prj?.D)??"+",
@@ -55,6 +56,7 @@ function TypeChoice({prj}){
 				<h1>D</h1>
 				<select defaultValue={type} className='base_style' name="type" id="type" onChange={(e)=>{
 					setData({...data,type:e.target.value})
+					shareVar.InputTaskPart.setType(e.target.value)
 				}}>
 					<option vaule="+">+</option>
 					<option vaule="-">-</option>
@@ -150,41 +152,135 @@ function TypeChoice({prj}){
 // 		</div>
 // 	);
 // }
-function InputTaskPart({id,name,tasks}){
-	let perventionDuplication=1;
-	
+function InputTaskPart({prj}){
+	const [type,setType]=useState((prj?.D)??"+")
+	const [page,setPage]=useState(0) //0: 도전과제, 1: 최종 도전과제
+	const data=useRef({
+		tasks:(prj?.tasks)??{},
+		lastTasks:(prj?.lastTasks)??{},
+		perventionDuplication:1
+	})
+	shareVar.InputTaskPart={
+		setType
+	}
 	useEffect(()=>{
-		if(tasks){
-			if(perventionDuplication===1){
-				for(let taskKey in tasks){
-					let inputCell=CreateTaskInputCell(name,taskKey)
-					if(tasks[taskKey]){
-						inputCell.input.disabled=true
-						inputCell.delBtn.disabled=true
-					}
-					GetElement(id).appendChild(inputCell.div)
+		setPage(0)
+	},[type])
+	useEffect(()=>{
+		let {tasks,lastTasks}=data.current
+		if(data.current.perventionDuplication===1){
+			Object.keys(tasks).map((task)=>{
+				let inputCell=CreateTaskInputCell("task_input",task)
+				if(tasks[task]){
+					inputCell.input.disabled=true
+					inputCell.delBtn.disabled=true
 				}
-				perventionDuplication++; 
-			}
+				GetElement("task_inputs").appendChild(inputCell.div)
+			})
+			Object.keys(lastTasks).map((task)=>{
+				let inputCell=CreateTaskInputCell("last_task_inputs",task)
+				if(lastTasks[task]){
+					inputCell.input.disabled=true
+					inputCell.delBtn.disabled=true
+				}
+				GetElement("last_task_inputs").appendChild(inputCell.div)
+			})
+			data.current.perventionDuplication++; 
 		}
 	},[])
-	
 	return(
-		<div className={'task_div '+name}>
-			<label>
-				<input type="text" placeholder='도전과제'></input>
-				<input type="button" value="추가" onClick={(event)=>{
-					let textInput=event.target.parentElement.childNodes[0]
-					GetElement(id).appendChild(CreateTaskInputCell(name,textInput.value).div);
-					textInput.value=""
-					textInput.focus()
-				}}></input>
-			</label>
-			<ul className="task_input_ul" id={id}>
-			</ul>
+		<div className=''>
+			<div className='task_tabmenu'>
+				{
+					type==="-"?(
+						<>
+							<input type="radio" defaultChecked={!page} name="menu" id="tabmenu1" onClick={()=>{
+								setPage(0)
+							}}/>
+							<label style={!page?{backgroundColor:"#7965bd"}:{}} className='tab_radio_label' defaultChecked={page} htmlFor="tabmenu1">
+								<span>기본 과제</span>
+							</label>
+							<input type="radio" name="menu" id="tabmenu2" onClick={()=>{
+								setPage(1)
+							}}/>
+							<label style={page?{backgroundColor:"#7965bd"}:{}} className='tab_radio_label' htmlFor="tabmenu2">
+								<span>최종 과제</span>
+							</label>
+						</>
+					):(
+						<>
+							<input disabled type="radio" name="menu" id="tabmenu1" onClick={()=>{
+								setPage(0)
+							}}/>
+							<label className='tab_radio_label' htmlFor="tabmenu1">기본 과제</label>
+						</>
+					)
+				}
+			</div>
+			<div className='tab_cont'>
+				<div style={!page?{}:{display:"none"}}>
+					<label className='add_task'>
+						<input type="text" placeholder='입력'></input>
+						<input type="button" value="+" onClick={(event)=>{
+							let textInput=event.target.parentElement.childNodes[0]
+							GetElement("task_inputs").appendChild(CreateTaskInputCell("task_input",textInput.value).div);
+							textInput.value=""
+							textInput.focus()
+						}}></input>
+					</label>
+					<ul className="task_input_ul" id="task_inputs"></ul>
+				</div>
+				<div style={page?{}:{display:"none"}}>
+					<label className='add_task'>
+						<input type="text" placeholder='입력'></input>
+						<input type="button" value="+" onClick={(event)=>{
+							let textInput=event.target.parentElement.childNodes[0]
+							GetElement("last_task_inputs").appendChild(CreateTaskInputCell("last_task_input",textInput.value).div);
+							textInput.value=""
+							textInput.focus()
+						}}></input>
+					</label>
+					<ul className="task_input_ul" id="last_task_inputs"></ul>
+				</div>
+			</div>
 		</div>
-	);
+	)
 }
+// function InputTaskPart({id,name,tasks}){
+// 	let perventionDuplication=1;
+	
+// 	useEffect(()=>{
+// 		if(tasks){
+// 			if(perventionDuplication===1){
+// 				for(let taskKey in tasks){
+// 					let inputCell=CreateTaskInputCell(name,taskKey)
+// 					if(tasks[taskKey]){
+// 						inputCell.input.disabled=true
+// 						inputCell.delBtn.disabled=true
+// 					}
+// 					GetElement(id).appendChild(inputCell.div)
+// 				}
+// 				perventionDuplication++; 
+// 			}
+// 		}
+// 	},[])
+	
+// 	return(
+// 		<div className={'task_div '+name}>
+// 			<label>
+// 				<input type="text" placeholder='도전과제'></input>
+// 				<input type="button" value="추가" onClick={(event)=>{
+// 					let textInput=event.target.parentElement.childNodes[0]
+// 					GetElement(id).appendChild(CreateTaskInputCell(name,textInput.value).div);
+// 					textInput.value=""
+// 					textInput.focus()
+// 				}}></input>
+// 			</label>
+// 			<ul className="task_input_ul" id={id}>
+// 			</ul>
+// 		</div>
+// 	);
+// }
 function CreateBtn({dataToModify}){
 	const navigate=useNavigate()
 	return(
