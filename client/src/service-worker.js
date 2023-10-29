@@ -12,6 +12,7 @@ import { ExpirationPlugin } from 'workbox-expiration';
 import { precacheAndRoute, createHandlerBoundToURL } from 'workbox-precaching';
 import { registerRoute } from 'workbox-routing';
 import { StaleWhileRevalidate } from 'workbox-strategies';
+import { Count, getCount } from './module/global/Count';
 
 clientsClaim();
 
@@ -70,3 +71,24 @@ self.addEventListener('message', (event) => {
 });
 
 // Any other custom service worker logic can go here.
+// self.addEventListener('activated',(e)=>{
+// 	self.clients.claim()
+// 	setInterval(() => {
+// 		ShowNotification()
+// 		console.log("background")
+// 	}, 3000);
+// })
+// function ShowNotification(){
+// 	// Notification.requestPermission((result)=>{
+// 		// if(result==="granted"){
+// 			navigator.serviceWorker.ready.then((registration)=>{
+// 				registration.showNotification("noti sample",{
+// 					body:"body",
+// 					icon:"./logo.svg",
+// 					vibrate:[100,100,200,200,300,300],
+// 					tag:"noti tag"
+// 				})
+// 			})
+// 		// }
+// 	// })
+// }

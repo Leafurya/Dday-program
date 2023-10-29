@@ -1,51 +1,33 @@
-import { SendMessage } from "../../module/SendMessageModule";
+import projectBundle from "../../module/global/DataBundle";
+import todoList from "../../module/global/ToDo";
 
-function ClickTask(prjName,tasks,task,val){
-	let done=true
-	console.log(typeof(val),val)
-	//tasks[task]=val
-	SendMessage("set_tasks",[prjName,task,val])
-	for(var t in tasks){
-		if(!tasks[t]){
-			done=false;
-			break;
-		}
-	}
-	SendMessage("set_data",[prjName,"taskDone",done])
-}
-function TaskItem(props){
-	let eleID=props.index
-	let tasks=props.tasks
-	let task=props.task
-
-	return(
-		<li key={eleID}>
-			<input className='when_start' type="checkbox" id={"task"+eleID} defaultChecked={tasks[task]} value={task} onChange={(event)=>{
-				ClickTask(props.projectName,tasks,event.target.value,event.target.checked);
-				if(event.target.checked){
-					document.querySelector("label[for="+event.target.id+"]").classList.add("checked");
-					// props.PlusStat();
-					SendMessage("set_stat",[props.projectName,"plus_checkedTaskCount"])
-				}
-				else{
-					document.querySelector("label[for="+event.target.id+"]").classList.remove("checked");
-					// props.MinusStat();
-					SendMessage("set_stat",[props.projectName,"minus_checkedTaskCount"])
-				}
-				SendMessage("save_data")
-			}}></input>
-			<label className={(tasks[task]?" checked":"")} htmlFor={"task"+eleID}>{task}</label>
-		</li>
-	)
-}
-function TaskLists(props){
-	const tasks=props.tasks;
+function TaskLists({project,pageUpdate}){
 	let lists=[];
-	let index=0
+	let tasks=project.GetNowTasks()
 	
-	console.log("taskObj",tasks);
-	for(var task in tasks){
-		lists.push(<TaskItem projectName={props.projectName} index={index++} tasks={tasks} task={task} key={task}></TaskItem>)//TaskCheck={TaskCheck} checkedClassName={taskObj[task]?"checked":""} index={index}  taskChecked={taskObj[task]}
+	Object.keys(tasks).map((task,index)=>{
+		lists.push(
+			<li key={index}>
+				<input className='when_start' type="checkbox" id={"task"+index} defaultChecked={tasks[task]} value={task} onChange={(event)=>{
+					project.taskDone=tasks.Set(task,event.target.checked)
+					if(event.target.checked){
+						document.querySelector("label[for="+event.target.id+"]").classList.add("checked");
+						project.stat.checkedTaskCount++
+					}
+					else{
+						document.querySelector("label[for="+event.target.id+"]").classList.remove("checked");
+						project.stat.checkedTaskCount--
+					}
+					projectBundle.Save()
+					todoList.Save()
+					pageUpdate([])
+				}}></input>
+				<label className={"base_style"+(tasks[task]?" checked":"")} htmlFor={"task"+index}>{task}</label>
+			</li>
+		)
+	})
+	if(!lists.length){
+		lists.push(<li className="base_style" key={0} style={{textAlign:"center"}}>오늘 뭐하지?</li>)
 	}
 
 	return lists;

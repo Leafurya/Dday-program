@@ -1,19 +1,19 @@
 let attendance;
-function InitAttendance(){
+function InitAttendance(){ //씀
 	attendance=localStorage.getItem("attendance");
 	if(attendance==null){
 		attendance=0;
 		localStorage.setItem("attendance",0);
 	}
 }
-function UpdateAttendance(dateDelta){
+function UpdateAttendance(dateDelta){ //씀
 	attendance++;
 	if(dateDelta>1){
 		attendance=0;
 	}
 	localStorage.setItem("attendance",attendance);
 }
-function GetAttendance(){
+function GetAttendance(){ //씀
 	return attendance;
 }
 

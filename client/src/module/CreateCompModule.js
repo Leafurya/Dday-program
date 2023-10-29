@@ -1,8 +1,8 @@
-function GetElement(id){
+function GetElement(id){ //씀
 	return document.getElementById(id);
 }
 
-function CreateElement(obj){
+function CreateElement(obj){ //씀
 	let ele=document.createElement(obj.element);
 	if(obj?.name){ele.name=obj.name;}
 	if(obj?.id) {ele.id=obj.id;}
@@ -15,7 +15,7 @@ function CreateElement(obj){
 }
 const taskCellIdSuffix="task_input";
 let taskCellCount=0;
-function CreateTaskInputCell(name,cntnt){
+function CreateTaskInputCell(name,cntnt){ //씀
 	let div=CreateElement({element:"li",classList:"task_input_div",id:taskCellCount+taskCellIdSuffix})
 	let input=CreateElement({element:"input",name:name,value:cntnt,type:"text"})
 	let delBtn=CreateElement({element:"input",name:(taskCellCount++)+"task_input",value:"-",type:"button",
@@ -28,10 +28,9 @@ function CreateTaskInputCell(name,cntnt){
 	div.appendChild(delBtn);
 
 	taskCellCount++;
-	console.log("CreateTaskInputCell",div);
-	return div;
+	return {div,input,delBtn};
 }
-function GetTaskFromInput(targetName){
+function GetTaskFromInput(targetName){ //씀
 	let taskInputs=document.getElementsByName(targetName);
 	let tasks={};
 	for(var i=0;i<taskInputs.length;i++){

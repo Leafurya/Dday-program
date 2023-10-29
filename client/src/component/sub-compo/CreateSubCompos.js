@@ -1,19 +1,23 @@
-import React,{useEffect,useState} from 'react';
+import React,{useEffect, useRef, useState} from 'react';
 import {GetPickedDate,GetOldDate} from '../../module/TimeModule';
 import Notice from '../../module/Notice.js';
-import { SendMessage } from '../../module/SendMessageModule';
+import { CreateTaskInputCell, GetElement, GetTaskFromInput } from '../../module/CreateCompModule';
+import { CreateDataObj } from '../../module/DataModule';
+import projectBundle from '../../module/global/DataBundle';
+import { useNavigate } from 'react-router-dom';
 
-function DeleteBtn(props){
+import "../../style/Template.css"
+
+function DeleteBtn({prjName}){
+	const navigate=useNavigate()
 	return(
 		<input className="function_btn" type="button" value="삭제" onClick={
 			async()=>{
 				if(await Notice.Confrim('프로젝트 삭제를 원하신다면 확인을 눌러주십시오.<br/>한번 삭제한 프로젝트는 복구가 불가능합니다.')==1){
-					// props.QuitCallback(props.dataToModify.name);
-					SendMessage("quit_project",props.dataToModify.name)
+					projectBundle.Quit(prjName)
+					projectBundle.Save()
 					Notice.Alert("프로젝트를 삭제하였습니다.");
-					//alert("프로젝트를 삭제하였습니다.");
-					// props.PageCallback("Lobby");
-					SendMessage("change_page",["Lobby"])
+					navigate(-2)
 				}
 			}
 		}></input>
@@ -31,129 +35,293 @@ function DisableInput(val){
 	}
 	document.getElementById("date_picker").disabled=val;
 }
-function TypeChoicePart(props){
+let shareVar={}
+function TypeChoice({prj}){
+	const [data,setData]=useState({
+		type:(prj?.D)??"+",
+		day:(prj?.day)??0
+	})
+	let {type,day}=data
 	useEffect(()=>{
-		if(props.defaultCheck=="+"){
-			DisableInput(true);
+		let dayInput=document.getElementById("prj_day")
+		if(dayInput){
+			dayInput.focus()
+			dayInput.value=''
+			dayInput.value=data.day
 		}
-	},[])
+	},[data])
 	return(
-		<div className="type_choice">
-			<input defaultChecked={props.defaultCheck=="+"} id="D+" type="radio" value="D+" name="project_type" onClick={(event)=>{
-				DisableInput(true);
-			}}/>
-			<label htmlFor='D+'>
-				D+
-			</label>
-			<input defaultChecked={props.defaultCheck=="-"} id="D-" type="radio" value="D-" name="project_type" onClick={(event)=>{
-				DisableInput(false);
-			}}/>
-			<label htmlFor='D-'>
-				D-
-			</label>
-			<span>
-				<input disabled={props.defaultCheck=="plus"} type="number" placeholder="일수" id="prj_day" defaultValue={props.day?props.day:""} onChange={(event)=>{
-					let date=new Date()
-					//console.log("event.target.value",Number(date.getDate())+Number(event.target.value))
-					date.setDate(Number(date.getDate())+Number(event.target.value))
-					let year=date.getFullYear()
-					let month=date.getMonth()+1
-					let dateVal=date.getDate()
-					document.querySelector("input[type=date]").value=year+"-"+(month<10?"0"+month:month)+"-"+(dateVal<10?"0"+dateVal:dateVal)
-				}}></input>
-				<div style={{position: "relative"}}>
-					<input className="center_align_ab" disabled={props.defaultCheck=="plus"} type="date" id="date_picker" onChange={(event)=>{
-						//console.log("date pick",event.target.value);
+		<div className='base_style day_pick'>
+			<div>
+				<h1>D</h1>
+				<select defaultValue={type} className='base_style' name="type" id="prj_type" onChange={(e)=>{
+					setData({...data,type:e.target.value})
+					shareVar.InputTaskPart.setType(e.target.value)
+				}}>
+					<option vaule="+">+</option>
+					<option vaule="-">-</option>
+				</select>
+				<span className='day_input'>
+					{
+						type==="+"?(
+							<h1>0</h1>
+						):(
+							<span>
+								<label htmlFor='prj_day'>
+									{day}
+								</label>
+								<input className='base_style' type="number" id="prj_day" defaultValue={day} onChange={(event)=>{
+									let date=new Date()
+									console.log(Number(event.target.value))
+									date.setDate(Number(date.getDate())+Number(event.target.value))
+									let year=date.getFullYear()
+									let month=date.getMonth()+1
+									let dateVal=date.getDate()
+									document.querySelector("input[type=date]").value=year+"-"+(month<10?"0"+month:month)+"-"+(dateVal<10?"0"+dateVal:dateVal)
+									setData({...data,day:Number(event.target.value)})
+									event.target.focus()
+								}}></input>
+							</span>
+						)
+					}
+				</span>
+			</div>
+			{
+				type==="+"?(
+					<div>
+					</div>
+				):(
+					<input className='base_style' type="date" id="date_picker" onChange={(event)=>{
 						let dateDelta=GetPickedDate(event.target.value)-GetOldDate()
+						console.log("date pick",GetPickedDate(event.target.value),GetOldDate(),dateDelta)
 						if(dateDelta<=0){
 							Notice.Alert("오늘보다 이후의 날짜만 선택 가능합니다.")
-							// alert("오늘보다 이후의 날짜만 선택 가능합니다.")
 							return;
 						}
 						document.getElementById("prj_day").value=dateDelta;
 					}}></input>
-				</div>
-			</span>
-			
-		</div>
-	);
-}
-function InputTaskPart(props){
-	let perventionDuplication=1;
-	let taskInputs=[];
-	let CreateTaskInputCell=props.CreateTaskInputCell;
-	let GetElement=props.GetElement;
-	console.log("InputTaskPart props",props);
-	useEffect(()=>{
-		if(props?.tasks){
-			if(perventionDuplication===1){
-				for(let taskKey in props.tasks){
-					console.log("CreateTaskInputCell(props.name,taskKey)",CreateTaskInputCell(props.name,taskKey));
-					GetElement(props.id).appendChild(CreateTaskInputCell(props.name,taskKey))
-				}
-				perventionDuplication++; 
+				)
 			}
+		</div>
+	)
+}
+// function TypeChoicePart(props){
+// 	useEffect(()=>{
+// 		if(props.defaultCheck=="+"){
+// 			DisableInput(true);
+// 		}
+// 	},[])
+// 	return(
+// 		<div className="type_choice">
+// 			<input defaultChecked={props.defaultCheck=="+"} id="D+" type="radio" value="D+" name="project_type" onClick={(event)=>{
+// 				DisableInput(true);
+// 			}}/>
+// 			<label className='base_style' htmlFor='D+'>
+// 				D+
+// 			</label>
+// 			<input defaultChecked={props.defaultCheck=="-"} id="D-" type="radio" value="D-" name="project_type" onClick={(event)=>{
+// 				DisableInput(false);
+// 			}}/>
+// 			<label htmlFor='D-'>
+// 				D-
+// 			</label>
+// 			<span>
+// 				<input disabled={props.defaultCheck=="plus"} type="number" placeholder="일수" id="prj_day" defaultValue={props.day?props.day:""} onChange={(event)=>{
+// 					let date=new Date()
+					
+// 					date.setDate(Number(date.getDate())+Number(event.target.value))
+// 					let year=date.getFullYear()
+// 					let month=date.getMonth()+1
+// 					let dateVal=date.getDate()
+// 					document.querySelector("input[type=date]").value=year+"-"+(month<10?"0"+month:month)+"-"+(dateVal<10?"0"+dateVal:dateVal)
+// 				}}></input>
+// 				<div style={{position: "relative"}}>
+// 					<input className="center_align_ab" disabled={props.defaultCheck=="plus"} type="date" id="date_picker" onChange={(event)=>{
+						
+// 						let dateDelta=GetPickedDate(event.target.value)-GetOldDate()
+// 						console.log("date pick",GetPickedDate(event.target.value),GetOldDate(),dateDelta)
+// 						if(dateDelta<=0){
+// 							Notice.Alert("오늘보다 이후의 날짜만 선택 가능합니다.")
+// 							return;
+// 						}
+// 						document.getElementById("prj_day").value=dateDelta;
+// 					}}></input>
+// 				</div>
+// 			</span>
+			
+// 		</div>
+// 	);
+// }
+function InputTaskPart({prj}){
+	const [type,setType]=useState((prj?.D)??"+")
+	const [page,setPage]=useState(0) //0: 도전과제, 1: 최종 도전과제
+	const data=useRef({
+		tasks:(prj?.tasks)??{},
+		lastTasks:(prj?.lastTasks)??{},
+		perventionDuplication:1
+	})
+	shareVar.InputTaskPart={
+		setType
+	}
+	useEffect(()=>{
+		setPage(0)
+	},[type])
+	useEffect(()=>{
+		let {tasks,lastTasks}=data.current
+		if(data.current.perventionDuplication===1){
+			Object.keys(tasks).map((task)=>{
+				let inputCell=CreateTaskInputCell("task_input",task)
+				if(tasks[task]){
+					inputCell.input.disabled=true
+					inputCell.delBtn.disabled=true
+				}
+				GetElement("task_inputs").appendChild(inputCell.div)
+			})
+			Object.keys(lastTasks).map((task)=>{
+				let inputCell=CreateTaskInputCell("last_task_inputs",task)
+				if(lastTasks[task]){
+					inputCell.input.disabled=true
+					inputCell.delBtn.disabled=true
+				}
+				GetElement("last_task_inputs").appendChild(inputCell.div)
+			})
+			data.current.perventionDuplication++; 
 		}
 	},[])
-	
 	return(
-		<div className={'task_div '+props.name}>
-			<label>
-				<input type="text" placeholder='도전과제'></input>
-				<input type="button" value="추가" onClick={(event)=>{
-					let textInput=event.target.parentElement.childNodes[0]
-					GetElement(props.id).appendChild(CreateTaskInputCell(props.name,textInput.value));
-					textInput.value=""
-					textInput.focus()
-				}}></input>
-			</label>
-			{/* <input id={props.id+"_add_btn"} className="add_task_btn" type="button" value={props.value} onClick={async()=>{
-				GetElement(props.id).appendChild(CreateTaskInputCell(props.name,await Notice.Prompt("도전과제 내용을 적어주세요.")));
-				//GetTaskInput("task_inputs","task_input");
-			}}></input> */}
-			<ul className="task_input_ul" id={props.id}>
-				{console.log("return taskInputs",taskInputs)}
-			</ul>
+		<div className=''>
+			<div className='task_tabmenu'>
+				{
+					type==="-"?(
+						<>
+							<input type="radio" defaultChecked={!page} name="menu" id="tabmenu1" onClick={()=>{
+								setPage(0)
+							}}/>
+							<label style={!page?{backgroundColor:"#7965bd"}:{}} className='tab_radio_label' defaultChecked={page} htmlFor="tabmenu1">
+								<span>기본 과제</span>
+							</label>
+							<input type="radio" name="menu" id="tabmenu2" onClick={()=>{
+								setPage(1)
+							}}/>
+							<label style={page?{backgroundColor:"#7965bd"}:{}} className='tab_radio_label' htmlFor="tabmenu2">
+								<span>최종 과제</span>
+							</label>
+						</>
+					):(
+						<>
+							<input disabled type="radio" name="menu" id="tabmenu1" onClick={()=>{
+								setPage(0)
+							}}/>
+							<label className='tab_radio_label' htmlFor="tabmenu1">기본 과제</label>
+						</>
+					)
+				}
+			</div>
+			<div className='tab_cont'>
+				<div style={!page?{}:{display:"none"}}>
+					<label className='add_task'>
+						<input type="text" placeholder='입력'></input>
+						<input type="button" value="+" onClick={(event)=>{
+							let textInput=event.target.parentElement.childNodes[0]
+							GetElement("task_inputs").appendChild(CreateTaskInputCell("task_input",textInput.value).div);
+							textInput.value=""
+							textInput.focus()
+						}}></input>
+					</label>
+					<ul className="task_input_ul" id="task_inputs"></ul>
+				</div>
+				<div style={page?{}:{display:"none"}}>
+					<label className='add_task'>
+						<input type="text" placeholder='입력'></input>
+						<input type="button" value="+" onClick={(event)=>{
+							let textInput=event.target.parentElement.childNodes[0]
+							GetElement("last_task_inputs").appendChild(CreateTaskInputCell("last_task_input",textInput.value).div);
+							textInput.value=""
+							textInput.focus()
+						}}></input>
+					</label>
+					<ul className="task_input_ul" id="last_task_inputs"></ul>
+				</div>
+			</div>
 		</div>
-	);
+	)
 }
-function CreateBtn(props){
-	let dataToModify=props.dataToModify;
+// function InputTaskPart({id,name,tasks}){
+// 	let perventionDuplication=1;
+	
+// 	useEffect(()=>{
+// 		if(tasks){
+// 			if(perventionDuplication===1){
+// 				for(let taskKey in tasks){
+// 					let inputCell=CreateTaskInputCell(name,taskKey)
+// 					if(tasks[taskKey]){
+// 						inputCell.input.disabled=true
+// 						inputCell.delBtn.disabled=true
+// 					}
+// 					GetElement(id).appendChild(inputCell.div)
+// 				}
+// 				perventionDuplication++; 
+// 			}
+// 		}
+// 	},[])
+	
+// 	return(
+// 		<div className={'task_div '+name}>
+// 			<label>
+// 				<input type="text" placeholder='도전과제'></input>
+// 				<input type="button" value="추가" onClick={(event)=>{
+// 					let textInput=event.target.parentElement.childNodes[0]
+// 					GetElement(id).appendChild(CreateTaskInputCell(name,textInput.value).div);
+// 					textInput.value=""
+// 					textInput.focus()
+// 				}}></input>
+// 			</label>
+// 			<ul className="task_input_ul" id={id}>
+// 			</ul>
+// 		</div>
+// 	);
+// }
+function CreateBtn({dataToModify}){
+	const navigate=useNavigate()
 	return(
 		<input className="function_btn" type="button" defaultValue="저장" onClick={()=>{
-			if(dataToModify){
-				// props.QuitCallback(dataToModify);
-				SendMessage("quit_project",dataToModify)
-			}
-			let projectName=props.GetElement("prj_name").value;
-			let discription=props.GetElement("prj_cntnt").value;
-			let D=props.GetElement("D+").checked?"+":"-";
-			let Day=(D=="+")?0:props.GetElement("prj_day").value;
-			let tasks=props.GetTaskFromInput("task_input");
-			let lastTasks=(D=="+")?null:props.GetTaskFromInput("last_task_input"); //if lastTasks not exist, value is null
+			let projectName=GetElement("prj_name").value;
+			let discription=GetElement("prj_cntnt").value;
+			let D=GetElement("prj_type").value
+			let Day=(D=="+")?0:GetElement("prj_day").value;
+			let tasks=GetTaskFromInput("task_input");
+			let lastTasks=(D=="+")?null:GetTaskFromInput("last_task_input"); //if lastTasks not exist, value is null
 			if(projectName.length<=0){
 				Notice.Alert("프로젝트 이름이 비어있습니다.");
-				//alert("프로젝트 이름이 비어있습니다.");
 				return;
 			}
 			if(!tasks){
 				Notice.Alert("도전과제가 비어있습니다.");
-				//alert("도전과제가 비어있습니다.");
 				return;
 			}
 			if(D==='-'&&Day===""){
 				Notice.Alert("일 수가 비어있습니다.");
-				// alert("일 수가 비어있습니다.");
 				return;
 			}
 
-			let data=props.CreateDataObj(discription,tasks,D,Day,lastTasks)
-			console.log("new create data",data);
-			SendMessage("append_project",{name:projectName,data:data})
-			// props.SaveDataCallback(data);
-			// props.PageCallback("Lobby");
+			let data=CreateDataObj(discription,tasks,D,Day,lastTasks)
+			if(dataToModify){
+				projectBundle.Remove(dataToModify)
+			}
+			if(!projectBundle.Append(projectName,data)){
+				Notice.Alert("같은 이름의 프로젝트가 존재합니다.");
+				console.log("exist same project")
+				return
+			}
+			projectBundle.Save()
+			
+			if(projectName===dataToModify){
+				navigate(-1)
+				return
+			}
+			navigate(`/Project?name=${projectName}`,{replace:true})
 		}}></input>
 	)
 }
-
+const TypeChoicePart=TypeChoice
 export {CreateBtn,DeleteBtn,TypeChoicePart,InputTaskPart};
