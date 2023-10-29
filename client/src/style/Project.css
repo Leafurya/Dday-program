@@ -21,6 +21,7 @@
 .project_board{
 	display: flex;
 	flex-direction: column;
+	overflow: scroll;
 	/* background: linear-gradient(#947fda 30%, #fff) */
 }
 .project_day{
