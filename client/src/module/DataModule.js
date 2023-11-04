@@ -1,4 +1,6 @@
-const _nowDataVersion=1
+import StateConst from "./global/StateConst"
+
+// const _nowDataVersion=2
 export class Stat{
 	constructor(taskCount){
 		this.taskCount=taskCount
@@ -7,27 +9,29 @@ export class Stat{
 }
 class DPlus{
 	constructor(day,discription,tasks){
-		this.version=_nowDataVersion
+		// this.version=_nowDataVersion
 		this.D="+"
-		this.start=false
+		this.state=StateConst.WaitToStart
+		// this.start=false
 		this.tasks=tasks
 		this.day=day
 		this.discription=discription
 		this.stat=new Stat(Object.keys(tasks).length)
-		this.prjDone=false
+		// this.prjDone=false
 		this.taskDone=false
 	}
 }
 class DMinus{
 	constructor(day,discription,tasks,lastTasks){
-		this.version=_nowDataVersion
+		// this.version=_nowDataVersion
 		this.D="-"
-		this.start=false
+		this.state=StateConst.WaitToStart
+		// this.start=false
 		this.tasks=tasks
 		this.day=day
 		this.discription=discription
 		this.stat=new Stat(Object.keys(tasks).length)
-		this.prjDone=false
+		// this.prjDone=false
 		this.taskDone=false
 
 		if(lastTasks){

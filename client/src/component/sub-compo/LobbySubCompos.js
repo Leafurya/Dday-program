@@ -1,12 +1,13 @@
 import { StyledLink } from '../../module/GlobalModule';
 import projectBundle from '../../module/global/DataBundle';
+import StateConst from '../../module/global/StateConst';
 import todoList from '../../module/global/ToDo';
 
 import "../../style/Template.css"
 import ProgressBar from '../ProgressBar';
 
-const prjDoneStamp=<span className="project_done"></span>;
-const taskDoneStamp=<span className="done_stamp"></span>;
+// const prjDoneStamp=<span className="project_done"></span>;
+// const taskDoneStamp=<span className="done_stamp"></span>;
 
 function Progress({stat}){
 	return(
@@ -35,22 +36,11 @@ function GetProgressGraph(stat){
 	}
 }
 function ProjectCard({project}){
-	let {name,start,taskDone,D,prjDone}=project
+	let {day,name,taskDone,D,state}=project
 	let id=Date.now()+Math.random()
 	let value=(project.stat.checkedTaskCount/project.stat.taskCount)*100
-	let stat=(start?((value).toFixed(1)+"%"):"-%")
+	let stat=(state===StateConst.ProjectStart?((value).toFixed(1)+"%"):"-%")
 	let tasks=project.GetNowTasks()
-	let state
-
-	if(prjDone){
-		state=0
-	}
-	else if(!start){
-		state=1
-	}
-	else{
-		state=2
-	}
 	
 	return(
 		<li className="project_list_li" key={id}>
@@ -66,9 +56,8 @@ function ProjectCard({project}){
 					<div className='project_list_content'>
 						<div style={{display:"flex",flexDirection:"column"}}>
 							<div className="project_list_day ">{"D"+D+project.GetDay()}</div>
-							{/* {prjDone?prjDoneStamp:""} */}
 							<div className="task_stat ">
-								<span>{["프로젝트 끝","시작 대기중...",`성공률 ${stat}`][state]}</span>
+								<span>{["프로젝트 끝","수정 대기중...","시작 대기중...",`성공률 ${stat}`][state]}</span>
 							</div>
 						</div>
 						<div className="project_list_name">
@@ -101,7 +90,7 @@ function ToDoCard({}){
 							</div>
 						</div>
 					</div>
-					<ProgressBar state={2} progress={isNaN(progress)?0:progress}></ProgressBar>
+					<ProgressBar state={StateConst.ProjectStart} progress={isNaN(progress)?0:progress}></ProgressBar>
 				</label>
 			</StyledLink>
 		</li>

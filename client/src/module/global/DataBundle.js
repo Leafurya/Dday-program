@@ -1,3 +1,5 @@
+import StateConst from "./StateConst";
+
 export class Tasks{
 	constructor(data){
 		if(data){
@@ -38,27 +40,50 @@ export class Tasks{
 	}
 }
 class Project{
+	#nowDataVersion=2
 	constructor(name,data){
 		// this.data=data
-
+		// data=this.CheckVersion(data)
 		this.name=name
-		this.version=data.version
+		this.version=this.#nowDataVersion
 		this.D=data.D
-		this.start=data.start??data.start
+		// this.start=data.start??data.start
 		this.tasks=new Tasks(data.tasks)
 		this.day=Number(data.day)
 		
 		this.discription=data.discription
 		this.stat=data.stat
-		this.prjDone=data.prjDone
+		this.state=data.state
+		// this.prjDone=data.prjDone
 		this.taskDone=data.taskDone
 		this.lastTasks=new Tasks(data.lastTasks)
+	}
+	CheckVersion(jsonData){
+		let result=jsonData
+		if(result.version!==this.#nowDataVersion){
+			result.version=this.#nowDataVersion
+			if(result.prjDone){
+				result.state=StateConst.ProjectDone //프로젝트 끝
+			}
+			else if(!result.start&&(result.day===0)){
+				result.state=StateConst.WaitToModify //수정 대기
+			}
+			else if(!result.start){
+				result.state=StateConst.WaitToStart //시작 대기
+			}
+			else{
+				result.state=StateConst.ProjectStart //진행중
+			}
+			delete result.prjDone
+			delete result.start
+		}
+		return result
 	}
 	Start(){
 		if((this.D==="-"&&this.day<=0)||this.start){
 			return false
 		}
-		this.start=true
+		this.state=StateConst.ProjectStart
 		return true;
 	}
 	IsLastTaskExist(){
@@ -84,26 +109,29 @@ class Project{
 	}
 	Reset(){
 		this.day=0
-		this.start=false
+		// this.start=false
 		this.tasks.Reset()
 		if(this.IsLastTaskExist()){
 			this.lastTasks.Reset()
 		}
-		this.prjDone=true
+		this.state=StateConst.ProjectDone
+		// this.prjDone=true
 		this.taskDone=false
 	}
 }
 export class ProjectBundle{
 	#storageName="projects"
+	
 	constructor(){
 		
 	}
 	Init(){
 		let jsonString=localStorage.getItem(this.#storageName)??"{}"
-		let holyValue=JSON.parse(jsonString)
+		let jsonData=JSON.parse(jsonString)
 		this.data={}
-		Object.keys(holyValue).map((name)=>{
-			this.data[name]=new Project(name,holyValue[name])
+		Object.keys(jsonData).map((name)=>{
+			// let data=this.CheckVersion(jsonData[name])
+			this.data[name]=new Project(name,jsonData[name])
 		})
 	}
 	GetProject(prjName){
@@ -139,7 +167,7 @@ export class ProjectBundle{
 	DailyUpdate(dateDelta){
 		let nowTask
 		Object.values(this.data).map((data)=>{
-			if(data.start){
+			if(data.state===StateConst.ProjectStart){
 				nowTask=data.GetNowTasks()
 				switch(data.D){
 					case "+":{
@@ -167,6 +195,7 @@ export class ProjectBundle{
 			}
 		})
 	}
+	
 }
 let projectBundle=new ProjectBundle()
 export default projectBundle

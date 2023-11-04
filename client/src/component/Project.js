@@ -8,6 +8,7 @@ import Notice from '../module/Notice.js';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import projectBundle from '../module/global/DataBundle';
 import TopNavigator from './TopNavigator';
+import StateConst from '../module/global/StateConst';
 
 function FunctionBtns({prjName,pageUpdate,start,project}){
 	const navigate=useNavigate()
@@ -49,22 +50,24 @@ function Project(props){
 	const [refresh,pageUpdate]=useState([]);
 	const project=projectBundle.GetProject(prjName)
 
+	let started=(project.state===StateConst.ProjectStart)
 	let value=(project.stat.checkedTaskCount/project.stat.taskCount)*100
-	let stat=(project.start?((value).toFixed(1)+"%"):"-%")
+	let stat=(started?((value).toFixed(1)+"%"):"-%")
 
 	useEffect(()=>{
 		if(project){
-			for(var i=0,ele=document.querySelectorAll(".when_start");i<ele.length;i++){
-				ele[i].disabled=!project.start;
-			}
-			for(var i=0,ele=document.querySelectorAll(".when_ready");i<ele.length;i++){
-				ele[i].disabled=project.start;
-			}
-			if(project.prjDone){
+			// for(var i=0,ele=document.querySelectorAll(".when_start");i<ele.length;i++){
+			// 	ele[i].disabled=!project.start;
+			// }
+			// for(var i=0,ele=document.querySelectorAll(".when_ready");i<ele.length;i++){
+			// 	ele[i].disabled=project.start;
+			// }
+			if(project.state===StateConst.ProjectDone){
 				let stat=((project.stat.checkedTaskCount/project.stat.taskCount)*100).toFixed(1)+"%";
 				Notice.Alert(stat+"의 성공률로 프로젝트가 끝났습니다! 이제 프로젝트 설정을 변경하거나 프로젝트를 제거 할 수 있습니다.\n 수고하셨습니다!");
-				project.prjDone=false
+				project.state=StateConst.WaitToModify
 				projectBundle.Save()
+				pageUpdate([])
 			}
 		}
 	},[refresh])
@@ -75,8 +78,8 @@ function Project(props){
 	}
 	return(
 		<div className="borad">
-			<TopNavigator title={prjName} sub={project.start?`성공률 ${stat}`:"시작 대기중..."}></TopNavigator>
-			<div className={"main_platform project_board "+(project.start?"":"not_start_in_prjcomp")}>
+			<TopNavigator title={prjName} sub={["프로젝트 끝","수정 대기중...","시작 대기중...",`성공률 ${stat}`][project.state]}></TopNavigator>
+			<div className={"main_platform project_board "+(started?"":"not_start_in_prjcomp")}>
 				<div>
 					<div>
 						<h1 className="project_day base_style">{"D"+project.D+project.GetDay()}</h1>
@@ -87,7 +90,7 @@ function Project(props){
 					<TaskLists project={project} pageUpdate={pageUpdate}></TaskLists>
 				</ul>
 			</div>
-			<FunctionBtns prjName={prjName} project={project} start={project.start} pageUpdate={pageUpdate}></FunctionBtns>
+			<FunctionBtns prjName={prjName} project={project} start={started} pageUpdate={pageUpdate}></FunctionBtns>
 			{/* <div className="function_btns">
 				<input className='function_btn' type="button" value="뒤로" onClick={()=>{
 					window.history.back()

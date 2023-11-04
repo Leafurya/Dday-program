@@ -1,14 +1,16 @@
 import projectBundle from "../../module/global/DataBundle";
+import StateConst from "../../module/global/StateConst";
 import todoList from "../../module/global/ToDo";
 
 function TaskLists({project,pageUpdate}){
 	let lists=[];
 	let tasks=project.GetNowTasks()
+	let started=(project.state===StateConst.ProjectStart)
 	
 	Object.keys(tasks).map((task,index)=>{
 		lists.push(
 			<li key={index}>
-				<input className='when_start' type="checkbox" id={"task"+index} defaultChecked={tasks[task]} value={task} onChange={(event)=>{
+				<input disabled={!started} className='when_start' type="checkbox" id={"task"+index} defaultChecked={tasks[task]} value={task} onChange={(event)=>{
 					project.taskDone=tasks.Set(task,event.target.checked)
 					if(event.target.checked){
 						document.querySelector("label[for="+event.target.id+"]").classList.add("checked");
