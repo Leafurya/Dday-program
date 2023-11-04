@@ -43,7 +43,7 @@ class Project{
 	#nowDataVersion=2
 	constructor(name,data){
 		// this.data=data
-		// data=this.CheckVersion(data)
+		data=this.CheckVersion(data)
 		this.name=name
 		this.version=this.#nowDataVersion
 		this.D=data.D
@@ -53,7 +53,7 @@ class Project{
 		
 		this.discription=data.discription
 		this.stat=data.stat
-		this.state=data.state
+		this.state=data.state??StateConst.ProjectStart
 		// this.prjDone=data.prjDone
 		this.taskDone=data.taskDone
 		this.lastTasks=new Tasks(data.lastTasks)
