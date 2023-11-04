@@ -178,7 +178,7 @@ function InputTaskPart({prj}){
 				GetElement("task_inputs").appendChild(inputCell.div)
 			})
 			Object.keys(lastTasks).map((task)=>{
-				let inputCell=CreateTaskInputCell("last_task_inputs",task)
+				let inputCell=CreateTaskInputCell("last_task_input",task)
 				if(lastTasks[task]){
 					inputCell.input.disabled=true
 					inputCell.delBtn.disabled=true
@@ -288,9 +288,10 @@ function CreateBtn({dataToModify}){
 			let projectName=GetElement("prj_name").value;
 			let discription=GetElement("prj_cntnt").value;
 			let D=GetElement("prj_type").value
-			let Day=(D=="+")?0:GetElement("prj_day").value;
+			let Day=(D==="+")?0:GetElement("prj_day").value;
 			let tasks=GetTaskFromInput("task_input");
-			let lastTasks=(D=="+")?null:GetTaskFromInput("last_task_input"); //if lastTasks not exist, value is null
+			let lastTasks=(D==="+")?null:GetTaskFromInput("last_task_input"); //if lastTasks not exist, value is null
+			console.log("lastTasks",lastTasks)
 			if(projectName.length<=0){
 				Notice.Alert("프로젝트 이름이 비어있습니다.");
 				return;
@@ -313,6 +314,7 @@ function CreateBtn({dataToModify}){
 				console.log("exist same project")
 				return
 			}
+			console.log("created data",data);
 			projectBundle.Save()
 			
 			if(projectName===dataToModify){
