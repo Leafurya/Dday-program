@@ -1,5 +1,6 @@
 import { Stat } from "../DataModule"
 import { Tasks } from "./DataBundle"
+import StateConst from "./StateConst"
 
 class ToDoList{
 	#storageName="todolist"
@@ -13,6 +14,7 @@ class ToDoList{
 		this.data=new Tasks(data.data)
 		this.taskDone=data.taskDone??false
 		this.stat=data.stat??new Stat(0)
+		this.state=data.state??StateConst.ProjectStart
 		console.log("data",this.data)
 	}
 	Save(){
