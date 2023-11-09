@@ -1,7 +1,7 @@
 import React,{useEffect, useRef, useState} from 'react';
 import {GetPickedDate,GetOldDate} from '../../module/TimeModule';
 import Notice from '../../module/Notice.js';
-import { CreateTaskInputCell, GetElement, GetTaskFromInput } from '../../module/CreateCompModule';
+import { CreateTaskInputCell, GetElement, GetTaskFromInput, TextAreaKeyInput } from '../../module/CreateCompModule';
 import { CreateDataObj } from '../../module/DataModule';
 import projectBundle from '../../module/global/DataBundle';
 import { useNavigate } from 'react-router-dom';
@@ -220,7 +220,8 @@ function InputTaskPart({prj}){
 			<div className='tab_cont'>
 				<div style={!page?{}:{display:"none"}}>
 					<label className='add_task'>
-						<input type="text" placeholder='입력'></input>
+						<textarea className='input' placeholder='입력' rows="1" onKeyDown={TextAreaKeyInput}></textarea>
+						{/* <input type="text" placeholder='입력'></input> */}
 						<input type="button" value="+" onClick={(event)=>{
 							let textInput=event.target.parentElement.childNodes[0]
 							GetElement("task_inputs").appendChild(CreateTaskInputCell("task_input",textInput.value).div);
@@ -232,7 +233,8 @@ function InputTaskPart({prj}){
 				</div>
 				<div style={page?{}:{display:"none"}}>
 					<label className='add_task'>
-						<input type="text" placeholder='입력'></input>
+						<textarea className='input' placeholder='입력' rows="1" onKeyDown={TextAreaKeyInput}></textarea>
+						{/* <input type="text" placeholder='입력'></input> */}
 						<input type="button" value="+" onClick={(event)=>{
 							let textInput=event.target.parentElement.childNodes[0]
 							GetElement("last_task_inputs").appendChild(CreateTaskInputCell("last_task_input",textInput.value).div);

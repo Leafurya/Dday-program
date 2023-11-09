@@ -18,7 +18,8 @@ function Create({}){
 			<TopNavigator title={dataToModify?"프로젝트 수정":"프로젝트 생성"}></TopNavigator>
 			<div className="main_platform">
 				<div className='info_part'>
-					<input id="prj_name" type="text" placeholder="프로젝트 이름" defaultValue={prjName??""}></input>
+					<textarea rows="1" className='input' id="prj_name" type="text" placeholder="프로젝트 이름" defaultValue={prjName??""}></textarea>
+					{/* <input id="prj_name" type="text" placeholder="프로젝트 이름" defaultValue={prjName??""}></input> */}
 					<TypeChoicePart prj={dataToModify}></TypeChoicePart>
 					<textarea rows="5" id="prj_cntnt" placeholder="프로젝트 내용" defaultValue={dataToModify?dataToModify.discription:""}></textarea>
 				</div>
