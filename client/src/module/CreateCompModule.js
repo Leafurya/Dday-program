@@ -1,3 +1,5 @@
+const { default: TextInput } = require("../component/global/TextInput");
+
 function GetElement(id){ //씀
 	return document.getElementById(id);
 }
@@ -21,7 +23,7 @@ const taskCellIdSuffix="task_input";
 let taskCellCount=0;
 function CreateTaskInputCell(name,cntnt){ //씀
 	let div=CreateElement({element:"li",classList:"task_input_div",id:taskCellCount+taskCellIdSuffix})
-	let input=CreateElement({element:"textarea",name:name,value:cntnt,classList:["input"], rows:"1"})
+	let input=CreateElement({element:"textarea",name:name,value:cntnt,classList:["input"], rows:"1", wrap:"off"})
 	// let input=CreateElement({element:"input",name:name,value:cntnt,type:"text"})
 	let delBtn=CreateElement({element:"input",name:(taskCellCount++)+"task_input",value:"-",type:"button",
 		onclick:(event)=>{
@@ -34,6 +36,16 @@ function CreateTaskInputCell(name,cntnt){ //씀
 
 	taskCellCount++;
 	return {div,input,delBtn};
+}
+function TaskInputCell({name,cntnt,disabled}){ //씀
+	return(
+		<li className="task_input_div" id={`${taskCellCount}${taskCellIdSuffix}`}>
+			<TextInput name={name} value={cntnt} disabled={disabled}></TextInput>
+			<input type="button" value="-" name={`${taskCellCount++}task_input`} disabled={disabled} onClick={(e)=>{
+				GetElement(e.target.name).remove()
+			}}></input>
+		</li>
+	)
 }
 function GetTaskFromInput(targetName){ //씀
 	let taskInputs=document.getElementsByName(targetName);
@@ -51,16 +63,20 @@ function GetTaskFromInput(targetName){ //씀
 function TextAreaKeyInput(e){
 	console.log(e)
 	if(e.keyCode===13){
-		let textInput=e.target.parentElement.childNodes[0]
+		let textInput=e.target
+		let name=e.target.name
 		GetElement("task_inputs").appendChild(CreateTaskInputCell("task_input",textInput.value).div);
+		// GetElement(`${name}s`).appendChild(<TaskInputCell name={name} cntnt={textInput.value} disabled={false}></TaskInputCell>);
 		textInput.value=""
 		textInput.focus()
 		e.preventDefault()
 	}
 }
 
-module.exports.CreateTaskInputCell=CreateTaskInputCell;
-module.exports.GetElement=GetElement;
-module.exports.GetTaskFromInput=GetTaskFromInput;
-module.exports.CreateElement=CreateElement;
-module.exports.TextAreaKeyInput=TextAreaKeyInput;
+// module.exports.CreateTaskInputCell=CreateTaskInputCell;
+// module.exports.GetElement=GetElement;
+// module.exports.GetTaskFromInput=GetTaskFromInput;
+// module.exports.CreateElement=CreateElement;
+// module.exports.TextAreaKeyInput=TextAreaKeyInput;
+// module.exports.TaskInputCell=TaskInputCell;
+export{CreateTaskInputCell,GetElement,GetTaskFromInput,CreateElement,TextAreaKeyInput,TaskInputCell}
