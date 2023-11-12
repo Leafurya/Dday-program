@@ -82,7 +82,8 @@ function Project(props){
 			<div className={"main_platform project_board "+(started?"":"not_start_in_prjcomp")}>
 				<div>
 					<div>
-						<h1 className="project_day base_style">{"D"+project.D+project.GetDay()}</h1>
+						{/* <h1 className="project_day base_style">{"D"+project.D+project.GetDay()}</h1> */}
+						<h1 className="project_day base_style">{project.state===StateConst.WaitToModify?"D-END":project.GetDay()}</h1>
 						<h4 className="project_content base_style">{project.discription}</h4>
 					</div>
 				</div>
