@@ -18,10 +18,25 @@ function Create({}){
 			<TopNavigator title={dataToModify?"프로젝트 수정":"프로젝트 생성"}></TopNavigator>
 			<div className="main_platform">
 				<div className='info_part'>
-					<textarea rows="1" className='input' id="prj_name" type="text" placeholder="프로젝트 이름" defaultValue={prjName??""}></textarea>
+					<textarea rows="1" className='input' id="prj_name" type="text" placeholder="프로젝트 이름" defaultValue={prjName??""} onKeyDown={(e)=>{
+						if(e.key==="Enter"){
+							try{
+								document.getElementById("prj_day").focus()
+							}catch(e){
+								document.getElementById("prj_cntnt").focus()
+							}
+							e.preventDefault()
+						}
+					}}></textarea>
 					{/* <input id="prj_name" type="text" placeholder="프로젝트 이름" defaultValue={prjName??""}></input> */}
 					<TypeChoicePart prj={dataToModify}></TypeChoicePart>
-					<textarea rows="5" id="prj_cntnt" placeholder="프로젝트 내용" defaultValue={dataToModify?dataToModify.discription:""}></textarea>
+					<textarea rows="5" id="prj_cntnt" placeholder="프로젝트 내용" defaultValue={dataToModify?dataToModify.discription:""} onKeyDown={(e)=>{
+						if(e.key==="Enter"){
+							console.log('enter')
+							document.querySelector(".add_task .input[name=task_input]").focus()
+							e.preventDefault()
+						}
+					}}></textarea>
 				</div>
 				<div className='task_part'>
 					<InputTaskPart prj={dataToModify}></InputTaskPart>

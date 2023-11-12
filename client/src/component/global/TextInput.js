@@ -10,6 +10,6 @@ export default ({placeholder,className,name,value,disabled})=>{
 			color:"white",
 			padding:"5px 20px",
 			margin:"0",
-		}} className={className} placeholder={placeholder} rows="1" onKeyDown={TextAreaKeyInput} wrap="off" name={name} value={value} disabled={disabled}></textarea>
+		}} className={className} placeholder={placeholder} rows="1" onKeyDown={TextAreaKeyInput} wrap="off" name={name} defaultValue={value} disabled={disabled}></textarea>
 	)
 }

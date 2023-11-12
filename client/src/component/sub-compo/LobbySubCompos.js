@@ -55,7 +55,8 @@ function ProjectCard({project}){
 					{/* <Progress stat={(tasks.CountChecked()/tasks.GetTaskCount())*100}></Progress> */}
 					<div className='project_list_content'>
 						<div style={{display:"flex",flexDirection:"column"}}>
-							<div className="project_list_day ">{"D"+D+project.GetDay()}</div>
+							<div className="project_list_day ">{project.GetDay()}</div>
+							{/* <div className="project_list_day ">{"D"+D+project.GetDay()}</div> */}
 							<div className="task_stat ">
 								<span>{["프로젝트 끝","수정 대기중...","시작 대기중...",`성공률 ${stat}`][state]}</span>
 							</div>

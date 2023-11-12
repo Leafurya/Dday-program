@@ -41,7 +41,7 @@ function TaskInputCell({name,cntnt,disabled}){ //씀
 	return(
 		<li className="task_input_div" id={`${taskCellCount}${taskCellIdSuffix}`}>
 			<TextInput name={name} value={cntnt} disabled={disabled}></TextInput>
-			<input type="button" value="-" name={`${taskCellCount++}task_input`} disabled={disabled} onClick={(e)=>{
+			<input type="button" defaultValue="-" name={`${taskCellCount++}task_input`} disabled={disabled} onClick={(e)=>{
 				GetElement(e.target.name).remove()
 			}}></input>
 		</li>

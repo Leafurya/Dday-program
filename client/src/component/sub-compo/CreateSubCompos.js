@@ -38,6 +38,8 @@ function DisableInput(val){
 }
 let shareVar={}
 function TypeChoice({prj}){
+	const tdDate=new Date();
+	const today=`${tdDate.getFullYear()}-${tdDate.getMonth()+1}-${tdDate.getDate()}`
 	const [data,setData]=useState({
 		type:(prj?.D)??"+",
 		day:(prj?.day)??0
@@ -92,15 +94,18 @@ function TypeChoice({prj}){
 					<div>
 					</div>
 				):(
-					<input className='base_style' type="date" id="date_picker" onChange={(event)=>{
-						let dateDelta=GetPickedDate(event.target.value)-GetOldDate()
-						console.log("date pick",GetPickedDate(event.target.value),GetOldDate(),dateDelta)
-						if(dateDelta<=0){
-							Notice.Alert("오늘보다 이후의 날짜만 선택 가능합니다.")
-							return;
-						}
-						document.getElementById("prj_day").value=dateDelta;
-					}}></input>
+					<div>
+						<input className='base_style' type="date" id="date_picker" defaultValue={today} onChange={(event)=>{
+							let dateDelta=GetPickedDate(event.target.value)-GetOldDate()
+							console.log("date pick",GetPickedDate(event.target.value),GetOldDate(),dateDelta)
+							if(dateDelta<=0){
+								Notice.Alert("오늘보다 이후의 날짜만 선택 가능합니다.")
+								return;
+							}
+							setData({...data,day:dateDelta})
+							// document.getElementById("prj_day").value=dateDelta;
+						}}></input>
+					</div>
 				)
 			}
 		</div>

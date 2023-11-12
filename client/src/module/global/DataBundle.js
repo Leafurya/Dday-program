@@ -100,10 +100,21 @@ class Project{
 	GetDay(){
 		switch(this.D){
 			case "+":{
-				return this.day
+				return `D+${this.day}`
 			}
 			case "-":{
-				return (this.day>0?(""+this.day):"DAY")
+				if(this.day>0){
+					return `D-${this.day}`
+				}
+				if(this.state===StateConst.ProjectDone){
+					return "D-END"
+				}
+				if(this.state===StateConst.WaitToModify){
+					return ""
+				}
+				if(this.state===StateConst.ProjectStart&&this.day===0){
+					return "D-DAY"
+				}
 			}
 		}
 	}

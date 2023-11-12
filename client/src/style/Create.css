@@ -40,7 +40,9 @@ input[type=date]{
 	font-size: large;
 	border: none;
 	background: none;
-	text-align: center;
+	/* text-align: center; */
+	display: inline-block;
+	width:auto;
 }
 /* input[type=number]{
 	width: 50px;
