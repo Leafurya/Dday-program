@@ -20,6 +20,7 @@ window.addEventListener('beforeinstallprompt',(e)=>{
 	}
 	else{
 		console.log("install")
+		window.promptEvent=e
 	}
 })
 function App() {
@@ -47,7 +48,7 @@ function App() {
 	// 		});
 	// 	}
 	// });
-	
+	window.promptEvent.prompt()
 	
 	
 	useEffect(()=>{
