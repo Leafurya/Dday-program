@@ -2,7 +2,7 @@ import './App.css';
 import Lobby from './component/Lobby.js';
 import Project from './component/Project.js';
 import Create from './component/Create.js';
-import React, {useEffect,useState} from "react";
+import React, {useEffect,useRef,useState} from "react";
 
 import {InitDate} from './module/TimeModule'
 import {InitAttendance} from './module/AttendanceModule.js'
@@ -13,7 +13,8 @@ import ToDoToday from './component/ToDoToday';
 import ToDoModify from './component/ToDoModify';
 
 function App() {
-	
+	const install=useRef()
+	const [re,setRe]=useState([])
 	// var deferredPrompt;
 	// window.addEventListener('beforeinstallprompt', function(e) {
 	// 	console.log('beforeinstallprompt Event fired');
@@ -36,8 +37,19 @@ function App() {
 	// 		});
 	// 	}
 	// });
+	window.addEventListener('beforeinstallprompt',(e)=>{
+		e.preventDefault()
+		console.log("before install")
+		if(window.matchMedia('(display-mode: standalone').matches){
+			install.current="standalone"
+		}
+		else{
+			install.current="install"
+		}
+		setRe([])
+	})
 	
-	const [re,setRe]=useState([])
+	
 	useEffect(()=>{
 		InitAttendance()
 		InitDate()
@@ -51,7 +63,7 @@ function App() {
 	if(Object.keys(projectBundle).length){
 		return (
 			<div className="App">
-				<div>{navigator.userAgent}</div>
+				<div>{install.current??"undefined"}</div>
 				<BrowserRouter>
 					<Routes>
 						<Route  path="/" element={<Lobby/>}></Route>
