@@ -62,7 +62,6 @@ function App() {
 	if(Object.keys(projectBundle).length){
 		return (
 			<div className="App">
-				<div>{install.current??"undefined"}</div>
 				<BrowserRouter>
 					<Routes>
 						<Route  path="/" element={<Lobby/>}></Route>
