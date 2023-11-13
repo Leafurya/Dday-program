@@ -13,14 +13,13 @@ import ToDoToday from './component/ToDoToday';
 import ToDoModify from './component/ToDoModify';
 
 window.addEventListener('beforeinstallprompt',(e)=>{
-	// e.preventDefault()
+	e.preventDefault()
 	console.log("before install")
 	if(window.matchMedia('(display-mode: standalone').matches){
 		console.log("standalone")
 	}
 	else{
 		console.log("install")
-		window.promptEvent=e
 	}
 })
 function App() {
@@ -48,7 +47,6 @@ function App() {
 	// 		});
 	// 	}
 	// });
-	window.promptEvent.prompt()
 	
 	
 	useEffect(()=>{
