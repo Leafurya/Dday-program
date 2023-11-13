@@ -64,8 +64,8 @@ function TextAreaKeyInput(e){
 	console.log(e)
 	if(e.keyCode===13){
 		let textInput=e.target
-		let name=e.target.name
-		GetElement("task_inputs").appendChild(CreateTaskInputCell("task_input",textInput.value).div);
+		let name=e.target.dataset.name
+		GetElement(`${name}s`).appendChild(CreateTaskInputCell(name,textInput.value).div);
 		// GetElement(`${name}s`).appendChild(<TaskInputCell name={name} cntnt={textInput.value} disabled={false}></TaskInputCell>);
 		textInput.value=""
 		textInput.focus()

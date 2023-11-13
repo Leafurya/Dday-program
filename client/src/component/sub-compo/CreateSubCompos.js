@@ -167,8 +167,6 @@ function InputTaskPart({prj}){
 		perventionDuplication:1
 	})
 	let {tasks,lastTasks}=data.current
-	console.log("tasks",tasks)
-	console.log("lastTasks",lastTasks)
 	shareVar.InputTaskPart={
 		setType
 	}
@@ -265,7 +263,7 @@ function InputTaskPart({prj}){
 					<ul className="task_input_ul" id="last_task_inputs">
 						{lastTasks?(
 							Object.keys(lastTasks).map((task,index)=>{
-								return <TaskInputCell key={index} name="task_input" cntnt={task} disalbed={lastTasks[task]}></TaskInputCell>
+								return <TaskInputCell key={index} name="last_task_input" cntnt={task} disalbed={lastTasks[task]}></TaskInputCell>
 							})
 						):""}
 					</ul>
