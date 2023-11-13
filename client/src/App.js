@@ -12,16 +12,16 @@ import todoList from './module/global/ToDo';
 import ToDoToday from './component/ToDoToday';
 import ToDoModify from './component/ToDoModify';
 
-window.addEventListener('beforeinstallprompt',(e)=>{
-	e.preventDefault()
-	console.log("before install")
-	if(window.matchMedia('(display-mode: standalone').matches){
-		console.log("standalone")
-	}
-	else{
-		console.log("install")
-	}
-})
+// window.addEventListener('beforeinstallprompt',(e)=>{
+// 	e.preventDefault()
+// 	console.log("before install")
+// 	if(window.matchMedia('(display-mode: standalone').matches){
+// 		console.log("standalone")
+// 	}
+// 	else{
+// 		console.log("install")
+// 	}
+// })
 function App() {
 	const install=useRef()
 	const [re,setRe]=useState([])
