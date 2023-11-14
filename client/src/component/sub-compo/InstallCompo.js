@@ -2,7 +2,7 @@ import React, { useCallback, useRef } from "react";
 
 export default ()=>{
 	const installEvent=useRef()
-	window.addEventListener('beforeistallprompt',(e)=>{
+	window.addEventListener('beforeinstallprompt',(e)=>{
 		e.preventDefault()
 		installEvent.current=e
 		console.log(installEvent.current)
