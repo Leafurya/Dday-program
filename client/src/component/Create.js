@@ -44,7 +44,7 @@ function Create({}){
 			</div>
 			<div className="function_btns">
 				<input className="function_btn" type="button" value="뒤로" onClick={()=>{window.history.back()}}></input>
-				<CreateBtn dataToModify={prjName}></CreateBtn>
+				<CreateBtn modiPrjName={prjName}></CreateBtn>
 				{dataToModify?<DeleteBtn prjName={prjName}></DeleteBtn>:""}
 			</div>
 		</div>

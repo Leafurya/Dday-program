@@ -227,7 +227,7 @@ function InputTaskPart({prj}){
 			<div className='tab_cont'>
 				<div style={!page?{}:{display:"none"}}>
 					<label className='add_task'>
-						<TextInput placeholder={'입력'} className={"input"} name={"task_input"}></TextInput>
+						<TextInput placeholder={'입력'} className={"input"} data={"task_input"}></TextInput>
 						{/* <textarea className='input' placeholder='입력' rows="1" onKeyDown={TextAreaKeyInput}></textarea> */}
 						{/* <input type="text" placeholder='입력'></input> */}
 						<input type="button" value="+" onClick={(event)=>{
@@ -242,14 +242,14 @@ function InputTaskPart({prj}){
 					<ul className="task_input_ul" id="task_inputs">
 						{tasks?(
 							Object.keys(tasks).map((task,index)=>{
-								return <TaskInputCell key={index} name="task_input" cntnt={task} disalbed={tasks[task]}></TaskInputCell>
+								return <TaskInputCell key={index} name="task_input" cntnt={task} disabled={tasks[task]}></TaskInputCell>
 							})
 						):""}
 					</ul>
 				</div>
 				<div style={page?{}:{display:"none"}}>
 					<label className='add_task'>
-						<TextInput  className='input' placeholder='입력' name={"last_task_input"}></TextInput>
+						<TextInput  className='input' placeholder='입력' data={"last_task_input"}></TextInput>
 						{/* <textarea className='input' placeholder='입력' rows="1" onKeyDown={TextAreaKeyInput}></textarea> */}
 						{/* <input type="text" placeholder='입력'></input> */}
 						<input type="button" value="+" onClick={(event)=>{
@@ -307,14 +307,14 @@ function InputTaskPart({prj}){
 // 		</div>
 // 	);
 // }
-function CreateBtn({dataToModify}){
+function CreateBtn({modiPrjName}){
 	const navigate=useNavigate()
 	return(
 		<input className="function_btn" type="button" defaultValue="저장" onClick={()=>{
 			let projectName=GetElement("prj_name").value;
 			let discription=GetElement("prj_cntnt").value;
 			let D=GetElement("prj_type").value
-			let Day=(D==="+")?0:GetElement("prj_day").value;
+			let Day=(D==="+")?0:parseInt(GetElement("prj_day").value);
 			let tasks=GetTaskFromInput("task_input");
 			let lastTasks=(D==="+")?null:GetTaskFromInput("last_task_input"); //if lastTasks not exist, value is null
 			console.log("lastTasks",lastTasks)
@@ -326,24 +326,27 @@ function CreateBtn({dataToModify}){
 				Notice.Alert("도전과제가 비어있습니다.");
 				return;
 			}
-			if(D==='-'&&Day===""){
+			console.log("Day",typeof(Day))
+			if(D==='-'&&Day===0){
 				Notice.Alert("일 수가 비어있습니다.");
 				return;
 			}
 
 			let data=CreateDataObj(discription,tasks,D,Day,lastTasks)
-			if(dataToModify){
-				projectBundle.Remove(dataToModify)
+			console.log("created data",data);
+			if(modiPrjName){
+				console.log("modi")
+				projectBundle.Remove(modiPrjName)
 			}
 			if(!projectBundle.Append(projectName,data)){
 				Notice.Alert("같은 이름의 프로젝트가 존재합니다.");
 				console.log("exist same project")
 				return
 			}
-			console.log("created data",data);
+			
 			projectBundle.Save()
 			
-			if(projectName===dataToModify){
+			if(projectName===modiPrjName){
 				navigate(-1)
 				return
 			}
