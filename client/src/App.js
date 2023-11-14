@@ -11,6 +11,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import todoList from './module/global/ToDo';
 import ToDoToday from './component/ToDoToday';
 import ToDoModify from './component/ToDoModify';
+import InstallCompo from './component/sub-compo/InstallCompo.js';
 
 // window.addEventListener('beforeinstallprompt',(e)=>{
 // 	e.preventDefault()
@@ -58,6 +59,10 @@ function App() {
 		setRe([])
 	},[])
 	
+	if(!window.matchMedia("(display-mode: standalone)").matches){
+		return <InstallCompo></InstallCompo>
+	}
+
 	console.log("app",projectBundle)
 	if(Object.keys(projectBundle).length){
 		return (

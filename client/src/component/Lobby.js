@@ -10,7 +10,6 @@ import todoList from "../module/global/ToDo";
 
 function Lobby(){
 	let today=IsNextDay();
-
 	if(today){
 		let dateDelta=today-GetOldDate();
 		UpdateAttendance(dateDelta);
@@ -21,6 +20,7 @@ function Lobby(){
 	}
 	return(
 		<div className="borad">
+			
 			<ul className="project_list_ul">
 				{/* <li className="project_list_li" >
 					<StyledLink to={'/Create'}>
