@@ -1,4 +1,10 @@
-let obj={a:1,b:2}
+function GetDeg(myX,myZ,trgX,trgZ){
+	let originX=trgX-myX
+	let originZ=trgZ-myZ
 
-let obj2={a:19,...obj}
-console.log(obj2)
+	let deg=Math.atan(originZ/originX)*(180.0/Math.PI)
+	if(originX<0){
+		return deg-180
+	}
+	return deg
+}
