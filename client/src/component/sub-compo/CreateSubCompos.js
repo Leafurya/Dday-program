@@ -205,13 +205,13 @@ function InputTaskPart({prj}){
 								setPage(0)
 							}}/>
 							<label style={!page?{backgroundColor:"#7965bd"}:{}} className='tab_radio_label' defaultChecked={page} htmlFor="tabmenu1">
-								<span>기본 과제</span>
+								<span>할 일</span>
 							</label>
 							<input type="radio" name="menu" id="tabmenu2" onClick={()=>{
 								setPage(1)
 							}}/>
 							<label style={page?{backgroundColor:"#7965bd"}:{}} className='tab_radio_label' htmlFor="tabmenu2">
-								<span>최종 과제</span>
+								<span>최종 목표</span>
 							</label>
 						</>
 					):(
@@ -219,7 +219,7 @@ function InputTaskPart({prj}){
 							<input disabled type="radio" name="menu" id="tabmenu1" onClick={()=>{
 								setPage(0)
 							}}/>
-							<label className='tab_radio_label' htmlFor="tabmenu1">기본 과제</label>
+							<label className='tab_radio_label' htmlFor="tabmenu1">할 일</label>
 						</>
 					)
 				}
