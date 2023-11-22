@@ -59,9 +59,9 @@ function App() {
 		setRe([])
 	},[])
 	
-	// if(!window.matchMedia("(display-mode: standalone)").matches){
-	// 	return <InstallCompo></InstallCompo>
-	// }
+	if(!window.matchMedia("(display-mode: standalone)").matches){
+		return <InstallCompo></InstallCompo>
+	}
 
 	console.log("app",projectBundle)
 	if(Object.keys(projectBundle).length){
