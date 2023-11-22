@@ -36,6 +36,8 @@ export default ()=>{
 				앱 이름을 왜 이렇게 정했는지 알려주면 이 앱의 의의를 더 잘 알 수 있겠지?
 
 				이 앱은 투두 리스트에 가깝습니다. 반복적으로 해야 하는 일을 지정해 놓고 D-Day 프로젝트로 만들고 실행해 보세요!
+
+				디스코드 사이트 참고해서 만들어보면 좋을듯?
 			</div>
 			<div className="install_btn_platform" style={{backgroundColor:"#95f",width:"50%"}}>
 				
