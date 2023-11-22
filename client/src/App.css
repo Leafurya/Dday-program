@@ -6,7 +6,7 @@ body{
 	font-size: x-large;
 	overflow:hidden;
 	font-family: 'Jeju Gothic', sans-serif;
-	background-color: #947fda;
+	
 	
 	-webkit-user-select: none !important; 
 	-moz-user-select: -moz-none !important;
@@ -22,6 +22,7 @@ li{
 	overflow:hidden;
 	height: 100%;
 	width: 100%;
+	background-color: #947fda;
 }
 textarea,input{
 	font-family: 'Jeju Gothic', sans-serif;
