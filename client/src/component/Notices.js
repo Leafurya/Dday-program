@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 function NotiBase({children,btns}){
 	return(
@@ -39,10 +39,10 @@ function Confrim({children,ResultCallback}){
 	return(
 		<NotiBase btns={[{
 			title:"확인",
-			onClick:(e)=>{ResultCallback("ok",e)}
+			onClick:(e)=>{ResultCallback(true,e)}
 		},{
 			title:"취소",
-			onClick:(e)=>{ResultCallback("cancel",e)}
+			onClick:(e)=>{ResultCallback(false,e)}
 		}]}>
 			<div>
 				{children}
@@ -72,11 +72,26 @@ function Prompt({children,ResultCallback}){
 		</NotiBase>
 	)
 }
-function Toast({children}){
+const toastRef={}
+function Toast({}){
+	const [message,setMessage]=useState(null)
+	
+	toastRef.SetMessage=(msg)=>{
+		setMessage(<div id="toast">
+			{msg}
+		</div>)
+	}
+	useEffect(()=>{
+		if(message!==null){
+			setTimeout(()=>{
+				setMessage(null)
+			},2500)
+		}
+	},[message])
 	return(
-		<div>
-			{children}
+		<div style={{bottom:0,position:"absolute",left:0,width:"100%"}}>
+			{message}
 		</div>
 	)
 }
-export{Alert,Confrim,Prompt}
+export{Alert,Confrim,Prompt,Toast,toastRef}

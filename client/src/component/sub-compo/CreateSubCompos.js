@@ -13,14 +13,17 @@ function DeleteBtn({prjName}){
 	const navigate=useNavigate()
 	return(
 		<input className="function_btn" type="button" value="삭제" onClick={
-			async()=>{
-				if(await Notice.Confrim('프로젝트 삭제를 원하신다면 확인을 눌러주십시오.<br/>한번 삭제한 프로젝트는 복구가 불가능합니다.')==1){
-					projectBundle.Quit(prjName)
-					projectBundle.Save()
-					Notice.Alert("프로젝트를 삭제하였습니다.");
-					navigate(-2)
-				}
+			()=>{
+				navigate(`/Create?name=${prjName}&confrim=delete`)
 			}
+			// async()=>{
+			// 	if(await Notice.Confrim('프로젝트 삭제를 원하신다면 확인을 눌러주십시오.<br/>한번 삭제한 프로젝트는 복구가 불가능합니다.')==1){
+			// 		projectBundle.Quit(prjName)
+			// 		projectBundle.Save()
+			// 		Notice.Alert("프로젝트를 삭제하였습니다.");
+			// 		navigate(-2)
+			// 	}
+			// }
 		}></input>
 	)
 }

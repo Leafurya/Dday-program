@@ -12,6 +12,7 @@ import todoList from './module/global/ToDo';
 import ToDoToday from './component/ToDoToday';
 import ToDoModify from './component/ToDoModify';
 import InstallCompo from './component/sub-compo/InstallCompo.js';
+import { Toast } from './component/Notices.js';
 
 // window.addEventListener('beforeinstallprompt',(e)=>{
 // 	e.preventDefault()
@@ -76,6 +77,7 @@ function App() {
 						<Route path="/ToDoModify" element={<ToDoModify/>}></Route>
 					</Routes>
 				</BrowserRouter>
+				<Toast></Toast>
 			</div>
 		)
 	}

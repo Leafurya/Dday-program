@@ -57,3 +57,21 @@
 .prompt_platform .okcancel input, .confirm_platform .okcancel input{
     flex:1;
 }
+
+@keyframes toast{
+	0%{
+		opacity: 1;
+	}
+	85%{
+		opacity: 1;
+	}
+	100%{
+		opacity: 0;
+		display: none;
+	}
+}
+#toast{
+	animation-name: toast;
+	animation-duration: 2.5s;
+	animation-fill-mode: forwards;
+}
