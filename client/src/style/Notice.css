@@ -16,6 +16,7 @@
     flex-direction: column;
     width: 80%;
     background-color: gray;
+	box-sizing: content-box;
 }
 .platform_base .article{
     display: flex;

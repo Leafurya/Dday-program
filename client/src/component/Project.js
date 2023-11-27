@@ -9,6 +9,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import projectBundle from '../module/global/DataBundle';
 import TopNavigator from './TopNavigator';
 import StateConst from '../module/global/StateConst';
+import { Prompt } from './Notices.js';
 
 function FunctionBtns({prjName,pageUpdate,start,project}){
 	const navigate=useNavigate()
@@ -17,12 +18,13 @@ function FunctionBtns({prjName,pageUpdate,start,project}){
 			window.history.back()
 		}}></input>,
 		start?<input key={2} className="when_start function_btn" type="button" value="포기" onClick={async()=>{
-			let str=await Notice.Prompt('프로젝트 포기를 원하신다면<br/>"포기하겠습니다"<br/>를 적고 확인을 눌러주십시오.<br/>한번 포기한 프로젝트는 복구가 불가능합니다.');
-			if(str=="포기하겠습니다"){
-				projectBundle.Quit(prjName)
-				Notice.Alert("프로젝트를 포기하셨습니다. 수고하셨습니다.");
-				window.history.back()
-			}
+			navigate(`/Project?name=${prjName}&giveup=true`)
+			// let str=await Notice.Prompt('프로젝트 포기를 원하신다면<br/>"포기하겠습니다"<br/>를 적고 확인을 눌러주십시오.<br/>한번 포기한 프로젝트는 복구가 불가능합니다.');
+			// if(str=="포기하겠습니다"){
+			// 	projectBundle.Quit(prjName)
+			// 	Notice.Alert("프로젝트를 포기하셨습니다. 수고하셨습니다.");
+			// 	window.history.back()
+			// }
 		}}></input>:"",
 		start?"":<input key={3} className="when_ready function_btn" type="button" value="수정" onClick={()=>{
 			navigate(`/Create?name=${prjName}`)
@@ -50,10 +52,6 @@ function Project(props){
 	const [refresh,pageUpdate]=useState([]);
 	const project=projectBundle.GetProject(prjName)
 
-	let started=(project.state===StateConst.ProjectStart)
-	let value=(project.stat.checkedTaskCount/project.stat.taskCount)*100
-	let stat=(started?((value).toFixed(1)+"%"):"-%")
-
 	useEffect(()=>{
 		if(project){
 			// for(var i=0,ele=document.querySelectorAll(".when_start");i<ele.length;i++){
@@ -71,11 +69,17 @@ function Project(props){
 			}
 		}
 	},[refresh])
+	useEffect(()=>{
+		console.log("param effect",param.get('giveup'))
+	},[param])
 
 	if(!project){
 		window.history.back()
 		return
 	}
+	let started=(project.state===StateConst.ProjectStart)
+	let value=(project.stat.checkedTaskCount/project.stat.taskCount)*100
+	let stat=(started?((value).toFixed(1)+"%"):"-%")
 	return(
 		<div className="borad">
 			<TopNavigator title={prjName} sub={["프로젝트 끝","수정 대기중...","시작 대기중...",`성공률 ${stat}`][project.state]}></TopNavigator>
@@ -92,6 +96,29 @@ function Project(props){
 				</ul>
 			</div>
 			<FunctionBtns prjName={prjName} project={project} start={started} pageUpdate={pageUpdate}></FunctionBtns>
+			{
+				param.get("giveup")?(
+					<Prompt ResultCallback={(result)=>{
+						switch(result){
+							case "ok":{
+								if(document.getElementById("prompt_ok").value==="포기하겠습니다"){
+									projectBundle.Quit(prjName)
+									pageUpdate([])
+								}
+								break
+							}
+							case "cancel":{
+								window.history.back()
+								break
+							}
+						}
+					}}>
+						프로젝트 포기를 원하신다면<br/>
+						"포기하겠습니다"<br/>
+						를 적어주십시오
+					</Prompt>
+				):""
+			}
 			{/* <div className="function_btns">
 				<input className='function_btn' type="button" value="뒤로" onClick={()=>{
 					window.history.back()
