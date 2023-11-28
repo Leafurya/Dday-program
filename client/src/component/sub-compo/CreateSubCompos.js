@@ -8,34 +8,38 @@ import { useNavigate } from 'react-router-dom';
 
 import "../../style/Template.css"
 import TextInput from '../global/TextInput.js';
+import { toastRef } from '../Notices.js';
 
 function DeleteBtn({prjName}){
 	const navigate=useNavigate()
 	return(
 		<input className="function_btn" type="button" value="삭제" onClick={
-			async()=>{
-				if(await Notice.Confrim('프로젝트 삭제를 원하신다면 확인을 눌러주십시오.<br/>한번 삭제한 프로젝트는 복구가 불가능합니다.')==1){
-					projectBundle.Quit(prjName)
-					projectBundle.Save()
-					Notice.Alert("프로젝트를 삭제하였습니다.");
-					navigate(-2)
-				}
+			()=>{
+				navigate(`/Create?name=${prjName}&confirm=delete`)
 			}
+			// async()=>{
+			// 	if(await Notice.Confrim('프로젝트 삭제를 원하신다면 확인을 눌러주십시오.<br/>한번 삭제한 프로젝트는 복구가 불가능합니다.')==1){
+			// 		projectBundle.Quit(prjName)
+			// 		projectBundle.Save()
+			// 		Notice.Alert("프로젝트를 삭제하였습니다.");
+			// 		navigate(-2)
+			// 	}
+			// }
 		}></input>
 	)
 }
-function DisableInput(val){
-	document.getElementById("prj_day").disabled=val;
-	if(val){
-		document.querySelector(".last_task_input").classList.add("disabled")
-		document.querySelector(".type_choice > span").classList.add("disabled_background")
-	}
-	else{
-		document.querySelector(".last_task_input").classList.remove("disabled")
-		document.querySelector(".type_choice > span").classList.remove("disabled_background")
-	}
-	document.getElementById("date_picker").disabled=val;
-}
+// function DisableInput(val){
+// 	document.getElementById("prj_day").disabled=val;
+// 	if(val){
+// 		document.querySelector(".last_task_input").classList.add("disabled")
+// 		document.querySelector(".type_choice > span").classList.add("disabled_background")
+// 	}
+// 	else{
+// 		document.querySelector(".last_task_input").classList.remove("disabled")
+// 		document.querySelector(".type_choice > span").classList.remove("disabled_background")
+// 	}
+// 	document.getElementById("date_picker").disabled=val;
+// }
 let shareVar={}
 function TypeChoice({prj}){
 	const tdDate=new Date();
@@ -51,6 +55,12 @@ function TypeChoice({prj}){
 			dayInput.focus()
 			dayInput.value=''
 			dayInput.value=data.day
+			if(data.day===0){
+				document.querySelector("label[for=prj_day]").classList="empty"
+			}
+			else{
+				document.querySelector("label[for=prj_day]").classList=""
+			}
 		}
 	},[data])
 	return(
@@ -74,8 +84,14 @@ function TypeChoice({prj}){
 									{day}
 								</label>
 								<input className='base_style' type="number" id="prj_day" defaultValue={day} onChange={(event)=>{
+									if(!Number(event.target.value)){
+										document.querySelector("label[for=prj_day]").classList="empty"
+									}
+									else{
+										document.querySelector("label[for=prj_day]").classList=""
+									}
+
 									let date=new Date()
-									console.log(Number(event.target.value))
 									date.setDate(Number(date.getDate())+Number(event.target.value))
 									let year=date.getFullYear()
 									let month=date.getMonth()+1
@@ -97,9 +113,10 @@ function TypeChoice({prj}){
 					<div>
 						<input className='base_style' type="date" id="date_picker" defaultValue={today} onChange={(event)=>{
 							let dateDelta=GetPickedDate(event.target.value)-GetOldDate()
-							console.log("date pick",GetPickedDate(event.target.value),GetOldDate(),dateDelta)
+							// console.log("date pick",GetPickedDate(event.target.value),GetOldDate(),dateDelta)
 							if(dateDelta<=0){
-								Notice.Alert("오늘보다 이후의 날짜만 선택 가능합니다.")
+								// Notice.Alert("오늘보다 이후의 날짜만 선택 가능합니다.")
+								toastRef.SetMessage("오늘보다 이후의 날짜만 선택 가능합니다.")
 								return;
 							}
 							setData({...data,day:dateDelta})
@@ -317,30 +334,31 @@ function CreateBtn({modiPrjName}){
 			let Day=(D==="+")?0:parseInt(GetElement("prj_day").value);
 			let tasks=GetTaskFromInput("task_input");
 			let lastTasks=(D==="+")?null:GetTaskFromInput("last_task_input"); //if lastTasks not exist, value is null
-			console.log("lastTasks",lastTasks)
+
 			if(projectName.length<=0){
-				Notice.Alert("프로젝트 이름이 비어있습니다.");
+				// Notice.Alert("프로젝트 이름이 비어있습니다.");
+				toastRef.SetMessage("프로젝트 이름이 비어있습니다.")
 				return;
 			}
 			if(!tasks){
-				Notice.Alert("도전과제가 비어있습니다.");
+				// Notice.Alert("도전과제가 비어있습니다.");
+				toastRef.SetMessage("할 일이 비어있습니다.")
 				return;
 			}
 			console.log("Day",typeof(Day))
 			if(D==='-'&&Day===0){
-				Notice.Alert("일 수가 비어있습니다.");
+				// Notice.Alert("일 수가 비어있습니다.");
+				toastRef.SetMessage("일 수가 비어있습니다.")
 				return;
 			}
 
 			let data=CreateDataObj(discription,tasks,D,Day,lastTasks)
-			console.log("created data",data);
 			if(modiPrjName){
-				console.log("modi")
 				projectBundle.Remove(modiPrjName)
 			}
 			if(!projectBundle.Append(projectName,data)){
-				Notice.Alert("같은 이름의 프로젝트가 존재합니다.");
-				console.log("exist same project")
+				// Notice.Alert("같은 이름의 프로젝트가 존재합니다.");
+				toastRef.SetMessage("같은 이름의 프로젝트가 존재합니다.")
 				return
 			}
 			

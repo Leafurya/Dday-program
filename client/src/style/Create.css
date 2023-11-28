@@ -355,3 +355,7 @@ input[type=text]:focus,input[type=number]:focus,textarea:focus,input[type=date]:
 .task_input_div input[type=button]:disabled{
 	color: transparent;
 }
+
+.empty{
+	color: rgba(255, 255, 255, 0.5);
+}

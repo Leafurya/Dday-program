@@ -9,6 +9,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import projectBundle from '../module/global/DataBundle';
 import TopNavigator from './TopNavigator';
 import StateConst from '../module/global/StateConst';
+import { Alert, Prompt, toastRef } from './Notices.js';
 
 function FunctionBtns({prjName,pageUpdate,start,project}){
 	const navigate=useNavigate()
@@ -17,12 +18,13 @@ function FunctionBtns({prjName,pageUpdate,start,project}){
 			window.history.back()
 		}}></input>,
 		start?<input key={2} className="when_start function_btn" type="button" value="포기" onClick={async()=>{
-			let str=await Notice.Prompt('프로젝트 포기를 원하신다면<br/>"포기하겠습니다"<br/>를 적고 확인을 눌러주십시오.<br/>한번 포기한 프로젝트는 복구가 불가능합니다.');
-			if(str=="포기하겠습니다"){
-				projectBundle.Quit(prjName)
-				Notice.Alert("프로젝트를 포기하셨습니다. 수고하셨습니다.");
-				window.history.back()
-			}
+			navigate(`/Project?name=${prjName}&giveup=true`)
+			// let str=await Notice.Prompt('프로젝트 포기를 원하신다면<br/>"포기하겠습니다"<br/>를 적고 확인을 눌러주십시오.<br/>한번 포기한 프로젝트는 복구가 불가능합니다.');
+			// if(str=="포기하겠습니다"){
+			// 	projectBundle.Quit(prjName)
+			// 	Notice.Alert("프로젝트를 포기하셨습니다. 수고하셨습니다.");
+			// 	window.history.back()
+			// }
 		}}></input>:"",
 		start?"":<input key={3} className="when_ready function_btn" type="button" value="수정" onClick={()=>{
 			navigate(`/Create?name=${prjName}`)
@@ -30,11 +32,13 @@ function FunctionBtns({prjName,pageUpdate,start,project}){
 		start?"":<input key={4} className="when_ready function_btn" type="button" value="시작" onClick={()=>{
 			if(project.Start()){
 				projectBundle.Save()
-				Notice.Alert(prjName+"프로젝트가 시작됐습니다.")
+				// Notice.Alert(prjName+"프로젝트가 시작됐습니다.")
+				toastRef.SetMessage("프로젝트가 시작됐습니다.")
 				pageUpdate([])
 			}
 			else{
-				Notice.Alert("프로젝트 재설정 부탁드립니다.")
+				// Notice.Alert("프로젝트 재설정 부탁드립니다.")
+				toastRef.SetMessage("프로젝트 재설정 부탁드립니다.")
 			}
 		}}></input>
 	]
@@ -45,37 +49,49 @@ function FunctionBtns({prjName,pageUpdate,start,project}){
 	)
 }
 function Project(props){
+	const navigate=useNavigate()
 	const [param,setParam]=useSearchParams()
 	const prjName=param.get('name')
 	const [refresh,pageUpdate]=useState([]);
 	const project=projectBundle.GetProject(prjName)
 
-	let started=(project.state===StateConst.ProjectStart)
-	let value=(project.stat.checkedTaskCount/project.stat.taskCount)*100
-	let stat=(started?((value).toFixed(1)+"%"):"-%")
-
+	// useEffect(()=>{
+	// 	if(project){
+	// 		// for(var i=0,ele=document.querySelectorAll(".when_start");i<ele.length;i++){
+	// 		// 	ele[i].disabled=!project.start;
+	// 		// }
+	// 		// for(var i=0,ele=document.querySelectorAll(".when_ready");i<ele.length;i++){
+	// 		// 	ele[i].disabled=project.start;
+	// 		// }
+	// 		if(project.state===StateConst.ProjectDone){
+	// 			// let stat=((project.stat.checkedTaskCount/project.stat.taskCount)*100).toFixed(1)+"%";
+	// 			// Notice.Alert(stat+"의 성공률로 프로젝트가 끝났습니다! 이제 프로젝트 설정을 변경하거나 프로젝트를 제거 할 수 있습니다.\n 수고하셨습니다!");
+	// 			project.state=StateConst.WaitToModify
+	// 			projectBundle.Save()
+	// 			pageUpdate([])
+	// 			navigate(`/Project?name=${prjName}&alert=done`)
+	// 		}
+	// 	}
+	// },[refresh])
 	useEffect(()=>{
+		// console.log("param effect",param.get('giveup'))
 		if(project){
-			// for(var i=0,ele=document.querySelectorAll(".when_start");i<ele.length;i++){
-			// 	ele[i].disabled=!project.start;
-			// }
-			// for(var i=0,ele=document.querySelectorAll(".when_ready");i<ele.length;i++){
-			// 	ele[i].disabled=project.start;
-			// }
 			if(project.state===StateConst.ProjectDone){
-				let stat=((project.stat.checkedTaskCount/project.stat.taskCount)*100).toFixed(1)+"%";
-				Notice.Alert(stat+"의 성공률로 프로젝트가 끝났습니다! 이제 프로젝트 설정을 변경하거나 프로젝트를 제거 할 수 있습니다.\n 수고하셨습니다!");
 				project.state=StateConst.WaitToModify
 				projectBundle.Save()
 				pageUpdate([])
+				navigate(`/Project?name=${prjName}&alert=done`)
 			}
 		}
-	},[refresh])
+	},[param])
 
 	if(!project){
 		window.history.back()
 		return
 	}
+	let started=(project.state===StateConst.ProjectStart)
+	let value=(project.stat.checkedTaskCount/project.stat.taskCount)*100
+	let stat=(started?((value).toFixed(1)+"%"):"-%")
 	return(
 		<div className="borad">
 			<TopNavigator title={prjName} sub={["프로젝트 끝","수정 대기중...","시작 대기중...",`성공률 ${stat}`][project.state]}></TopNavigator>
@@ -92,6 +108,32 @@ function Project(props){
 				</ul>
 			</div>
 			<FunctionBtns prjName={prjName} project={project} start={started} pageUpdate={pageUpdate}></FunctionBtns>
+			{
+				param.get("giveup")?(
+					<Prompt ResultCallback={(result)=>{
+						if(result){
+							if(document.getElementById("prompt_text_input").value==="포기하겠습니다"){
+								projectBundle.Quit(prjName)
+								// pageUpdate([])
+								toastRef.SetMessage("프로젝트를 종료했습니다.")
+								navigate(-2)
+							}
+						}
+						else{
+							window.history.back()
+						}
+					}}>
+						프로젝트 포기를 원하신다면<br/>
+						"포기하겠습니다"<br/>
+						를 적어주십시오
+					</Prompt>
+				):""
+			}
+			{
+				param.get("alert")?(
+					<Alert>{`${(value).toFixed(1)}% 의 성공률로 프로젝트가 끝났습니다! 이제 프로젝트 설정을 변경하거나 프로젝트를 제거 할 수 있습니다.\n 수고하셨습니다!`}</Alert>
+				):""
+			}
 			{/* <div className="function_btns">
 				<input className='function_btn' type="button" value="뒤로" onClick={()=>{
 					window.history.back()

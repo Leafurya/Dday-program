@@ -14,7 +14,7 @@ export default ({})=>{
 
 	return(
 		<div className="borad">
-			<TopNavigator title="오늘 할 일" sub={`성공률 ${_stat}`}></TopNavigator>
+			<TopNavigator title="오늘 할 일" sub={stat.taskCount?`성공률 ${_stat}`:"오늘 뭐하지?"}></TopNavigator>
 			<div className={"main_platform project_board"}>
 				<div>
 					<div>

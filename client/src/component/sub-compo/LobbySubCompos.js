@@ -87,7 +87,7 @@ function ToDoCard({}){
 						<div style={{display:"flex",flexDirection:"column"}}>
 							<h2 className='base_style'>오늘 할 일</h2>
 							<div className="task_stat base_style">
-								<span>{`성공률 ${_stat}`}</span>
+								<span>{stat.taskCount?`성공률 ${_stat}`:"오늘 뭐하지?"}</span>
 							</div>
 						</div>
 					</div>

@@ -12,6 +12,7 @@ import todoList from './module/global/ToDo';
 import ToDoToday from './component/ToDoToday';
 import ToDoModify from './component/ToDoModify';
 import InstallCompo from './component/sub-compo/InstallCompo.js';
+import { Toast } from './component/Notices.js';
 
 // window.addEventListener('beforeinstallprompt',(e)=>{
 // 	e.preventDefault()
@@ -55,27 +56,28 @@ function App() {
 		InitDate()
 		todoList.Init()
 		projectBundle.Init()
-		console.log("todoList",todoList)
+		// console.log("todoList",todoList)
 		setRe([])
 	},[])
 	
-	if(!window.matchMedia("(display-mode: standalone)").matches){
-		return <InstallCompo></InstallCompo>
-	}
+	// if(!window.matchMedia("(display-mode: standalone)").matches){
+	// 	return <InstallCompo></InstallCompo>
+	// }
 
-	console.log("app",projectBundle)
+	// console.log("app",projectBundle)
 	if(Object.keys(projectBundle).length){
 		return (
 			<div className="App">
 				<BrowserRouter>
 					<Routes>
-						<Route  path="/" element={<Lobby/>}></Route>
+						<Route path="/" element={<Lobby/>}></Route>
 						<Route path="/Create" element={<Create/>}></Route>
 						<Route path="/Project" element={<Project/>}></Route>
 						<Route path="/ToDoToday" element={<ToDoToday/>}></Route>
 						<Route path="/ToDoModify" element={<ToDoModify/>}></Route>
 					</Routes>
 				</BrowserRouter>
+				<Toast></Toast>
 			</div>
 		)
 	}

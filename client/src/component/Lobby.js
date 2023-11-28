@@ -7,6 +7,7 @@ import { StyledLink} from "../module/GlobalModule";
 import { GetOldDate, IsNextDay, UpdateOldDate } from "../module/TimeModule";
 import projectBundle from "../module/global/DataBundle";
 import todoList from "../module/global/ToDo";
+import { toastRef } from "./Notices.js";
 
 function Lobby(){
 	let today=IsNextDay();
@@ -20,7 +21,9 @@ function Lobby(){
 	}
 	return(
 		<div className="borad">
-			
+			{/* <input value="토스트 보이기" type="button" onClick={()=>{
+				toastRef.SetMessage("토스트 메시지")
+			}}></input> */}
 			<ul className="project_list_ul">
 				{/* <li className="project_list_li" >
 					<StyledLink to={'/Create'}>
