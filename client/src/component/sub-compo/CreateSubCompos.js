@@ -8,13 +8,14 @@ import { useNavigate } from 'react-router-dom';
 
 import "../../style/Template.css"
 import TextInput from '../global/TextInput.js';
+import { toastRef } from '../Notices.js';
 
 function DeleteBtn({prjName}){
 	const navigate=useNavigate()
 	return(
 		<input className="function_btn" type="button" value="삭제" onClick={
 			()=>{
-				navigate(`/Create?name=${prjName}&confrim=delete`)
+				navigate(`/Create?name=${prjName}&confirm=delete`)
 			}
 			// async()=>{
 			// 	if(await Notice.Confrim('프로젝트 삭제를 원하신다면 확인을 눌러주십시오.<br/>한번 삭제한 프로젝트는 복구가 불가능합니다.')==1){
@@ -102,7 +103,8 @@ function TypeChoice({prj}){
 							let dateDelta=GetPickedDate(event.target.value)-GetOldDate()
 							console.log("date pick",GetPickedDate(event.target.value),GetOldDate(),dateDelta)
 							if(dateDelta<=0){
-								Notice.Alert("오늘보다 이후의 날짜만 선택 가능합니다.")
+								// Notice.Alert("오늘보다 이후의 날짜만 선택 가능합니다.")
+								toastRef.SetMessage("오늘보다 이후의 날짜만 선택 가능합니다.")
 								return;
 							}
 							setData({...data,day:dateDelta})
@@ -320,30 +322,31 @@ function CreateBtn({modiPrjName}){
 			let Day=(D==="+")?0:parseInt(GetElement("prj_day").value);
 			let tasks=GetTaskFromInput("task_input");
 			let lastTasks=(D==="+")?null:GetTaskFromInput("last_task_input"); //if lastTasks not exist, value is null
-			console.log("lastTasks",lastTasks)
+
 			if(projectName.length<=0){
-				Notice.Alert("프로젝트 이름이 비어있습니다.");
+				// Notice.Alert("프로젝트 이름이 비어있습니다.");
+				toastRef.SetMessage("프로젝트 이름이 비어있습니다.")
 				return;
 			}
 			if(!tasks){
-				Notice.Alert("도전과제가 비어있습니다.");
+				// Notice.Alert("도전과제가 비어있습니다.");
+				toastRef.SetMessage("도전과제가 비어있습니다.")
 				return;
 			}
 			console.log("Day",typeof(Day))
 			if(D==='-'&&Day===0){
-				Notice.Alert("일 수가 비어있습니다.");
+				// Notice.Alert("일 수가 비어있습니다.");
+				toastRef.SetMessage("일 수가 비어있습니다.")
 				return;
 			}
 
 			let data=CreateDataObj(discription,tasks,D,Day,lastTasks)
-			console.log("created data",data);
 			if(modiPrjName){
-				console.log("modi")
 				projectBundle.Remove(modiPrjName)
 			}
 			if(!projectBundle.Append(projectName,data)){
-				Notice.Alert("같은 이름의 프로젝트가 존재합니다.");
-				console.log("exist same project")
+				// Notice.Alert("같은 이름의 프로젝트가 존재합니다.");
+				toastRef.SetMessage("같은 이름의 프로젝트가 존재합니다.")
 				return
 			}
 			

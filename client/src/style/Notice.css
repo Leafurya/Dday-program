@@ -15,7 +15,7 @@
     display: flex;
     flex-direction: column;
     width: 80%;
-    background-color: gray;
+    background-color: #947fda;
 	box-sizing: content-box;
 }
 .platform_base .article{
@@ -70,8 +70,25 @@
 		display: none;
 	}
 }
-#toast{
+.uniqe_toast{
 	animation-name: toast;
 	animation-duration: 2.5s;
 	animation-fill-mode: forwards;
+	position:absolute;
+	background-color: rgb(243, 243, 243);
+	color: black;
+	font-size: large;
+	padding: 10px 20px;
+	border-radius: 10px;
+	transform: translateX(-50%);
+	left: 50%;
+	text-align: center;
+	width:80%;
+	top:20px;
+}
+#prompt_text_input{
+	color:white;
+}
+#prompt_text_input::placeholder{
+	color:rgba(255, 255, 255, 0.541);
 }

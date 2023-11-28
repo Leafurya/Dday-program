@@ -111,18 +111,15 @@ function Project(props){
 			{
 				param.get("giveup")?(
 					<Prompt ResultCallback={(result)=>{
-						switch(result){
-							case "ok":{
-								if(document.getElementById("prompt_ok").value==="포기하겠습니다"){
-									projectBundle.Quit(prjName)
-									pageUpdate([])
-								}
-								break
+						if(result){
+							if(document.getElementById("prompt_text_input").value==="포기하겠습니다"){
+								projectBundle.Quit(prjName)
+								// pageUpdate([])
+								navigate(-2)
 							}
-							case "cancel":{
-								window.history.back()
-								break
-							}
+						}
+						else{
+							window.history.back()
 						}
 					}}>
 						프로젝트 포기를 원하신다면<br/>

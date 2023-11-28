@@ -10,6 +10,7 @@ import TopNavigator from './TopNavigator';
 import todoList from '../module/global/ToDo';
 import { GetTaskFromInput } from '../module/CreateCompModule';
 import Notice from '../module/Notice';
+import { toastRef } from './Notices.js';
 
 function CreateBtn(){
 	return(
@@ -17,10 +18,11 @@ function CreateBtn(){
 			
 			let tasks=GetTaskFromInput("task_input");
 			if(!tasks){
-				Notice.Alert("도전과제가 비어있습니다.");
+				// Notice.Alert("도전과제가 비어있습니다.");
+				toastRef.SetMessage("도전과제가 비어있습니다.")
 				return;
 			}
-			console.log("tasks",tasks)
+			// console.log("tasks",tasks)
 			todoList.SetData(tasks)
 			window.history.back()
 		}}></input>
