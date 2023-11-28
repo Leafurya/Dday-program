@@ -74,7 +74,7 @@ function Project(props){
 	// 	}
 	// },[refresh])
 	useEffect(()=>{
-		console.log("param effect",param.get('giveup'))
+		// console.log("param effect",param.get('giveup'))
 		if(project){
 			if(project.state===StateConst.ProjectDone){
 				project.state=StateConst.WaitToModify
@@ -115,6 +115,7 @@ function Project(props){
 							if(document.getElementById("prompt_text_input").value==="포기하겠습니다"){
 								projectBundle.Quit(prjName)
 								// pageUpdate([])
+								toastRef.SetMessage("프로젝트를 종료했습니다.")
 								navigate(-2)
 							}
 						}

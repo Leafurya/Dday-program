@@ -28,18 +28,18 @@ function DeleteBtn({prjName}){
 		}></input>
 	)
 }
-function DisableInput(val){
-	document.getElementById("prj_day").disabled=val;
-	if(val){
-		document.querySelector(".last_task_input").classList.add("disabled")
-		document.querySelector(".type_choice > span").classList.add("disabled_background")
-	}
-	else{
-		document.querySelector(".last_task_input").classList.remove("disabled")
-		document.querySelector(".type_choice > span").classList.remove("disabled_background")
-	}
-	document.getElementById("date_picker").disabled=val;
-}
+// function DisableInput(val){
+// 	document.getElementById("prj_day").disabled=val;
+// 	if(val){
+// 		document.querySelector(".last_task_input").classList.add("disabled")
+// 		document.querySelector(".type_choice > span").classList.add("disabled_background")
+// 	}
+// 	else{
+// 		document.querySelector(".last_task_input").classList.remove("disabled")
+// 		document.querySelector(".type_choice > span").classList.remove("disabled_background")
+// 	}
+// 	document.getElementById("date_picker").disabled=val;
+// }
 let shareVar={}
 function TypeChoice({prj}){
 	const tdDate=new Date();
@@ -55,6 +55,12 @@ function TypeChoice({prj}){
 			dayInput.focus()
 			dayInput.value=''
 			dayInput.value=data.day
+			if(data.day===0){
+				document.querySelector("label[for=prj_day]").classList="empty"
+			}
+			else{
+				document.querySelector("label[for=prj_day]").classList=""
+			}
 		}
 	},[data])
 	return(
@@ -78,8 +84,14 @@ function TypeChoice({prj}){
 									{day}
 								</label>
 								<input className='base_style' type="number" id="prj_day" defaultValue={day} onChange={(event)=>{
+									if(!Number(event.target.value)){
+										document.querySelector("label[for=prj_day]").classList="empty"
+									}
+									else{
+										document.querySelector("label[for=prj_day]").classList=""
+									}
+
 									let date=new Date()
-									console.log(Number(event.target.value))
 									date.setDate(Number(date.getDate())+Number(event.target.value))
 									let year=date.getFullYear()
 									let month=date.getMonth()+1
@@ -101,7 +113,7 @@ function TypeChoice({prj}){
 					<div>
 						<input className='base_style' type="date" id="date_picker" defaultValue={today} onChange={(event)=>{
 							let dateDelta=GetPickedDate(event.target.value)-GetOldDate()
-							console.log("date pick",GetPickedDate(event.target.value),GetOldDate(),dateDelta)
+							// console.log("date pick",GetPickedDate(event.target.value),GetOldDate(),dateDelta)
 							if(dateDelta<=0){
 								// Notice.Alert("오늘보다 이후의 날짜만 선택 가능합니다.")
 								toastRef.SetMessage("오늘보다 이후의 날짜만 선택 가능합니다.")
@@ -330,7 +342,7 @@ function CreateBtn({modiPrjName}){
 			}
 			if(!tasks){
 				// Notice.Alert("도전과제가 비어있습니다.");
-				toastRef.SetMessage("도전과제가 비어있습니다.")
+				toastRef.SetMessage("할 일이 비어있습니다.")
 				return;
 			}
 			console.log("Day",typeof(Day))

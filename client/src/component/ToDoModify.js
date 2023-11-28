@@ -19,7 +19,7 @@ function CreateBtn(){
 			let tasks=GetTaskFromInput("task_input");
 			if(!tasks){
 				// Notice.Alert("도전과제가 비어있습니다.");
-				toastRef.SetMessage("도전과제가 비어있습니다.")
+				toastRef.SetMessage("할 일이 비어있습니다.")
 				return;
 			}
 			// console.log("tasks",tasks)

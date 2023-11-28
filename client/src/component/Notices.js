@@ -74,7 +74,7 @@ function Prompt({children,ResultCallback}){
 				{children}
 			</div>
 			<div style={{display:"flex",justifyContent:"center",alignItems:"center"}}>
-				<textarea autoFocus rows={1} style={{margin:0,width:"100%",background:"none",marginTop:6,borderBottom:"1px solid white"}} type="text" id="prompt_text_input" placeholder="포기하겠습니다" onKeyDown={(e)=>{
+				<textarea rows={1} style={{margin:0,width:"100%",background:"none",marginTop:6,borderBottom:"1px solid white"}} type="text" id="prompt_text_input" placeholder="포기하겠습니다" onKeyDown={(e)=>{
 					if(e.key==="Enter"){
 						ResultCallback(true,e)
 						e.preventDefault()
@@ -92,7 +92,7 @@ function Toast({}){
 		timeout:null,
 		msg:[]
 	})
-	console.group("toast")
+	// console.group("toast")
 	toastRef.SetMessage=(msg)=>{
 
 		if(ref.current.timeout!==null){
@@ -103,12 +103,12 @@ function Toast({}){
 			// ref.current.msg.shift()
 			ref.current.msg=[]
 			setMessage([])
-			console.log("timeout end")
+			// console.log("timeout end")
 		}, 2500);
 		ref.current.msg.push(<div key={ref.current.msg.length} className="uniqe_toast">{msg}</div>)
 		setMessage([])
 	}
-	console.groupEnd("toast")
+	// console.groupEnd("toast")
 	return(
 		<div style={{top:0,position:"absolute",left:0,width:"100%"}}>
 			{ref.current.msg}

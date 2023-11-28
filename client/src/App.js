@@ -56,7 +56,7 @@ function App() {
 		InitDate()
 		todoList.Init()
 		projectBundle.Init()
-		console.log("todoList",todoList)
+		// console.log("todoList",todoList)
 		setRe([])
 	},[])
 	
@@ -64,13 +64,13 @@ function App() {
 	// 	return <InstallCompo></InstallCompo>
 	// }
 
-	console.log("app",projectBundle)
+	// console.log("app",projectBundle)
 	if(Object.keys(projectBundle).length){
 		return (
 			<div className="App">
 				<BrowserRouter>
 					<Routes>
-						<Route  path="/" element={<Lobby/>}></Route>
+						<Route path="/" element={<Lobby/>}></Route>
 						<Route path="/Create" element={<Create/>}></Route>
 						<Route path="/Project" element={<Project/>}></Route>
 						<Route path="/ToDoToday" element={<ToDoToday/>}></Route>
