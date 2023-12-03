@@ -73,7 +73,7 @@ function ProjectCard({project}){
 	)
 }
 function ToDoCard({}){
-	let {done,stat,data}=todoList
+	let {done,stat,data,state}=todoList
 	let id=Date.now()+Math.random()
 	let value=(stat.checkedTaskCount/stat.taskCount)*100
 	let _stat=((isNaN(value)?"0.0":(value.toFixed(1)))+"%")
@@ -91,7 +91,7 @@ function ToDoCard({}){
 							</div>
 						</div>
 					</div>
-					<ProgressBar state={StateConst.ProjectStart} progress={isNaN(progress)?0:progress}></ProgressBar>
+					<ProgressBar state={state} progress={isNaN(progress)?0:progress}></ProgressBar>
 				</label>
 			</StyledLink>
 		</li>
