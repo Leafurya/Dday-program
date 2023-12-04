@@ -39,7 +39,7 @@ export class Tasks{
 		return result
 	}
 }
-class Project{
+export class Project{
 	#nowDataVersion=2
 	constructor(name,data){
 		// this.data=data

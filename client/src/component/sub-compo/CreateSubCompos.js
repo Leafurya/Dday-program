@@ -244,7 +244,7 @@ function InputTaskPart({prj}){
 			<div className='tab_cont'>
 				<div style={!page?{}:{display:"none"}}>
 					<label className='add_task'>
-						<TextInput placeholder={'입력'} className={"input"} data={"task_input"}></TextInput>
+						<TextInput placeholder={'입력'} className={"input"} data={"task_input"} id="input_for_task"></TextInput>
 						{/* <textarea className='input' placeholder='입력' rows="1" onKeyDown={TextAreaKeyInput}></textarea> */}
 						{/* <input type="text" placeholder='입력'></input> */}
 						<input type="button" value="+" onClick={(event)=>{
@@ -266,7 +266,7 @@ function InputTaskPart({prj}){
 				</div>
 				<div style={page?{}:{display:"none"}}>
 					<label className='add_task'>
-						<TextInput  className='input' placeholder='입력' data={"last_task_input"}></TextInput>
+						<TextInput  className='input' placeholder='입력' data={"last_task_input"} id="input_for_lasttask"></TextInput>
 						{/* <textarea className='input' placeholder='입력' rows="1" onKeyDown={TextAreaKeyInput}></textarea> */}
 						{/* <input type="text" placeholder='입력'></input> */}
 						<input type="button" value="+" onClick={(event)=>{
@@ -334,6 +334,17 @@ function CreateBtn({modiPrjName}){
 			let Day=(D==="+")?0:parseInt(GetElement("prj_day").value);
 			let tasks=GetTaskFromInput("task_input");
 			let lastTasks=(D==="+")?null:GetTaskFromInput("last_task_input"); //if lastTasks not exist, value is null
+			let taskInputValue=GetElement("input_for_task").value
+			let lasttaskInputValue=(GetElement("input_for_lasttask")?.value)??""
+
+			if(taskInputValue!==""){
+				toastRef.SetMessage("할 일의 입력칸이 차있습니다.")
+				return
+			}
+			if(lasttaskInputValue!==""){
+				toastRef.SetMessage("최종목표의 입력칸이 차있습니다.")
+				return
+			}
 
 			if(projectName.length<=0){
 				// Notice.Alert("프로젝트 이름이 비어있습니다.");
