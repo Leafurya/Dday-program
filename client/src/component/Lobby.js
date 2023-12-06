@@ -8,9 +8,11 @@ import { GetOldDate, IsNextDay, UpdateOldDate } from "../module/TimeModule";
 import projectBundle from "../module/global/DataBundle";
 import todoList from "../module/global/ToDo";
 import { toastRef } from "./Notices.js";
+import { useNavigate } from "react-router-dom";
 
 function Lobby(){
 	let today=IsNextDay();
+	const navigate=useNavigate()
 	if(today){
 		let dateDelta=today-GetOldDate();
 		UpdateAttendance(dateDelta);
@@ -34,11 +36,19 @@ function Lobby(){
 				</li> */}
 				<ProjectLists></ProjectLists>
 			</ul>
-			<StyledLink to={'/Create'}>
+			<input style={{display:"none"}} type="button" id="create_btn" onClick={()=>{
+				navigate("/Create")
+			}}></input>
+			<label htmlFor="create_btn">
 				<div className="plus_btn label_base">
 					<div className="plus_btn_value base_style">+</div>
 				</div>
-			</StyledLink>
+			</label>
+			{/* <StyledLink to={'/Create'}>
+				<div className="plus_btn label_base">
+					<div className="plus_btn_value base_style">+</div>
+				</div>
+			</StyledLink> */}
 		</div>
 	)
 }

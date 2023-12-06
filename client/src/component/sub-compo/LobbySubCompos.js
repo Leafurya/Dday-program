@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom';
 import { StyledLink } from '../../module/GlobalModule';
 import projectBundle from '../../module/global/DataBundle';
 import StateConst from '../../module/global/StateConst';
@@ -41,12 +42,14 @@ function ProjectCard({project}){
 	let value=(project.stat.checkedTaskCount/project.stat.taskCount)*100
 	let stat=(state===StateConst.ProjectStart?((value).toFixed(1)+"%"):"-%")
 	let tasks=project.GetNowTasks()
+	const navigate=useNavigate()
 	
 	return(
 		<li className="project_list_li" key={id}>
-			<StyledLink to={`/Project?name=${name}`}>
+			{/* <StyledLink to={`/Project?name=${name}`}> */}
 				<input id={id} type="button" value={name} onClick={
 					(event)=>{
+						navigate(`/Project?name=${name}`)
 					}
 				}></input>
 				{/* style={GetProgressGraph((tasks.CountChecked()/tasks.GetTaskCount())*100)}(taskDone?" task_done":"") */}
@@ -68,20 +71,23 @@ function ProjectCard({project}){
 					<ProgressBar state={state} progress={(tasks.CountChecked()/tasks.GetTaskCount())*100}></ProgressBar>
 					{/* {taskDone?taskDoneStamp:""} */}
 				</label>
-			</StyledLink>
+			{/* </StyledLink> */}
 		</li>
 	)
 }
 function ToDoCard({}){
-	let {done,stat,data}=todoList
+	let {done,stat,data,state}=todoList
 	let id=Date.now()+Math.random()
 	let value=(stat.checkedTaskCount/stat.taskCount)*100
 	let _stat=((isNaN(value)?"0.0":(value.toFixed(1)))+"%")
 	let progress=(data.CountChecked()/data.GetTaskCount())*100
+	const navigate=useNavigate()
 	return(
 		<li className="project_list_li" key={id}>
-			<StyledLink to={`/ToDoToday`}>
-				<input id={id} type="button" onClick={(event)=>{}}></input>
+			{/* <StyledLink to={`/ToDoToday`}> */}
+				<input id={id} type="button" onClick={(event)=>{
+					navigate("/ToDoToday")
+				}}></input>
 				<label className={"todo_style label_base"+(done?" task_done":"")} htmlFor={id}>
 					<div className='project_list_content'>
 						<div style={{display:"flex",flexDirection:"column"}}>
@@ -91,9 +97,9 @@ function ToDoCard({}){
 							</div>
 						</div>
 					</div>
-					<ProgressBar state={StateConst.ProjectStart} progress={isNaN(progress)?0:progress}></ProgressBar>
+					<ProgressBar state={state} progress={isNaN(progress)?0:progress}></ProgressBar>
 				</label>
-			</StyledLink>
+			{/* </StyledLink> */}
 		</li>
 	)
 }

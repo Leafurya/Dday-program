@@ -16,7 +16,11 @@ class DPlus{
 		this.tasks=tasks
 		this.day=day
 		this.discription=discription
-		this.stat=new Stat(Object.keys(tasks).length)
+		try{
+			this.stat=new Stat(Object.keys(tasks).length)
+		}catch(e){
+			this.stat=new Stat(0)
+		}
 		// this.prjDone=false
 		this.taskDone=false
 	}
@@ -30,7 +34,11 @@ class DMinus{
 		this.tasks=tasks
 		this.day=day
 		this.discription=discription
-		this.stat=new Stat(Object.keys(tasks).length)
+		try{
+			this.stat=new Stat(Object.keys(tasks).length)
+		}catch(e){
+			this.stat=new Stat(0)
+		}
 		// this.prjDone=false
 		this.taskDone=false
 

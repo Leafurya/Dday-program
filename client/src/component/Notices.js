@@ -110,7 +110,7 @@ function Toast({}){
 	}
 	// console.groupEnd("toast")
 	return(
-		<div style={{top:0,position:"absolute",left:0,width:"100%"}}>
+		<div style={{bottom:150,position:"absolute",left:0,width:"100%"}}>
 			{ref.current.msg}
 		</div>
 	)

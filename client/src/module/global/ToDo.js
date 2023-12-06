@@ -14,7 +14,9 @@ class ToDoList{
 		this.data=new Tasks(data.data)
 		this.taskDone=data.taskDone??false
 		this.stat=data.stat??new Stat(0)
-		this.state=data.state??StateConst.ProjectStart
+
+		this.state=this.stat.taskCount?StateConst.ProjectStart:StateConst.ProjectDone
+		// this.state=data.state??StateConst.ProjectStart
 		// console.log("data",this.data)
 	}
 	Save(){
@@ -23,6 +25,7 @@ class ToDoList{
 	DailyUpdate(){
 		this.data=new Tasks({})
 		this.stat=new Stat(0)
+		this.state=StateConst.ProjectDone
 		this.Save()
 	}
 	GetNowTasks(){
@@ -37,6 +40,7 @@ class ToDoList{
 		this.data=new Tasks(data)
 		this.done=false
 		this.stat.taskCount=Object.keys(data).length
+		this.state=this.stat.taskCount?StateConst.ProjectStart:StateConst.ProjectDone
 		this.Save()
 	}
 }
