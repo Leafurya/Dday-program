@@ -338,7 +338,7 @@ function CreateBtn({modiPrjName,resultAction}){
 			let lasttaskInputValue=(GetElement("input_for_lasttask")?.value)??""
 
 			if(taskInputValue!==""){
-				toastRef.SetMessage("할 일의 입력칸이 차있습니다.")
+				toastRef.SetMessage("할 일의 입력칸을 비워주세요.")
 				return
 			}
 			if(lasttaskInputValue!==""){
@@ -375,11 +375,11 @@ function CreateBtn({modiPrjName,resultAction}){
 			
 			projectBundle.Save()
 			
-			if(projectName===modiPrjName){
-				// navigate(-2)
-				return
-			}
-			resultAction(projectName)
+			// if(projectName===modiPrjName){
+			// 	// navigate(-2)
+			// 	return
+			// }
+			resultAction(projectName,projectName===modiPrjName)
 			// navigate(-1)
 			// navigate(`/Project?name=${projectName}`,{replace:true})
 		}}></input>

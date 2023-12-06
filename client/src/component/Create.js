@@ -270,8 +270,13 @@ function Create({}){
 					action.current.from="save"
 					navigate(-1)
 				}}></input>
-				<CreateBtn modiPrjName={prjName} resultAction={(projectName)=>{
+				<CreateBtn modiPrjName={prjName} resultAction={(projectName,isModi)=>{
 					console.log("result action")
+					if(isModi){
+						action.current.from=""
+						navigate(-2)
+						return
+					}
 					action.current.from="create"
 					action.current.data=projectName
 					// window.onpopstate=(e)=>{console.log(e)}
