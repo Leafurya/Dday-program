@@ -20,11 +20,11 @@ function InspectSaveData(originData){
 	let lastTasks=(D==="+")?null:GetTaskFromInput("last_task_input"); //if lastTasks not exist, value is null
 	let taskInputValue=GetElement("input_for_task").value
 	let lasttaskInputValue=(GetElement("input_for_lasttask")?.value)??""
-	console.log(`${projectName},${discription},${D},${Day},${tasks},${lastTasks}`)
+	// console.log(`${projectName},${discription},${D},${Day},${tasks},${lastTasks}`)
 
 	let data=CreateDataObj(discription,tasks,D,Day,lastTasks)
 	let prj=new Project(projectName,data)
-	console.log(JSON.stringify(prj))
+	// console.log(JSON.stringify(prj))
 	if(JSON.stringify(originData)!==JSON.stringify(prj)||taskInputValue!==""||lasttaskInputValue!==""){
 		return true
 	}
@@ -35,35 +35,178 @@ function InspectSaveData(originData){
 function Create({}){
 	const [param,setParam]=useSearchParams()
 	const notiCompo=useRef("")
-	const historyPrevDup=useRef(true)
+	const action=useRef({
+		data:false,
+		from:"save"
+	})
 	const navigate=useNavigate()
 	
-	let prjName=param.get("name")
-	const dataToModify=prjName?projectBundle.GetProject(prjName):new Project("",CreateDataObj("",null,"+",0,null))
-	const isCreate=(dataToModify.name==="")
+	useEffect(()=>{
+		console.log("create useeffect")
+		// eslint-disable-next-line no-restricted-globals
+		// console.log("useeffect history.state",history.state)
+		// eslint-disable-next-line no-restricted-globals
+		if(!history.state.hello){
+			// eslint-disable-next-line no-restricted-globals
+			history.pushState({hello:1}, '', location.href)
+		}
+		window.onpopstate=(e)=>{
+			// eslint-disable-next-line no-restricted-globals
+			// console.log("onpopstate event",e)
+			console.log("onpopstate",action.current)
 	
+			switch(action.current.from){
+				case "":{
+					return
+				}
+				case "delete":{
+					console.log("param.get delete")
+					if(action.current.data){
+						action.current.from=""
+						projectBundle.Quit(prjName)
+						projectBundle.Save()
+						navigate(-2)
+						console.log(action.current)
+						return
+					}
+					action.current.from="save"
+					return
+				}
+				case "create":{
+					action.current.from=""
+					navigate(`/Project?name=${action.current.data}`,{replace:true})
+					return
+				}
+				default:{
+					if(action.current.data){
+						console.log("state pushed")
+						// eslint-disable-next-line no-restricted-globals
+						history.pushState({hello:1}, '', location.href)
+						action.current.data=false
+						return
+					}
+					try{
+						// eslint-disable-next-line no-restricted-globals
+						history.replaceState({hello:1},'',location.href)
+						// eslint-disable-next-line no-restricted-globals
+						// console.log("onpopstate",history.state)
+						if(InspectSaveData(dataToModify)){
+							if(prjName){
+								navigate(`/Create?name=${prjName}&confirm=save`)
+							}
+							else{
+								navigate(`/Create?confirm=save`)
+							}
+						}
+						else{
+							navigate(-1)
+						}
+					}catch(e){
+						console.log(e)
+					}
+				}
+			}
+		}
+	},[])
 
-	if(historyPrevDup.current){
-		// eslint-disable-next-line no-restricted-globals
-		history.pushState({hello:1}, '', location.href)
-		
-		// eslint-disable-next-line no-restricted-globals
-		console.log("create useeffect",historyPrevDup.current)
-		historyPrevDup.current=false
+	let prjName=param.get("name")
+	let dataToModify
+	let isCreate
+	try{
+		dataToModify=prjName?projectBundle.GetProject(prjName):new Project("",CreateDataObj("",null,"+",0,null))
+		isCreate=(dataToModify.name==="")
+	}catch(e){
+		console.log(e)
+		// window.onpopstate=()=>{}
+		// navigate(-1)
+		return
 	}
+
+	
+	// if(historyPrevDup.current){
+	// 	historyPrevDup.current=false
+	// 	// eslint-disable-next-line no-restricted-globals
+	// 	history.pushState({check:false}, '', location.href)
+		
+	// 	// eslint-disable-next-line no-restricted-globals
+	// 	console.log("create useeffect",historyPrevDup.current)
+	// window.onpopstate=(e)=>{
+	// 	// eslint-disable-next-line no-restricted-globals
+	// 	console.log("onpopstate event",e)
+	// 	console.log("onpopstate",action.current)
+
+	// 	switch(action.current.from){
+	// 		case "":{
+	// 			return
+	// 		}
+	// 		case "delete":{
+	// 			console.log("param.get delete")
+	// 			action.current.from="save"
+	// 			return
+	// 		}
+	// 		case "create":{
+	// 			navigate(`/Project?name=${action.current.data}`,{replace:true})
+	// 			return
+	// 		}
+	// 		default:{
+	// 			if(action.current.data){
+	// 				console.log("state pushed")
+	// 				// eslint-disable-next-line no-restricted-globals
+	// 				history.pushState({hello:1}, '', location.href)
+	// 				action.current.data=false
+	// 				return
+	// 			}
+	// 			try{
+	// 				// eslint-disable-next-line no-restricted-globals
+	// 				history.replaceState({hello:1},'',location.href)
+	// 				// eslint-disable-next-line no-restricted-globals
+	// 				// console.log("onpopstate",history.state)
+	// 				if(InspectSaveData(dataToModify)){
+	// 					if(prjName){
+	// 						navigate(`/Create?name=${prjName}&confirm=save`)
+	// 					}
+	// 					else{
+	// 						navigate(`/Create?confirm=save`)
+	// 					}
+	// 				}
+	// 				else{
+	// 					navigate(-1)
+	// 				}
+	// 			}catch(e){
+	// 				console.log(e)
+	// 			}
+	// 		}
+	// 	}
+		// if(action.current.from===''){
+		// 	return
+		// }
+		// if(action.current.from==="delete"){
+		// 	console.log("param.get delete")
+		// 	action.current.from="save"
+		// 	return
+		// }
+		
+	// }
+	// }
 	switch(param.get("confirm")){
 		case "delete":{
 			notiCompo.current=<Confrim ResultCallback={(result)=>{
 				if(result){
 					projectBundle.Quit(prjName)
-					projectBundle.Save()
+					// projectBundle.Save()
 					// Notice.Alert("프로젝트를 삭제하였습니다.");
 					toastRef.SetMessage("프로젝트를 삭제하였습니다.")
-					navigate(-3)
+					action.current.from="delete"
+					action.current.data=true
+					// action.current.data=true
+					navigate(-1)
 					// window.history.back()
 				}
 				else{
-					window.history.back()
+					action.current.from="delete"
+					action.current.data=false
+
+					navigate(-1)
 				}
 			}}>정말로 프로젝트를<br/>삭제하겠습니까?</Confrim>
 			break
@@ -71,36 +214,16 @@ function Create({}){
 		case "save":{
 			// window.onpopstate=()=>{}
 			notiCompo.current=<Confrim ResultCallback={(result)=>{
-				if(result){
-					// projectBundle.Quit(prjName)
-					// projectBundle.Save()
-					// Notice.Alert("프로젝트를 삭제하였습니다.");
-					navigate(-3)
-					// window.history.back()
+				if(result){ //확인
+					window.onpopstate=()=>{}
+					// action.current.data=true
+					// action.current.from=''
+					navigate(-2)
 				}
-				else{
+				else{ //취소
+					action.current.data=true
+					action.current.from="save"
 					navigate(-1)
-					// eslint-disable-next-line no-restricted-globals
-					// history.pushState(null, '', location.href)
-					// window.onpopstate=(e)=>{
-					// 	console.log("popstate callback")
-					// 	try{
-					// 		if(InspectSaveData(dataToModify)){
-					// 			if(prjName){
-					// 				navigate(`/Create?name=${prjName}&confirm=save`)
-					// 			}
-					// 			else{
-					// 				navigate(`/Create?confirm=save`)
-					// 			}
-					// 		}
-					// 		else{
-					// 			navigate(-1)
-					// 		}
-					// 	}catch(e){
-					// 		console.log(e)
-							
-					// 	}
-					// }
 				}
 			}}>{`프로젝트 ${isCreate?"생성":"수정"}을 취소하시겠습니까?`}</Confrim>
 			break
@@ -111,42 +234,8 @@ function Create({}){
 		}	
 	}
 		// eslint-disable-next-line no-restricted-globals
-	console.log(history.state)
-	useEffect(()=>{
-		// if(historyPrevDup.current){
-		// 	// eslint-disable-next-line no-restricted-globals
-		// 	history.pushState({hello:1}, '', location.href)
-			
-		// 	// eslint-disable-next-line no-restricted-globals
-		// 	console.log("create useeffect",history)
-		// 	historyPrevDup.current=false
-		// }
-		// eslint-disable-next-line no-restricted-globals
-		// // eslint-disable-next-line no-restricted-globals
-		// if(history.state===1){
-		// // eslint-disable-next-line no-restricted-globals
-		// 	history.pushState(null, '', location.href)
-		// }
-		// window.onpopstate=(e)=>{
-		// 	console.log("popstate callback")
-		// 	try{
-		// 		if(InspectSaveData(dataToModify)){
-		// 			if(prjName){
-		// 				navigate(`/Create?name=${prjName}&confirm=save`)
-		// 			}
-		// 			else{
-		// 				navigate(`/Create?confirm=save`)
-		// 			}
-		// 		}
-		// 		else{
-		// 			navigate(-1)
-		// 		}
-		// 	}catch(e){
-		// 		console.log(e)
-				
-		// 	}
-		// }
-	},[])
+	// console.log(history.state)
+	
 	return(
 		<div className="borad">
 			<TopNavigator title={isCreate?"프로젝트 생성":"프로젝트 수정"}></TopNavigator>
@@ -167,7 +256,7 @@ function Create({}){
 					<textarea rows="5" id="prj_cntnt" placeholder="프로젝트 내용" defaultValue={dataToModify.discription} onKeyDown={(e)=>{
 						if(e.key==="Enter"){
 							console.log('enter')
-							document.querySelector(".add_task .input[name=task_input]").focus()
+							document.querySelector(".add_task .input").focus()
 							e.preventDefault()
 						}
 					}}></textarea>
@@ -178,20 +267,18 @@ function Create({}){
 			</div>
 			<div className="function_btns">
 				<input className="function_btn" type="button" value="뒤로" onClick={()=>{
-					if(InspectSaveData(dataToModify)){
-						if(prjName){
-							navigate(`/Create?name=${prjName}&confirm=save`)
-						}
-						else{
-							navigate(`/Create?confirm=save`)
-						}
-					}
-					else{
-						navigate(-1)
-					}
+					action.current.from="save"
+					navigate(-1)
 				}}></input>
-				<CreateBtn modiPrjName={prjName}></CreateBtn>
-				{dataToModify?<DeleteBtn prjName={prjName}></DeleteBtn>:""}
+				<CreateBtn modiPrjName={prjName} resultAction={(projectName)=>{
+					console.log("result action")
+					action.current.from="create"
+					action.current.data=projectName
+					// window.onpopstate=(e)=>{console.log(e)}
+					navigate(-1)
+					
+				}}></CreateBtn>
+				{isCreate?"":<DeleteBtn prjName={prjName}></DeleteBtn>}
 			</div>
 			{
 				notiCompo.current

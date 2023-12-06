@@ -324,7 +324,7 @@ function InputTaskPart({prj}){
 // 		</div>
 // 	);
 // }
-function CreateBtn({modiPrjName}){
+function CreateBtn({modiPrjName,resultAction}){
 	const navigate=useNavigate()
 	return(
 		<input className="function_btn" type="button" defaultValue="저장" onClick={()=>{
@@ -376,10 +376,12 @@ function CreateBtn({modiPrjName}){
 			projectBundle.Save()
 			
 			if(projectName===modiPrjName){
-				navigate(-1)
+				// navigate(-2)
 				return
 			}
-			navigate(`/Project?name=${projectName}`,{replace:true})
+			resultAction(projectName)
+			// navigate(-1)
+			// navigate(`/Project?name=${projectName}`,{replace:true})
 		}}></input>
 	)
 }
