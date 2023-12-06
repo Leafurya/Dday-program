@@ -13,7 +13,7 @@ import Notice from '../module/Notice';
 import { Confrim, toastRef } from './Notices.js';
 
 function InspectSaveData(originData){
-	let tasks=GetTaskFromInput("task_input");
+	let tasks=GetTaskFromInput("task_input")??{};
 	let taskInputValue=GetElement("input_for_task").value
 	// console.log(`${projectName},${discription},${D},${Day},${tasks},${lastTasks}`)
 
