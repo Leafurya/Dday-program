@@ -24,7 +24,7 @@ function TaskLists({project,pageUpdate}){
 					todoList.Save()
 					pageUpdate([])
 				}}></input>
-				<label className={"base_style"+(tasks[task]?" checked":"")} htmlFor={"task"+index}>{task}</label>
+				<label className={"base_style"+(tasks[task]?" checked":"")} htmlFor={"task"+index}>&nbsp;{`${task}`}&nbsp;</label>
 			</li>
 		)
 	})

@@ -73,6 +73,7 @@
 }
 .checked{
 	text-decoration: line-through;
+	text-decoration-color: white;
 }
 
 .project_board ul li label{
