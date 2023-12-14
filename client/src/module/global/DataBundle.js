@@ -83,6 +83,9 @@ export class Project{
 		if((this.D==="-"&&this.day<=0)||this.start){
 			return false
 		}
+		if(this.D==="+"){
+			this.day++
+		}
 		this.state=StateConst.ProjectStart
 		return true;
 	}
