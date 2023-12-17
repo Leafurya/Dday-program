@@ -10,6 +10,18 @@ function Title(){
 		</div>
 	)
 }
+function SimpleDescription(){
+	return(
+		<div>
+			<h2>
+				행동을 반복하면 목표를 이룰겁니다
+			</h2>
+			<div>
+				
+			</div>
+		</div>
+	)
+}
 
 export default ()=>{
 	const installEvent=useRef()
@@ -27,7 +39,7 @@ export default ()=>{
 		event.prompt()
 		event.userChoice.then((result)=>{
 			if(result.outcome==="dismissed"){
-				console.log("install cancelled")
+				console.log("install canceled")
 			}
 			else{
 				console.log("install success")
@@ -46,25 +58,7 @@ export default ()=>{
 				)}
 				<div style={{backgroundColor:"#947fda",display:"flex",flexDirection:"column"}}>
 					<Title></Title>
-					<div style={{color:"white",fontSize:"large"}}>
-						습관을 만들고 싶었어요.<br/>
-						목표를 정하고 하루하루 반복하는 것 만큼 확실한 방법은 없다고 생각했죠.<br/>
-						그래서 디데이와 투두리스트를 합쳐 이 앱을 만들었습니다!<br/>
-						사용은 간단하게. 기능은 확실하게. 이 앱의 방향성입니다!
-						{/* 
-						앱 개발 이유
-						앱 방향성
-						앱 기대 효과
-
-						앱 정보가 보여야된다.
-						앱 정보라 함은 일단 개발자가 누군지, 앱 이름이 뭔지, 이 앱의 목적이 뭔지 정도 있으면 되지 않을까?
-						앱 사용법도 보여주면 좋겠지?
-						앱 이름을 왜 이렇게 정했는지 알려주면 이 앱의 의의를 더 잘 알 수 있겠지?
-
-						이 앱은 투두 리스트에 가깝습니다. 반복적으로 해야 하는 일을 지정해 놓고 D-Day 프로젝트로 만들고 실행해 보세요!
-
-						디스코드 사이트 참고해서 만들어보면 좋을듯? */}
-					</div>
+					<SimpleDescription></SimpleDescription>
 				</div>
 				<div>
 
