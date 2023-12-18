@@ -15,9 +15,9 @@ import { Confrim, toastRef } from './Notices.js';
 function InspectSaveData(originData){
 	let tasks=GetTaskFromInput("task_input")??{};
 	let taskInputValue=GetElement("input_for_task").value
-	// console.log(`${projectName},${discription},${D},${Day},${tasks},${lastTasks}`)
+	// console.log(`${projectName},${description},${D},${Day},${tasks},${lastTasks}`)
 
-	// let data=CreateDataObj(discription,tasks,D,Day,lastTasks)
+	// let data=CreateDataObj(description,tasks,D,Day,lastTasks)
 	// let prj=new Project(projectName,data)
 	// console.log(JSON.stringify(prj))
 	if(JSON.stringify(originData)!==JSON.stringify(tasks)||taskInputValue!==""){

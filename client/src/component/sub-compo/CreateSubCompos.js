@@ -329,7 +329,7 @@ function CreateBtn({modiPrjName,resultAction}){
 	return(
 		<input className="function_btn" type="button" defaultValue="저장" onClick={()=>{
 			let projectName=GetElement("prj_name").value;
-			let discription=GetElement("prj_cntnt").value;
+			let description=GetElement("prj_cntnt").value;
 			let D=GetElement("prj_type").value
 			let Day=(D==="+")?0:parseInt(GetElement("prj_day").value);
 			let tasks=GetTaskFromInput("task_input");
@@ -363,7 +363,7 @@ function CreateBtn({modiPrjName,resultAction}){
 				return;
 			}
 
-			let data=CreateDataObj(discription,tasks,D,Day,lastTasks)
+			let data=CreateDataObj(description,tasks,D,Day,lastTasks)
 			if(modiPrjName){
 				projectBundle.Remove(modiPrjName)
 			}
