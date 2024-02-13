@@ -8,14 +8,14 @@ export class Stat{
 	}
 }
 class DPlus{
-	constructor(day,discription,tasks){
+	constructor(day,description,tasks){
 		// this.version=_nowDataVersion
 		this.D="+"
 		this.state=StateConst.WaitToStart
 		// this.start=false
 		this.tasks=tasks
 		this.day=day
-		this.discription=discription
+		this.description=description
 		try{
 			this.stat=new Stat(Object.keys(tasks).length)
 		}catch(e){
@@ -26,14 +26,14 @@ class DPlus{
 	}
 }
 class DMinus{
-	constructor(day,discription,tasks,lastTasks){
+	constructor(day,description,tasks,lastTasks){
 		// this.version=_nowDataVersion
 		this.D="-"
 		this.state=StateConst.WaitToStart
 		// this.start=false
 		this.tasks=tasks
 		this.day=day
-		this.discription=discription
+		this.description=description
 		try{
 			this.stat=new Stat(Object.keys(tasks).length)
 		}catch(e){
@@ -47,14 +47,14 @@ class DMinus{
 		}
 	}
 }
-function CreateDataObj(discription,tasks,D,day,lastTasks){
+function CreateDataObj(description,tasks,D,day,lastTasks){
 	let data
 	switch(D){
 		case "+":
-			data=new DPlus(day,discription,tasks)
+			data=new DPlus(day,description,tasks)
 			break
 		case "-":
-			data=new DMinus(day,discription,tasks,lastTasks)
+			data=new DMinus(day,description,tasks,lastTasks)
 			break
 	}
 	return data

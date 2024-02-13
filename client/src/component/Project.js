@@ -97,10 +97,18 @@ function Project(props){
 			<TopNavigator title={prjName} sub={["프로젝트 끝","수정 대기중...","시작 대기중...",`성공률 ${stat}`][project.state]}></TopNavigator>
 			<div className={"main_platform project_board "+(started?"":"not_start_in_prjcomp")}>
 				<div>
-					<div>
+					<div style={{height:"100%",alignItems:"center",width:"100%"}}>
 						{/* <h1 className="project_day base_style">{"D"+project.D+project.GetDay()}</h1> */}
-						<h1 className="project_day base_style">{project.state===StateConst.WaitToModify?"D-END":project.GetDay()}</h1>
-						<h4 className="project_content base_style">{project.discription}</h4>
+						<div style={{flex:1,display:"flex",justifyContent:"center",alignItems:"flex-end",width:"100%"}}>
+							<h1 className="project_day base_style">{project.state===StateConst.WaitToModify?"D-END":project.GetDay()}</h1>
+						</div>
+						<div style={{flex:(project.description?0.7:0.5),display:"flex",justifyContent:"center",alignItems:"flex-start",width:"100%"}}>
+							{/* <textarea style={{height:"90%",width:"100%"}} className='project_content' value={project.description} disabled readOnly></textarea> */}
+							<div style={{color:"white",whiteSpace:"pre-wrap",textAlign:"center",height:"90%",overflowY:"scroll",fontSize:"large"}}>
+								{project.description}
+							</div>
+						</div>
+						{/* <h4 className="project_content base_style">{project.description}</h4> */}
 					</div>
 				</div>
 				<ul>

@@ -13,16 +13,16 @@ import { CreateDataObj } from '../module/DataModule.js';
 
 function InspectSaveData(originData){
 	let projectName=GetElement("prj_name").value;
-	let discription=GetElement("prj_cntnt").value;
+	let description=GetElement("prj_cntnt").value;
 	let D=GetElement("prj_type").value
 	let Day=(D==="+")?0:parseInt(GetElement("prj_day").value);
 	let tasks=GetTaskFromInput("task_input");
 	let lastTasks=(D==="+")?null:GetTaskFromInput("last_task_input"); //if lastTasks not exist, value is null
 	let taskInputValue=GetElement("input_for_task").value
 	let lasttaskInputValue=(GetElement("input_for_lasttask")?.value)??""
-	// console.log(`${projectName},${discription},${D},${Day},${tasks},${lastTasks}`)
+	// console.log(`${projectName},${description},${D},${Day},${tasks},${lastTasks}`)
 
-	let data=CreateDataObj(discription,tasks,D,Day,lastTasks)
+	let data=CreateDataObj(description,tasks,D,Day,lastTasks)
 	let prj=new Project(projectName,data)
 	// console.log(JSON.stringify(prj))
 	if(JSON.stringify(originData)!==JSON.stringify(prj)||taskInputValue!==""||lasttaskInputValue!==""){
@@ -253,11 +253,11 @@ function Create({}){
 					}}></textarea>
 					{/* <input id="prj_name" type="text" placeholder="프로젝트 이름" defaultValue={prjName??""}></input> */}
 					<TypeChoicePart prj={dataToModify}></TypeChoicePart>
-					<textarea rows="5" id="prj_cntnt" placeholder="프로젝트 내용" defaultValue={dataToModify.discription} onKeyDown={(e)=>{
+					<textarea rows="5" id="prj_cntnt" placeholder="프로젝트 내용" defaultValue={dataToModify.description} onKeyDown={(e)=>{
 						if(e.key==="Enter"){
 							console.log('enter')
-							document.querySelector(".add_task .input").focus()
-							e.preventDefault()
+							// document.querySelector(".add_task .input").focus()
+							// e.preventDefault()
 						}
 					}}></textarea>
 				</div>

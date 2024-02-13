@@ -51,7 +51,7 @@ export class Project{
 		this.tasks=new Tasks(data.tasks)
 		this.day=Number(data.day)
 		
-		this.discription=data.discription
+		this.description=data.description
 		this.stat=data.stat
 		this.state=data.state??StateConst.ProjectStart
 		// this.prjDone=data.prjDone
