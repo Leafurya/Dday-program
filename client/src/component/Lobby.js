@@ -21,6 +21,7 @@ function Lobby(){
 		projectBundle.Save()
 		UpdateOldDate(today);
 	}
+	console.log("update old date",GetOldDate())
 	return(
 		<div className="borad">
 			{/* <input value="토스트 보이기" type="button" onClick={()=>{

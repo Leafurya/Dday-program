@@ -4,7 +4,7 @@ import Project from './component/Project.js';
 import Create from './component/Create.js';
 import React, {useEffect,useRef,useState} from "react";
 
-import {InitDate} from './module/TimeModule'
+import {GetOldDate, InitDate} from './module/TimeModule'
 import {InitAttendance} from './module/AttendanceModule.js'
 import projectBundle from './module/global/DataBundle';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
@@ -13,6 +13,7 @@ import ToDoToday from './component/ToDoToday';
 import ToDoModify from './component/ToDoModify';
 import InstallCompo from './component/sub-compo/InstallCompo.js';
 import { Toast } from './component/Notices.js';
+import Calendar from './component/Calendar.js';
 
 // window.addEventListener('beforeinstallprompt',(e)=>{
 // 	e.preventDefault()
@@ -56,6 +57,7 @@ function App() {
 		InitDate()
 		todoList.Init()
 		projectBundle.Init()
+		console.log("app effect",GetOldDate())
 		// console.log("todoList",todoList)
 		setRe([])
 	},[])
@@ -75,6 +77,7 @@ function App() {
 						<Route path="/Project" element={<Project/>}></Route>
 						<Route path="/ToDoToday" element={<ToDoToday/>}></Route>
 						<Route path="/ToDoModify" element={<ToDoModify/>}></Route>
+						<Route path="/Calendar" element={<Calendar/>}></Route>
 					</Routes>
 				</BrowserRouter>
 				<Toast></Toast>

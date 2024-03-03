@@ -1,10 +1,11 @@
-function GetDeg(myX,myZ,trgX,trgZ){
-	let originX=trgX-myX
-	let originZ=trgZ-myZ
-
-	let deg=Math.atan(originZ/originX)*(180.0/Math.PI)
-	if(originX<0){
-		return deg-180
-	}
-	return deg
+function func1(obj){
+	let {a}=obj
+	a.b=1
 }
+function func2(obj){
+	func1(obj)
+}
+var obj={a:{b:3}}
+console.log(obj)
+func2(obj)
+console.log(obj)
