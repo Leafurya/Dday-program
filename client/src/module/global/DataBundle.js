@@ -4,17 +4,25 @@ import StateConst from "./StateConst";
  * history는 하루가 지나고 앱을 켰을때 그 날의 히스토리가 생성되고 할 일이 업데이트 될때마다 히스토리도 업데이트 된다.
  * history객체는 프로젝트당 하나씩 가지고 있다. 오늘 뭐 하지 또한 history객체를 가지고 있다.
  */
-class History{ //프로젝트 시작 날짜. 총 할 일 개수. 각 일마다 완료한 할 일 개수.
+class History extends Date{ //프로젝트 시작 날짜. 총 할 일 개수. 각 일마다 완료한 할 일 개수.
 	/**
 	 * 
 	 * @param {Date} startDay 
 	 * @param {{Date:[number,number]}} taskHistory 
 	 */
 	constructor(startDay,taskHistory){
+		startDay?super(startDay):super()
+
 		this.startDay=startDay //Date
 		this.taskHistory=taskHistory //{Date:[total,done], ...}
 	}
 	Update(){
+
+	}
+	Load(){
+		
+	}
+	Save(){
 
 	}
 }
@@ -233,7 +241,7 @@ export class ProjectBundle{
 				if(!data.history){
 					let today=new Date()
 					today.setDate(today.getDate()-data.day)
-					data.history=new History()
+					data.history=new History(today)
 				}
 				nowTask.Reset()
 				data.taskDone=false

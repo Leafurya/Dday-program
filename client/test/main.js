@@ -1,11 +1,13 @@
-function func1(obj){
-	let {a}=obj
-	a.b=1
+class Dcls extends Date{
+	constructor(date){
+		date?super(date):super()
+		this.Load()
+	}
+	Load(){
+		console.log("hello")
+	}
 }
-function func2(obj){
-	func1(obj)
-}
-var obj={a:{b:3}}
-console.log(obj)
-func2(obj)
-console.log(obj)
+
+var d=new Dcls("2024-3-6")
+console.log(d)
+console.log(JSON.parse(JSON.stringify(d)))
