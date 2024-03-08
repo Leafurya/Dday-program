@@ -3,6 +3,9 @@ import StateConst from "./StateConst";
 /**
  * history는 하루가 지나고 앱을 켰을때 그 날의 히스토리가 생성되고 할 일이 업데이트 될때마다 히스토리도 업데이트 된다.
  * history객체는 프로젝트당 하나씩 가지고 있다. 오늘 뭐 하지 또한 history객체를 가지고 있다.
+ * 
+ * history를 저장할 때 어떻게 할까..? Date를 상속받으면 stringify할때 다른 데이터가 날아가는걸 확인했는데...
+ * 
  */
 class History extends Date{ //프로젝트 시작 날짜. 총 할 일 개수. 각 일마다 완료한 할 일 개수.
 	/**
@@ -84,12 +87,12 @@ export class Project{
 		this.taskDone=data.taskDone
 		this.lastTasks=new Tasks(data.lastTasks)
 
-		try{
-			this.history=data.history
-			this.history.__proto__=History.prototype
-		}catch(e){
-			console.log(e)
-		}
+		// try{
+		// 	this.history=data.history
+		// 	this.history.__proto__=History.prototype
+		// }catch(e){
+		// 	console.log(e)
+		// }
 
 	}
 	CheckVersion(jsonData){
