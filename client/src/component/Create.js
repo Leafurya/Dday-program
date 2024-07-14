@@ -1,15 +1,22 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import "../style/BaseStyle.css";
-import "../style/Create.css";
+import "../style/CreateStyle.css";
 import "../style/Align.css";
 
-import {DeleteBtn,InputTaskPart,TypeChoicePart,CreateBtn} from "./sub-compo/CreateSubCompos.js";
+// import {DeleteBtn,InputTaskPart,TypeChoicePart,CreateBtn} from "./sub-compo/CreateSubCompos.js";
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import projectBundle, { Project } from '../module/global/DataBundle';
 import TopNavigator from './TopNavigator';
 import { Confrim, toastRef } from './Notices.js';
 import { GetElement, GetTaskFromInput } from '../module/CreateCompModule.js';
 import { CreateDataObj } from '../module/DataModule.js';
+import TextInput from './global/TextInput.js';
+import Calendar from './global/Calendar.js';
+import { GetDateDiff } from '../module/TimeModule.js';
+import TaskCard from './global/TaskCard.js';
+import Task from '../module/data/Task.js';
+import userInfo from '../module/global/User.js';
+
 
 function InspectSaveData(originData){
 	let projectName=GetElement("prj_name").value;
@@ -32,263 +39,258 @@ function InspectSaveData(originData){
 	return false
 }
 
-function Create({}){
-	const [param,setParam]=useSearchParams()
-	const notiCompo=useRef("")
-	const action=useRef({
-		data:false,
-		from:"save"
+/**
+ * 프로젝트 생성이라면 파라미터를 받지 않고 프로젝트 수정이라면 프로젝트 이름을 파라미터로 받는다.
+ * 이를 바탕으로 프로젝트 객체를 만든다.
+ * 프로젝트의 정보를 보여준다.
+ * 프로젝트에 정보를 입력한다.
+ * 저장 혹은 삭제한다.
+ * 
+ * @param {*} param0 
+ * @returns 
+ */
+function CreateV2({}){
+	const today=new Date()
+	today.setHours(0,0,0,0)
+
+	const projectData=useRef({
+		getTaskDataRef:{}
 	})
+	console.log(projectData)
+
+	const [param,setParam]=useSearchParams()
+	const [selectMode,setSelectMode]=useState("end")
+
+	const [content,setContent]=useState("")
+	const [type,setType]=useState("+")
+	const [taskGroupCount,setTaskGroupConut]=useState({
+		"+":1,
+		"-":1
+	})
+	const [dtData,setDtData]=useState({
+		start:new Date(today)
+	})
+
+	
+	let {start,end}=dtData
+
+	// const [prjData,setData]=useState(projectBundle.GetProject(param.get("name"))??new Project("",CreateDataObj("",null,"+",0,null)))
 	const navigate=useNavigate()
-	
+
 	useEffect(()=>{
-		console.log("create useeffect")
-		// eslint-disable-next-line no-restricted-globals
-		// console.log("useeffect history.state",history.state)
-		// eslint-disable-next-line no-restricted-globals
-		if(!history.state.hello){
-			// eslint-disable-next-line no-restricted-globals
-			history.pushState({hello:1}, '', location.href)
-		}
-		window.onpopstate=(e)=>{
-			// eslint-disable-next-line no-restricted-globals
-			// console.log("onpopstate event",e)
-			console.log("onpopstate",action.current)
-	
-			switch(action.current.from){
-				case "":{
-					return
-				}
-				case "delete":{
-					console.log("param.get delete")
-					if(action.current.data){
-						action.current.from=""
-						projectBundle.Quit(prjName)
-						projectBundle.Save()
-						navigate(-2)
-						console.log(action.current)
-						return
-					}
-					action.current.from="save"
-					return
-				}
-				case "create":{
-					action.current.from=""
-					navigate(`/Project?name=${action.current.data}`,{replace:true})
-					return
-				}
-				default:{
-					if(action.current.data){
-						console.log("state pushed")
-						// eslint-disable-next-line no-restricted-globals
-						history.pushState({hello:1}, '', location.href)
-						action.current.data=false
-						return
-					}
-					try{
-						// eslint-disable-next-line no-restricted-globals
-						history.replaceState({hello:1},'',location.href)
-						// eslint-disable-next-line no-restricted-globals
-						// console.log("onpopstate",history.state)
-						if(InspectSaveData(dataToModify)){
-							if(prjName){
-								navigate(`/Create?name=${prjName}&confirm=save`)
-							}
-							else{
-								navigate(`/Create?confirm=save`)
-							}
-						}
-						else{
-							navigate(-1)
-						}
-					}catch(e){
-						console.log(e)
-					}
-				}
-			}
-		}
+		let end=new Date(today)
+		end.setDate(end.getDate()+1)
+		dtData.end=end
 	},[])
 
-	let prjName=param.get("name")
-	let dataToModify
-	let isCreate
-	try{
-		dataToModify=prjName?projectBundle.GetProject(prjName):new Project("",CreateDataObj("",null,"+",0,null))
-		isCreate=(dataToModify.name==="")
-	}catch(e){
-		console.log(e)
-		// window.onpopstate=()=>{}
-		// navigate(-1)
-		return
+	const CreateTaskGroup=()=>{
+		let cards=[]
+		for(let i=0;i<taskGroupCount[type];i++){
+			cards.push(<TaskCard getDataRef={projectData.current.getTaskDataRef} groupId={i} key={type+i} title={`할 일 그룹 ${i+1}`}></TaskCard>)
+		}
+		return (cards)
 	}
 
-	
-	// if(historyPrevDup.current){
-	// 	historyPrevDup.current=false
-	// 	// eslint-disable-next-line no-restricted-globals
-	// 	history.pushState({check:false}, '', location.href)
-		
-	// 	// eslint-disable-next-line no-restricted-globals
-	// 	console.log("create useeffect",historyPrevDup.current)
-	// window.onpopstate=(e)=>{
-	// 	// eslint-disable-next-line no-restricted-globals
-	// 	console.log("onpopstate event",e)
-	// 	console.log("onpopstate",action.current)
-
-	// 	switch(action.current.from){
-	// 		case "":{
-	// 			return
-	// 		}
-	// 		case "delete":{
-	// 			console.log("param.get delete")
-	// 			action.current.from="save"
-	// 			return
-	// 		}
-	// 		case "create":{
-	// 			navigate(`/Project?name=${action.current.data}`,{replace:true})
-	// 			return
-	// 		}
-	// 		default:{
-	// 			if(action.current.data){
-	// 				console.log("state pushed")
-	// 				// eslint-disable-next-line no-restricted-globals
-	// 				history.pushState({hello:1}, '', location.href)
-	// 				action.current.data=false
-	// 				return
-	// 			}
-	// 			try{
-	// 				// eslint-disable-next-line no-restricted-globals
-	// 				history.replaceState({hello:1},'',location.href)
-	// 				// eslint-disable-next-line no-restricted-globals
-	// 				// console.log("onpopstate",history.state)
-	// 				if(InspectSaveData(dataToModify)){
-	// 					if(prjName){
-	// 						navigate(`/Create?name=${prjName}&confirm=save`)
-	// 					}
-	// 					else{
-	// 						navigate(`/Create?confirm=save`)
-	// 					}
-	// 				}
-	// 				else{
-	// 					navigate(-1)
-	// 				}
-	// 			}catch(e){
-	// 				console.log(e)
-	// 			}
-	// 		}
-	// 	}
-		// if(action.current.from===''){
-		// 	return
-		// }
-		// if(action.current.from==="delete"){
-		// 	console.log("param.get delete")
-		// 	action.current.from="save"
-		// 	return
-		// }
-		
-	// }
-	// }
-	switch(param.get("confirm")){
-		case "delete":{
-			notiCompo.current=<Confrim ResultCallback={(result)=>{
-				if(result){
-					projectBundle.Quit(prjName)
-					// projectBundle.Save()
-					// Notice.Alert("프로젝트를 삭제하였습니다.");
-					toastRef.SetMessage("프로젝트를 삭제하였습니다.")
-					action.current.from="delete"
-					action.current.data=true
-					// action.current.data=true
-					navigate(-1)
-					// window.history.back()
-				}
-				else{
-					action.current.from="delete"
-					action.current.data=false
-
-					navigate(-1)
-				}
-			}}>정말로 프로젝트를<br/>삭제하겠습니까?</Confrim>
-			break
-		}
-		case "save":{
-			// window.onpopstate=()=>{}
-			notiCompo.current=<Confrim ResultCallback={(result)=>{
-				if(result){ //확인
-					window.onpopstate=()=>{}
-					// action.current.data=true
-					// action.current.from=''
-					navigate(-2)
-				}
-				else{ //취소
-					action.current.data=true
-					action.current.from="save"
-					navigate(-1)
-				}
-			}}>{`프로젝트 ${isCreate?"생성":"수정"}을 취소하시겠습니까?`}</Confrim>
-			break
-		}
-		default:{
-			notiCompo.current=""
-			break
-		}	
-	}
-		// eslint-disable-next-line no-restricted-globals
-	// console.log(history.state)
-	
 	return(
 		<div className="borad">
-			<TopNavigator title={isCreate?"프로젝트 생성":"프로젝트 수정"}></TopNavigator>
-			<div className="main_platform">
-				<div className='info_part'>
-					<textarea rows="1" className='input' id="prj_name" type="text" placeholder="프로젝트 이름" defaultValue={prjName??""} onKeyDown={(e)=>{
-						if(e.key==="Enter"){
-							try{
-								document.getElementById("prj_day").focus()
-							}catch(e){
-								document.getElementById("prj_cntnt").focus()
+			<div className='main_platform'>
+				<div className="title">
+					<TextInput placeholder={'제목'} className={"input"} data={"task_input"} id="input_for_title" onChange={(event)=>{
+						projectData.current.title=event.target.value
+					}}></TextInput>
+				</div>
+				<div className='type_pick'>
+					<input style={{display:"none"}} id='type_plus' type='radio' name="type" value="+" onClick={()=>{
+						if(start>today){
+							setDtData({...dtData,start:today})
+						}
+						setType("+")
+
+					}}></input>
+					<input style={{display:"none"}} id='type_min' type='radio' name="type" value="-" onClick={()=>{setType("-")}}></input>
+
+					<div style={{display:"flex"}}>
+						<label className={type==="+"?"checked":""} htmlFor='type_plus'>
+							D+1
+						</label>
+						<label className={type==="-"?"checked":""} htmlFor='type_min'>
+							D-Day
+						</label>
+					</div>
+					<div style={{backgroundColor:"white"}}>
+						{
+							type==="+"?(
+								<>
+									<div>
+										D+{GetDateDiff(today,start)+1}
+									</div>
+									<div>
+										<input style={{display:"none"}} id="start_date" type="button"></input>
+										<label htmlFor='start_date'>
+											시작 날짜: {`${start.getFullYear()}-${(start.getMonth()+1)<10?"0"+(start.getMonth()+1):(start.getMonth()+1)}-${start.getDate()<10?"0"+start.getDate():start.getDate()}`}
+										</label>
+									</div>
+									<div className='day_pick'>
+										<div>
+											<Calendar start={start} onChange={(date)=>{
+												if(date>today){
+													toastRef.SetMessage("오늘보다 이후의 날짜는 선택할 수 없습니다.")
+													return
+												}
+												setDtData({...dtData,start:date})
+											}}>
+												<DayCell></DayCell>
+											</Calendar>
+										</div>
+									</div>
+								</>
+							):(
+								<>
+									<div>
+										<label htmlFor='prj_day'>
+											D-<span >{GetDateDiff(end,start)}</span>
+										</label>
+										<input onFocus={(event)=>{
+											event.target.select()
+											document.querySelector("label[for=prj_day] span").classList="text_selected"
+										}} onBlur={()=>{
+											document.querySelector("label[for=prj_day] span").classList.remove("text_selected")
+										}} className='base_style' type="number" id="prj_day" defaultValue={GetDateDiff(end,start)} onChange={(event)=>{
+											let diff=Number(event.target.value)
+											if(diff===0){
+												diff=1
+												event.target.select()
+												document.querySelector("label[for=prj_day] span").classList.add("text_selected")
+											}
+											else{
+												document.querySelector("label[for=prj_day] span").classList.remove("text_selected")
+											}
+											
+											let temp=new Date(start)
+											temp.setDate(start.getDate()+diff)
+											setDtData({...dtData,end:temp})
+										}}></input>
+									</div>
+									<div>
+										<input style={{display:"none"}} id="start_date" type="button" onClick={()=>{
+											setSelectMode("start")
+										}}></input>
+										<label className={selectMode==="start"?"mode_selected":""} htmlFor='start_date'>
+											시작 날짜: {`${start.getFullYear()}-${(start.getMonth()+1)<10?"0"+(start.getMonth()+1):(start.getMonth()+1)}-${start.getDate()<10?"0"+start.getDate():start.getDate()}`}
+										</label>
+									</div>
+									<div>
+										<input style={{display:"none"}} id="end_date" type="button" onClick={()=>{
+											setSelectMode("end")
+										}}></input>
+										<label className={selectMode==="end"?"mode_selected":""} htmlFor='end_date'>
+											종료 날짜: {`${end.getFullYear()}-${(end.getMonth()+1)<10?"0"+(end.getMonth()+1):(end.getMonth()+1)}-${end.getDate()<10?"0"+end.getDate():end.getDate()}`}
+										</label>
+									</div>
+									<div className='day_pick'>
+										<div>
+											{
+												selectMode==="start"?(
+													<Calendar start={start} end={end} onChange={(date)=>{
+														if(date>end){
+															setDtData({start:date,end:date})
+															return
+														}
+														if(date<today){
+															toastRef.SetMessage("오늘보다 이전의 날짜는 선택할 수 없습니다.")
+															return
+														}
+														setDtData({...dtData,start:date})
+													}}>
+														<DayCell></DayCell>
+													</Calendar>
+												):(
+													<Calendar start={start} end={end} onChange={(date)=>{
+														if(date>start){
+															setDtData({...dtData,end:date})
+															return
+														}
+														toastRef.SetMessage("시작 날짜의 다음 날짜부터 선택 가능합니다.")
+													}}>
+														<DayCell></DayCell>
+													</Calendar>
+												)
+											}
+											
+										</div>
+									</div>
+								</>
+							)
+						}
+					</div>
+					<div className="task_inputs">
+						<ul style={{padding:0}}>
+							{CreateTaskGroup()}
+							{
+								type==="-"?(<TaskCard getDataRef={projectData.current.getTaskDataRef} groupId={-1} title="마지막 날 할 일 그룹"></TaskCard>):""
 							}
-							e.preventDefault()
-						}
-					}}></textarea>
-					{/* <input id="prj_name" type="text" placeholder="프로젝트 이름" defaultValue={prjName??""}></input> */}
-					<TypeChoicePart prj={dataToModify}></TypeChoicePart>
-					<textarea rows="5" id="prj_cntnt" placeholder="프로젝트 내용" defaultValue={dataToModify.description} onKeyDown={(e)=>{
-						if(e.key==="Enter"){
-							console.log('enter')
-							// document.querySelector(".add_task .input").focus()
-							// e.preventDefault()
-						}
-					}}></textarea>
-				</div>
-				<div className='task_part'>
-					<InputTaskPart prj={dataToModify}></InputTaskPart>
+						</ul>
+						<div>
+							<input type="button" value="그룹 추가" onClick={()=>{
+								taskGroupCount[type]++
+								setTaskGroupConut({...taskGroupCount})
+							}}></input>
+						</div>
+					</div>
 				</div>
 			</div>
-			<div className="function_btns">
-				<input className="function_btn" type="button" value="뒤로" onClick={()=>{
-					action.current.from="save"
-					navigate(-1)
-				}}></input>
-				<CreateBtn modiPrjName={prjName} resultAction={(projectName,isModi)=>{
-					console.log("result action")
-					if(isModi){
-						action.current.from=""
-						navigate(-2)
-						return
-					}
-					action.current.from="create"
-					action.current.data=projectName
-					// window.onpopstate=(e)=>{console.log(e)}
-					navigate(-1)
-					
-				}}></CreateBtn>
-				{isCreate?"":<DeleteBtn prjName={prjName}></DeleteBtn>}
+			<div className='page_create function_btns'>
+				<label>
+					<div>뒤로가기</div>
+					<input type="button" onClick={()=>{
+						navigate(-1)
+					}}></input>
+				</label>
+				<label>
+					<div>저장</div>
+					<input type="button" onClick={()=>{
+						//title 값 가져오기
+						//type 값 가져오기
+						//start 값 가져오기
+						//end 값 가져오기
+						//할 일 값 가져오기
+						console.log(projectData.current)
+						let tasks=[]
+						Object.values(projectData.current.getTaskDataRef).map((getData)=>{
+							tasks.push(getData())
+						})
+						let msg={
+							email:userInfo.email,
+							title:projectData.current.title,
+							type,start,end,tasks
+						}
+						console.log(JSON.stringify(msg))
+						fetch("https://aiv.p-e.kr:2020/create_project",{
+							method:"POST",
+							headers:{
+								"Content-Type":"application/json"
+							},
+							body:JSON.stringify(msg)
+						}).then((res)=>{
+							console.log(res)
+						})
+					}}></input>
+				</label>
+				
 			</div>
-			{
-				notiCompo.current
-			}
 		</div>
 	)
 }
+
+function DayCell({date}){
+	return(
+		<div style={{aspectRatio: 1,display:"flex",justifyContent:"center",alignItems:"center"}}>
+			<div>
+				{date}
+			</div>
+		</div>
+	)
+}
+
+const Create=CreateV2
 export default Create;

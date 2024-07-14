@@ -9,8 +9,13 @@ import projectBundle from "../module/global/DataBundle";
 import todoList from "../module/global/ToDo";
 import { toastRef } from "./Notices.js";
 import { useNavigate } from "react-router-dom";
+import { GoogleLogin, GoogleOAuthProvider, useGoogleLogin } from "@react-oauth/google";
+import { jwtDecode } from "jwt-decode";
+import userInfo from "../module/global/User.js";
+import GoogleLoginButton from "./GoogleLoginButton.js";
 
 function Lobby(){
+
 	let today=IsNextDay();
 	const navigate=useNavigate()
 	if(today){
@@ -23,20 +28,31 @@ function Lobby(){
 	}
 	return(
 		<div className="borad">
-			{/* <input value="토스트 보이기" type="button" onClick={()=>{
-				toastRef.SetMessage("토스트 메시지")
-			}}></input> */}
-			<ul className="project_list_ul">
-				{/* <li className="project_list_li" >
-					<StyledLink to={'/Create'}>
-						<div className="plus_btn label_base">
-							<div className="plus_btn_value base_style">+</div>
-						</div>
-					</StyledLink>
-				</li> */}
-				<ProjectLists></ProjectLists>
-			</ul>
+			<div>
+				<GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}>
+					<GoogleLoginButton></GoogleLoginButton>
+					{/* <GoogleLogin buttonText="google login" onSuccess={({credential})=>{
+						console.log(jwtDecode(credential))
+						let {email,given_name}=jwtDecode(credential)
+						userInfo.email=email
+						userInfo.name=given_name
+						// fetch(`https://aiv.p-e.kr:2020/signin?accessToken=${credential}`).then((res)=>{
+						// 	console.log(res)
+						// })
+					}} onError={(err)=>{
+						console.log(err)
+					}}
+					cookiePolicy={'single_host_origin'}
+					resposeType="id_token">
+
+					</GoogleLogin> */}
+				</GoogleOAuthProvider>
+			</div>
+			<ProjectLists></ProjectLists>
+			{/* <ul className="project_list_ul">
+			</ul> */}
 			<input style={{display:"none"}} type="button" id="create_btn" onClick={()=>{
+				fetch("")
 				navigate("/Create")
 			}}></input>
 			<label htmlFor="create_btn">
@@ -44,11 +60,6 @@ function Lobby(){
 					<div className="plus_btn_value base_style">+</div>
 				</div>
 			</label>
-			{/* <StyledLink to={'/Create'}>
-				<div className="plus_btn label_base">
-					<div className="plus_btn_value base_style">+</div>
-				</div>
-			</StyledLink> */}
 		</div>
 	)
 }

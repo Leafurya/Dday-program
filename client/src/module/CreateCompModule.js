@@ -61,7 +61,7 @@ function GetTaskFromInput(targetName){ //씀
 	return tasks;
 }
 function TextAreaKeyInput(e){
-	console.log(e)
+	// console.log(e)
 	if(e.keyCode===13){
 		let textInput=e.target
 		let name=e.target.dataset.name

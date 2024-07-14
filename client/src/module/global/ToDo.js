@@ -7,6 +7,7 @@ class ToDoList{
 	constructor(){
 		this.taskDone=false
 		this.stat=new Stat(0)
+		this.state=StateConst.ProjectStart
 	}
 	Init(){
 		let jsonString=localStorage.getItem(this.#storageName)??"{}"

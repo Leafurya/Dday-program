@@ -1,9 +1,9 @@
 import React, { useEffect, useRef } from 'react';
 import "../style/BaseStyle.css";
-import "../style/Create.css";
+// import "../style/Create.css";
 import "../style/Align.css";
 
-import {DeleteBtn,InputTaskPart,TypeChoicePart} from "./sub-compo/CreateSubCompos.js";
+// import {DeleteBtn,InputTaskPart,TypeChoicePart} from "./sub-compo/CreateSubCompos.js";
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import projectBundle from '../module/global/DataBundle';
 import TopNavigator from './TopNavigator';
@@ -126,7 +126,7 @@ export default ({})=>{
 		<div className="borad">
 			<TopNavigator title="오늘 할 일"></TopNavigator>
 			<div className="main_platform">
-				<InputTaskPart prj={{tasks:todoList.data}}></InputTaskPart>
+				{/* <InputTaskPart prj={{tasks:todoList.data}}></InputTaskPart> */}
 			</div>
 			<div className="function_btns">
 				<input className="function_btn" type="button" value="뒤로" onClick={()=>{

@@ -2,5 +2,6 @@
 	background: radial-gradient( #775cd2, #856fce);
 }
 .base_style{
-	color: white;
+	/* color: white; */
+	color: white !important;
 }

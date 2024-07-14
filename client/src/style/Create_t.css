@@ -52,7 +52,7 @@ input[type=date]{
 	padding: 0 7px 0 0;
 } */
 textarea::placeholder{
-	color: rgba(255, 255, 255, 0.5);
+	color: rgb(69, 69, 69);
 }
 textarea{
 	resize: none;

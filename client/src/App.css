@@ -22,7 +22,8 @@ li{
 	overflow:hidden;
 	height: 100%;
 	width: 100%;
-	background-color: #947fda;
+	background-color: #E3E9FF;
+	/* background-color: #7965bd; */
 }
 textarea,input{
 	font-family: 'Jeju Gothic', sans-serif;
