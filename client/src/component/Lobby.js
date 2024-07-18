@@ -26,11 +26,12 @@ function Lobby(){
 		projectBundle.Save()
 		UpdateOldDate(today);
 	}
+	console.log(window.sessionStorage)
 	return(
 		<div className="borad">
-			<div>
+			<div style={{display:"flex",justifyContent:"center",alignItems:"center"}}>
 				<GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}>
-					<GoogleLoginButton></GoogleLoginButton>
+					<GoogleLoginButton></GoogleLoginButton> 
 					{/* <GoogleLogin buttonText="google login" onSuccess={({credential})=>{
 						console.log(jwtDecode(credential))
 						let {email,given_name}=jwtDecode(credential)
@@ -44,7 +45,6 @@ function Lobby(){
 					}}
 					cookiePolicy={'single_host_origin'}
 					resposeType="id_token">
-
 					</GoogleLogin> */}
 				</GoogleOAuthProvider>
 			</div>
