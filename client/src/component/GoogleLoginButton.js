@@ -6,7 +6,7 @@ export default ()=>{
 			try{
 				const {code}=tokenResponse
 				console.log(tokenResponse)
-				const res=await fetch("https://aiv.p-e.kr:2020/api/signin/google",{
+				const res=await fetch("https://aiv.p-e.kr:2020/auth/google",{
 					method:"POST",
 					headers:{
 						"Content-Type":"application/json"
@@ -37,7 +37,6 @@ export default ()=>{
 		onFailure:(res)=>{console.log(res)},
 		flow:"auth_code",
 		accessType:"offline"
-		
 	})
 
 	return(
