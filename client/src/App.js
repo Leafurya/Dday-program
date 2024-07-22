@@ -26,6 +26,8 @@ function App() {
 		todoList.Init()
 		projectBundle.Init()
 		setRe([])
+		//access code 저장?
+		//
 	},[])
 	
 	if(process.env.NODE_ENV!=="development"){

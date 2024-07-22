@@ -26,7 +26,7 @@ function Lobby(){
 		projectBundle.Save()
 		UpdateOldDate(today);
 	}
-	console.log(window.sessionStorage)
+	// console.log(window.sessionStorage)
 	return(
 		<div className="borad">
 			<div style={{display:"flex",justifyContent:"center",alignItems:"center"}}>

@@ -65,9 +65,9 @@ export default ({select,fontSize,textAlign,children,onChange,start,end,min})=>{
 						// setSelected(date)
 					})
 				})(dayEle[index])}>
-					<div style={{width:"100%",height:"100%"}}>
+					{/* <div style={{}}> */}
 						{React.cloneElement(children,{date:dayEle[index++]?.getDate()})}
-					</div>
+					{/* </div> */}
 				</td>
 			)
 		}

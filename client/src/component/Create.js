@@ -56,7 +56,6 @@ function CreateV2({}){
 	const projectData=useRef({
 		getTaskDataRef:{}
 	})
-	console.log(projectData)
 
 	const [param,setParam]=useSearchParams()
 	const [selectMode,setSelectMode]=useState("end")

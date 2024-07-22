@@ -29,9 +29,20 @@
 	border: 1px solid rgb(151, 151, 151);
 	padding:0;
 }
-#calendar .today > div{
-	border: 1px solid red;
-	z-index: 10;
+/* #calendar td > div{
+	display: flex;
+	align-items: center;
+	justify-content: center;
+} */
+#calendar .today > div > div{
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background-color: rgb(255, 165, 165);
+	height:80%;
+	width: 80%;
+	border-radius: 50%;
+	/* margin-bottom:-4px; */
 }
 #calendar .selected{
 	background-color: #cfcfcf;
