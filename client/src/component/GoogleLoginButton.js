@@ -35,7 +35,8 @@ export default ()=>{
 			// }
 		},
 		onFailure:(res)=>{console.log(res)},
-		flow:"auth_code"
+		flow:"auth_code",
+		accessType:"offline"
 		
 	})
 
