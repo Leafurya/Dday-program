@@ -1,4 +1,6 @@
 import { useGoogleLogin } from "@react-oauth/google"
+import { getCookie } from "../module/global/Cookie"
+import { SetAuthResult } from "../module/global/Auth"
 
 export default ()=>{
 	const login=useGoogleLogin({
@@ -6,15 +8,19 @@ export default ()=>{
 			try{
 				const {code}=tokenResponse
 				console.log(tokenResponse)
-				const res=await fetch("https://aiv.p-e.kr:2020/auth/google",{
+				fetch(`${process.env.REACT_APP_API_HOST}/auth/google`,{
+					credentials:"include",
 					method:"POST",
 					headers:{
 						"Content-Type":"application/json"
 					},
 					body:JSON.stringify({code})
+				}).then((res)=>{
+					console.log(res)
+					SetAuthResult(true)
 				})
-				const data=await res.json()
-				console.log(data)
+				// const data=await res.text()
+				// console.log(getCookie("api_sid"))
 			}catch(e){
 				console.log(e)
 			}

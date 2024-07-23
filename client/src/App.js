@@ -15,6 +15,7 @@ import InstallCompo from './component/sub-compo/InstallCompo.js';
 import { Toast } from './component/Notices.js';
 import { GoogleLogin, GoogleOAuthProvider } from '@react-oauth/google';
 import { jwtDecode } from 'jwt-decode';
+import { Authentication } from './module/global/Auth.js';
 
 function App() {
 	const install=useRef()
@@ -25,7 +26,9 @@ function App() {
 		InitDate()
 		todoList.Init()
 		projectBundle.Init()
-		setRe([])
+		Authentication(()=>{
+			setRe([])
+		})
 		//access code 저장?
 		//
 	},[])

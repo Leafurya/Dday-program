@@ -9,10 +9,11 @@ import projectBundle from "../module/global/DataBundle";
 import todoList from "../module/global/ToDo";
 import { toastRef } from "./Notices.js";
 import { useNavigate } from "react-router-dom";
-import { GoogleLogin, GoogleOAuthProvider, useGoogleLogin } from "@react-oauth/google";
+// import { GoogleLogin, GoogleOAuthProvider, useGoogleLogin } from "@react-oauth/google";
 import { jwtDecode } from "jwt-decode";
 import userInfo from "../module/global/User.js";
 import GoogleLoginButton from "./GoogleLoginButton.js";
+import { GetAuthResult } from "../module/global/Auth.js";
 
 function Lobby(){
 
@@ -30,23 +31,13 @@ function Lobby(){
 	return(
 		<div className="borad">
 			<div style={{display:"flex",justifyContent:"center",alignItems:"center"}}>
-				<GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}>
-					<GoogleLoginButton></GoogleLoginButton> 
-					{/* <GoogleLogin buttonText="google login" onSuccess={({credential})=>{
-						console.log(jwtDecode(credential))
-						let {email,given_name}=jwtDecode(credential)
-						userInfo.email=email
-						userInfo.name=given_name
-						// fetch(`https://aiv.p-e.kr:2020/signin?accessToken=${credential}`).then((res)=>{
-						// 	console.log(res)
-						// })
-					}} onError={(err)=>{
-						console.log(err)
-					}}
-					cookiePolicy={'single_host_origin'}
-					resposeType="id_token">
-					</GoogleLogin> */}
-				</GoogleOAuthProvider>
+				{
+					GetAuthResult()?(
+						<input type="button" value="로그아웃"></input>
+					):(
+						<GoogleLoginButton></GoogleLoginButton>
+					)
+				}
 			</div>
 			<ProjectLists></ProjectLists>
 			{/* <ul className="project_list_ul">
