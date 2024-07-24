@@ -52,7 +52,6 @@ function App() {
 					</Routes>
 				</BrowserRouter>
 				<Toast></Toast>
-				
 			</div>
 		)
 	}

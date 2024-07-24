@@ -96,7 +96,7 @@ function CreateV2({}){
 				<div className="title">
 					<TextInput placeholder={'제목'} className={"input"} data={"task_input"} id="input_for_title" onChange={(event)=>{
 						projectData.current.title=event.target.value
-					}}></TextInput>
+					}} style={{color:"black"}}></TextInput>
 				</div>
 				<div className='type_pick'>
 					<input style={{display:"none"}} id='type_plus' type='radio' name="type" value="+" onClick={()=>{
@@ -259,12 +259,11 @@ function CreateV2({}){
 							tasks.push(getData())
 						})
 						let msg={
-							email:userInfo.email,
 							title:projectData.current.title,
 							type,start,end,tasks
 						}
 						console.log(JSON.stringify(msg))
-						fetch("https://aiv.p-e.kr:2020/create_project",{
+						fetch(`${process.env.REACT_APP_API_HOST}/api/create_project`,{
 							method:"POST",
 							headers:{
 								"Content-Type":"application/json"
