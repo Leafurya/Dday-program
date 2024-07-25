@@ -1,6 +1,7 @@
 import { useGoogleLogin } from "@react-oauth/google"
 import { getCookie } from "../module/global/Cookie"
 import { SetAuthResult } from "../module/global/Auth"
+import { share } from "../module/global/ShareMethod"
 
 export default ()=>{
 	const login=useGoogleLogin({
@@ -18,6 +19,7 @@ export default ()=>{
 				}).then((res)=>{
 					console.log(res)
 					SetAuthResult(true)
+					share.app.setRe([])
 				})
 				// const data=await res.text()
 				// console.log(getCookie("api_sid"))

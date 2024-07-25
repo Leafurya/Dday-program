@@ -13,10 +13,10 @@ import { useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 import userInfo from "../module/global/User.js";
 import GoogleLoginButton from "./GoogleLoginButton.js";
-import { GetAuthResult } from "../module/global/Auth.js";
+import { GetAuthResult, SetAuthResult } from "../module/global/Auth.js";
+import { share } from "../module/global/ShareMethod.js";
 
 function Lobby(){
-
 	let today=IsNextDay();
 	const navigate=useNavigate()
 	if(today){
@@ -33,7 +33,18 @@ function Lobby(){
 			<div style={{display:"flex",justifyContent:"center",alignItems:"center"}}>
 				{
 					GetAuthResult()?(
-						<input type="button" value="로그아웃"></input>
+						<input type="button" value="로그아웃" onClick={()=>{
+							fetch(`${process.env.REACT_APP_API_HOST}/api/logout`,{
+								method:"GET",
+								credentials:"include"
+							}).then((res)=>{
+								if(res.status===200){
+									console.log(res.status)
+									SetAuthResult(false)
+									share.app.setRe([])
+								}
+							})
+						}}></input>
 					):(
 						<GoogleLoginButton></GoogleLoginButton>
 					)

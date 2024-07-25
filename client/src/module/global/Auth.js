@@ -22,3 +22,6 @@ export function GetAuthResult(){
 export function SetAuthResult(value){
 	authResult=value
 }
+export function Logout(){
+	
+}

@@ -16,10 +16,14 @@ import { Toast } from './component/Notices.js';
 import { GoogleLogin, GoogleOAuthProvider } from '@react-oauth/google';
 import { jwtDecode } from 'jwt-decode';
 import { Authentication } from './module/global/Auth.js';
+import { share } from './module/global/ShareMethod.js';
 
 function App() {
 	const install=useRef()
 	const [re,setRe]=useState([])
+	share.app={
+		setRe
+	}
 
 	useEffect(()=>{
 		InitAttendance()

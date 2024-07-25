@@ -1,11 +1,3 @@
-let obj={
-	hello:{
-		a:1
-	}
-}
-function set(obj){
-	obj.a=2
-}
-console.log(obj)
-set(obj.hello)
-console.log(obj)
+let yee=parseInt(Date.now()/1000)
+console.log(Date.now())
+console.log(yee)
