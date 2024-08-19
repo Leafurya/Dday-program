@@ -57,23 +57,21 @@ function CreateV2({}){
 		getTaskDataRef:{}
 	})
 
+	
 	const [param,setParam]=useSearchParams()
 	const [selectMode,setSelectMode]=useState("end")
 
 	const [content,setContent]=useState("")
-	const [type,setType]=useState("+")
-	const [taskGroupCount,setTaskGroupConut]=useState({
-		"+":1,
-		"-":1
-	})
+	const [type,setType]=useState(0) //0: +, 1: -
+	const [taskGroupCount,setTaskGroupConut]=useState([1,1])
 	const [dtData,setDtData]=useState({
 		start:new Date(today)
 	})
 
 	
 	let {start,end}=dtData
-
-	// const [prjData,setData]=useState(projectBundle.GetProject(param.get("name"))??new Project("",CreateDataObj("",null,"+",0,null)))
+	console.log("start",start)
+	// const [prjData,setData]=useState(projectBundle.GetProject(param.get("name"))??new Project("",CreateDataObj("",null,0,0,null)))
 	const navigate=useNavigate()
 
 	useEffect(()=>{
@@ -103,22 +101,21 @@ function CreateV2({}){
 						if(start>today){
 							setDtData({...dtData,start:today})
 						}
-						setType("+")
-
+						setType(0)
 					}}></input>
-					<input style={{display:"none"}} id='type_min' type='radio' name="type" value="-" onClick={()=>{setType("-")}}></input>
+					<input style={{display:"none"}} id='type_min' type='radio' name="type" value="-" onClick={()=>{setType(1)}}></input>
 
 					<div style={{display:"flex"}}>
-						<label className={type==="+"?"checked":""} htmlFor='type_plus'>
+						<label className={type?"":"checked"} htmlFor='type_plus'>
 							D+1
 						</label>
-						<label className={type==="-"?"checked":""} htmlFor='type_min'>
+						<label className={type?"checked":""} htmlFor='type_min'>
 							D-Day
 						</label>
 					</div>
 					<div style={{backgroundColor:"white"}}>
 						{
-							type==="+"?(
+							type===0?(
 								<>
 									<div>
 										D+{GetDateDiff(today,start)+1}
@@ -258,9 +255,13 @@ function CreateV2({}){
 						Object.values(projectData.current.getTaskDataRef).map((getData)=>{
 							tasks.push(getData())
 						})
+						console.log("tasks",tasks)
 						let msg={
 							title:projectData.current.title,
-							type,start,end,tasks
+							type,
+							start:(start.getTime()/1000),
+							end:(end?.getTime()/1000)
+							,tasks
 						}
 						console.log(JSON.stringify(msg))
 						fetch(`${process.env.REACT_APP_API_HOST}/api/create_project`,{
@@ -268,8 +269,13 @@ function CreateV2({}){
 							headers:{
 								"Content-Type":"application/json"
 							},
-							body:JSON.stringify(msg)
+							body:JSON.stringify(msg),
+							credentials:"include"
 						}).then((res)=>{
+							if(res.status===200){
+								toastRef.SetMessage("프로젝트를 생성했습니다.")
+								navigate(-1)
+							}
 							console.log(res)
 						})
 					}}></input>

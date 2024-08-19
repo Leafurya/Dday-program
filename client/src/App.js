@@ -17,6 +17,7 @@ import { GoogleLogin, GoogleOAuthProvider } from '@react-oauth/google';
 import { jwtDecode } from 'jwt-decode';
 import { Authentication } from './module/global/Auth.js';
 import { share } from './module/global/ShareMethod.js';
+import { ProjectBundle } from './module/data/DataBundle.js';
 
 function App() {
 	const install=useRef()
@@ -30,9 +31,12 @@ function App() {
 		InitDate()
 		todoList.Init()
 		projectBundle.Init()
-		Authentication(()=>{
+		Authentication((data)=>{
+			let test=new ProjectBundle(data)
+			console.log(test)
 			setRe([])
 		})
+		//프로젝트 받아오기
 		//access code 저장?
 		//
 	},[])
@@ -43,25 +47,25 @@ function App() {
 		}
 	}
 
-	if(Object.keys(projectBundle).length){
-		return (
-			<div className="App">
-				<BrowserRouter>
-					<Routes>
-						<Route path="/" element={<Lobby/>}></Route>
-						<Route path="/Create" element={<Create/>}></Route>
-						<Route path="/Project" element={<Project/>}></Route>
-						<Route path="/ToDoToday" element={<ToDoToday/>}></Route>
-						<Route path="/ToDoModify" element={<ToDoModify/>}></Route>
-					</Routes>
-				</BrowserRouter>
-				<Toast></Toast>
-			</div>
-		)
-	}
-	else{
-		return "loading"
-	}
+	return (
+		<div className="App">
+			<BrowserRouter>
+				<Routes>
+					<Route path="/" element={<Lobby/>}></Route>
+					<Route path="/Create" element={<Create/>}></Route>
+					<Route path="/Project" element={<Project/>}></Route>
+					<Route path="/ToDoToday" element={<ToDoToday/>}></Route>
+					<Route path="/ToDoModify" element={<ToDoModify/>}></Route>
+				</Routes>
+			</BrowserRouter>
+			<Toast></Toast>
+		</div>
+	)
+	// if(Object.keys(projectBundle).length){
+	// }
+	// else{
+	// 	return "loading"
+	// }
 }
 
 export default App;

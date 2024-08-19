@@ -214,6 +214,9 @@ function ProjectLists(){
 	<ul className="project_list_ul">
 		<ProjectCard project={todoList} tasks={todoList.GetNowTasks()} day={"오늘 할 일"} title=""></ProjectCard>
 		{
+			// projectBundle.data.map((project)=>{
+			// 	return <ProjectCard key={project.name} project={project} tasks={project.GetNowTasks()} day={project.GetDay()} title={project.name}></ProjectCard>
+			// })
 			Object.values(projectBundle.data).map((project)=>{
 				return <ProjectCard key={project.name} project={project} tasks={project.GetNowTasks()} day={project.GetDay()} title={project.name}></ProjectCard>
 			})

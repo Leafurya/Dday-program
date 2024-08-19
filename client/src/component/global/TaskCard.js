@@ -21,11 +21,10 @@ function TaskInput({content,onDelete,onChange}){
 export default ({title,groupId,tasks,getDataRef})=>{
 	const[taskList,setTaskList]=useState(tasks??[])
 	
-	useEffect(()=>{
-		getDataRef[groupId]=()=>{
-			return taskList
-		}
-	},[])
+	getDataRef[groupId]=()=>{
+		// console.log("taskList"+groupId,taskList)
+		return taskList
+	}
 
 	useEffect(()=>{
 		document.querySelector(`#group_${groupId} ul.task_list`)?.childNodes[taskList.length]?.querySelector("textarea").focus()

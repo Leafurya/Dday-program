@@ -7,13 +7,14 @@ export function Authentication(callback){
 	}).then((res)=>{
 		if(res.status===200){
 			authResult=true
-			return res.text()
+			return res.json()
 		}
 		authResult=false
-		callback()
+		// callback()
+		// return res.json()
 	}).then((data)=>{
 		console.log(data)
-		callback()
+		callback(data)
 	})
 }
 export function GetAuthResult(){

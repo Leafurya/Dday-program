@@ -15,6 +15,7 @@ import userInfo from "../module/global/User.js";
 import GoogleLoginButton from "./GoogleLoginButton.js";
 import { GetAuthResult, SetAuthResult } from "../module/global/Auth.js";
 import { share } from "../module/global/ShareMethod.js";
+import { useEffect } from "react";
 
 function Lobby(){
 	let today=IsNextDay();
@@ -27,6 +28,10 @@ function Lobby(){
 		projectBundle.Save()
 		UpdateOldDate(today);
 	}
+	useEffect(()=>{
+		console.log("lobby")
+		
+	},[])
 	// console.log(window.sessionStorage)
 	return(
 		<div className="borad">

@@ -137,7 +137,7 @@ export class ProjectBundle{
 	#storageName="projects"
 	
 	constructor(){
-		
+		this.data={}
 	}
 	Init(){
 		let jsonString=localStorage.getItem(this.#storageName)??"{}"
