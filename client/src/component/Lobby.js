@@ -21,12 +21,12 @@ function Lobby(){
 	let today=IsNextDay();
 	const navigate=useNavigate()
 	if(today){
-		let dateDelta=today-GetOldDate();
-		UpdateAttendance(dateDelta);
-		todoList.DailyUpdate()
-		projectBundle.DailyUpdate(dateDelta)
-		projectBundle.Save()
 		UpdateOldDate(today);
+		let dateDelta=today-GetOldDate();
+		// UpdateAttendance(dateDelta);
+		// todoList.DailyUpdate()
+		// projectBundle.DailyUpdate(dateDelta)
+		// projectBundle.Save()
 	}
 	useEffect(()=>{
 		console.log("lobby")
@@ -58,15 +58,22 @@ function Lobby(){
 			<ProjectLists></ProjectLists>
 			{/* <ul className="project_list_ul">
 			</ul> */}
-			<input style={{display:"none"}} type="button" id="create_btn" onClick={()=>{
-				fetch("")
-				navigate("/Create")
-			}}></input>
-			<label htmlFor="create_btn">
+			<div style={{padding:"15px"}}>
+				{/* <label htmlFor="create_btn"> */}
+					<input style={{display:"none"}} type="button" id="create_btn" onClick={()=>{
+						navigate("/Create")
+					}}></input>
+					<label htmlFor="create_btn" className="plus_btn label_base">
+						<div className="plus_btn_value base_style">+</div>
+					</label>
+				{/* </label> */}
+			</div>
+			
+			{/* <label htmlFor="create_btn">
 				<div className="plus_btn label_base">
 					<div className="plus_btn_value base_style">+</div>
 				</div>
-			</label>
+			</label> */}
 		</div>
 	)
 }

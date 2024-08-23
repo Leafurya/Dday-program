@@ -21,10 +21,10 @@
 
 
 .label_base{
-	margin: 0 15px 0 15px;
+	/* margin: 0 15px 0 15px; */
 	/* border: 1px solid gray;
 	border-radius: 10px; */
-	margin-top: 15px;
+	/* margin-top: 15px; */
 }
 .plus_btn{
 	height:50px;
@@ -33,8 +33,8 @@
 	align-items: center;
 	justify-content: center;
 	/* background-color: #947fda; */
-	background-color: #7965bd;
-	margin: 15px;
+	background-color: #AF7EEB;
+	
 }
 
 /* .project_list_li input{

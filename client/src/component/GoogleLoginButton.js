@@ -2,6 +2,7 @@ import { useGoogleLogin } from "@react-oauth/google"
 import { getCookie } from "../module/global/Cookie"
 import { SetAuthResult } from "../module/global/Auth"
 import { share } from "../module/global/ShareMethod"
+import { ProjectBundle } from "../module/data/DataBundle"
 
 export default ()=>{
 	const login=useGoogleLogin({
@@ -20,6 +21,12 @@ export default ()=>{
 					console.log(res)
 					SetAuthResult(true)
 					share.app.setRe([])
+					return res.json()
+					// SetAuthResult(true)
+					// // let test=new ProjectBundle(data)
+				}).then((data)=>{
+					console.log(data)
+					share.projectLists.setProjectBundle(new ProjectBundle(data))
 				})
 				// const data=await res.text()
 				// console.log(getCookie("api_sid"))

@@ -1,4 +1,5 @@
 import StateConst from "../global/StateConst";
+import { GetDateDiff } from "../TimeModule";
 
 export class Tasks{
 	constructor(data){
@@ -42,7 +43,8 @@ export class Tasks{
 export class Project{
 	#nowDataVersion=2
 	constructor(data){
-		let {name,type,end,start,tasks,nowTaskGroup}=data
+		let {id,name,type,end,start,tasks,nowTaskGroup}=data
+		this.id=id
 		// this.data=data
 		// data=this.CheckVersion(data)
 		this.name=name
@@ -56,6 +58,7 @@ export class Project{
 		this.start=start
 		
 		this.state=data.state??StateConst.ProjectStart
+		this.nowTaskGroup=nowTaskGroup
 	}
 	CheckVersion(jsonData){
 		let result=jsonData
@@ -92,21 +95,19 @@ export class Project{
 		return (this.lastTasks.GetTaskCount()>0?true:false)
 	}
 	GetNowTasks(){
-		if(this?.lastTasks){
-			if(this.day<=0&&Object.keys(this.lastTasks).length!==0){
-				return this.lastTasks;
-			}
-		}
-		return this.tasks
+		return this.tasks[this.nowTaskGroup]
 	}
 	GetDay(){
+
 		switch(this.D){
 			case "+":{
-				return `D+${this.day}`
+				return `D+${GetDateDiff(Date.now(),this.start.getTime())}`
 			}
 			case "-":{
-				if(this.day>0){
-					return `D-${this.day}`
+				let diff=GetDateDiff(Date.now(),this.end?.getTime())
+				console.log("diff",diff)
+				if(diff>0){
+					return `D-${diff}`
 				}
 				if(this.state===StateConst.ProjectDone){
 					return "D-END"
@@ -114,7 +115,7 @@ export class Project{
 				if(this.state===StateConst.WaitToModify){
 					return ""
 				}
-				if(this.state===StateConst.ProjectStart&&this.day===0){
+				if(this.state===StateConst.ProjectStart&&diff===0){
 					return "D-DAY"
 				}
 			}
@@ -137,31 +138,36 @@ export class ProjectBundle{
 	
 	constructor(rowData){
 		this.data=[]
-		rowData.map((item,index)=>{
-			let{idProject,content,end,idGroup,idTask,name,start,type,checked,nowTaskGroup}=item
-			
-			if(!this.data[idProject]){
-				this.data[idProject]=new Project({
-					name,
-					type:(type?"-":"+"),
-					end:(end?new Date(end*1000):undefined),
-					start:new Date(start*1000),
-					nowTaskGroup
-				})
-				// this.data[idProject]={
-				// 	name,
-				// 	type:(type?"-":"+"),
-				// 	end:(end?new Date(end*1000):undefined),
-				// 	start:new Date(start*1000),
-				// 	tasks:[],
-				// 	nowTaskGroup
-				// }
-			}
-			if(!this.data[idProject].tasks[idGroup]){
-				this.data[idProject].tasks[idGroup]=[]
-			}
-			this.data[idProject].tasks[idGroup][idTask]={content,checked}
-		})
+		try{
+			rowData.map((item,index)=>{
+				let{idProject,content,end,idGroup,idTask,name,start,type,checked,nowTaskGroup}=item
+				
+				if(!this.data[idProject]){
+					this.data[idProject]=new Project({
+						id:idProject,
+						name,
+						type:(type?"-":"+"),
+						end:(end?new Date(end*1000):undefined),
+						start:(start?new Date(start*1000):undefined),
+						nowTaskGroup
+					})
+					// this.data[idProject]={
+					// 	name,
+					// 	type:(type?"-":"+"),
+					// 	end:(end?new Date(end*1000):undefined),
+					// 	start:new Date(start*1000),
+					// 	tasks:[],
+					// 	nowTaskGroup
+					// }
+				}
+				if(!this.data[idProject].tasks[idGroup]){
+					this.data[idProject].tasks[idGroup]=[]
+				}
+				this.data[idProject].tasks[idGroup][idTask]={content,checked}
+			})
+		}catch(e){
+			console.log(e)
+		}
 		console.log(this.data)
 	}
 	// Init(){
@@ -180,15 +186,18 @@ export class ProjectBundle{
 	// 	return (prjName in this.data)
 	// }
 	// Save(){
-	// 	localStorage.setItem(this.#storageName,JSON.stringify(this.data))
+	// 	let jsonData=JSON.stringify(this.data)
+	// 	localStorage.setItem(this.#storageName,jsonData)
+	// 	jsonData.replace()
 	// }
-	// Append(prjName,data){
-	// 	if(this.IsExist(prjName)){
-	// 		return false
-	// 	}
-	// 	this.data[prjName]=new Project(prjName,data)
-	// 	return true
-	// }
+	Append(project){
+		this.data[project.id]=project
+		// if(this.IsExist(prjName)){
+		// 	return false
+		// }
+		// this.data[prjName]=new Project(prjName,data)
+		// return true
+	}
 	// Modify(oldName,newName,data){
 	// 	if(!this.Append(newName,data)){
 	// 		return false

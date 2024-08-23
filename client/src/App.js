@@ -2,7 +2,7 @@ import './App.css';
 import Lobby from './component/Lobby.js';
 import Project from './component/Project.js';
 import Create from './component/Create.js';
-import React, {useEffect,useRef,useState} from "react";
+import React, {useCallback, useEffect,useRef,useState} from "react";
 
 import {InitDate} from './module/TimeModule'
 import {InitAttendance} from './module/AttendanceModule.js'
@@ -22,18 +22,35 @@ import { ProjectBundle } from './module/data/DataBundle.js';
 function App() {
 	const install=useRef()
 	const [re,setRe]=useState([])
+	const projectBundle=useRef(undefined)
 	share.app={
-		setRe
+		setRe,
+		setProjectBundle:useCallback((bundle)=>{
+			projectBundle.current=bundle
+			share.projectLists.setRe([])
+		}),
+		appendProject:useCallback((project)=>{
+			projectBundle.current.Append(project)
+			share.projectLists.setRe([])
+		}),
+		getProjectBundle:useCallback(()=>{
+			return projectBundle.current
+		})
 	}
-
 	useEffect(()=>{
-		InitAttendance()
+		// InitAttendance()
 		InitDate()
-		todoList.Init()
-		projectBundle.Init()
+		// todoList.Init()
+		// projectBundle.Init()
+		/**
+		 * 로그인 시 projectlists에 state로 저장된 프로젝트 번들을 새 것으로 교체하자.
+		 * 이때 문제점: 수정할 때 수정할 프로젝트의 데이터는 어떻게 받아오지?
+		 * 서버로부터 받아올 수 있겠지만 그건 별로일 것 같고. state를 받아오는 방법으로 해볼자.
+		 */
 		Authentication((data)=>{
-			let test=new ProjectBundle(data)
-			console.log(test)
+			// let test=new ProjectBundle(data)
+			// console.log(test)
+			share.app.setProjectBundle(new ProjectBundle(data))
 			setRe([])
 		})
 		//프로젝트 받아오기

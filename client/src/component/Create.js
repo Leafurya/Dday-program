@@ -5,8 +5,7 @@ import "../style/Align.css";
 
 // import {DeleteBtn,InputTaskPart,TypeChoicePart,CreateBtn} from "./sub-compo/CreateSubCompos.js";
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import projectBundle, { Project } from '../module/global/DataBundle';
-import TopNavigator from './TopNavigator';
+import projectBundle, { Project } from '../module/data/DataBundle';
 import { Confrim, toastRef } from './Notices.js';
 import { GetElement, GetTaskFromInput } from '../module/CreateCompModule.js';
 import { CreateDataObj } from '../module/DataModule.js';
@@ -16,6 +15,7 @@ import { GetDateDiff } from '../module/TimeModule.js';
 import TaskCard from './global/TaskCard.js';
 import Task from '../module/data/Task.js';
 import userInfo from '../module/global/User.js';
+import { share } from '../module/global/ShareMethod.js';
 
 
 function InspectSaveData(originData){
@@ -91,11 +91,6 @@ function CreateV2({}){
 	return(
 		<div className="borad">
 			<div className='main_platform'>
-				<div className="title">
-					<TextInput placeholder={'제목'} className={"input"} data={"task_input"} id="input_for_title" onChange={(event)=>{
-						projectData.current.title=event.target.value
-					}} style={{color:"black"}}></TextInput>
-				</div>
 				<div className='type_pick'>
 					<input style={{display:"none"}} id='type_plus' type='radio' name="type" value="+" onClick={()=>{
 						if(start>today){
@@ -219,11 +214,16 @@ function CreateV2({}){
 							)
 						}
 					</div>
+					<div className="title">
+						<TextInput placeholder={'제목'} className={"input"} data={"task_input"} id="input_for_title" onChange={(event)=>{
+							projectData.current.title=event.target.value
+						}} style={{color:"black"}}></TextInput>
+					</div>
 					<div className="task_inputs">
 						<ul style={{padding:0}}>
 							{CreateTaskGroup()}
 							{
-								type==="-"?(<TaskCard getDataRef={projectData.current.getTaskDataRef} groupId={-1} title="마지막 날 할 일 그룹"></TaskCard>):""
+								type?(<TaskCard getDataRef={projectData.current.getTaskDataRef} groupId={-1} title="마지막 날 할 일 그룹"></TaskCard>):""
 							}
 						</ul>
 						<div>
@@ -263,6 +263,18 @@ function CreateV2({}){
 							end:(end?.getTime()/1000)
 							,tasks
 						}
+
+						console.log("msg",msg)
+						let newProject=new Project({
+							name:projectData.current.title,
+							type:(type?"-":"+"),
+							end:(end?new Date(end):undefined),
+							start:(start?new Date(start):undefined),
+							nowTaskGroup:0
+						})
+						console.log("newProject",newProject)
+						newProject.tasks=tasks
+
 						console.log(JSON.stringify(msg))
 						fetch(`${process.env.REACT_APP_API_HOST}/api/create_project`,{
 							method:"POST",
@@ -273,10 +285,17 @@ function CreateV2({}){
 							credentials:"include"
 						}).then((res)=>{
 							if(res.status===200){
-								toastRef.SetMessage("프로젝트를 생성했습니다.")
-								navigate(-1)
+								return res.json()
 							}
 							console.log(res)
+						}).then((data)=>{
+							if(data){
+								toastRef.SetMessage("프로젝트를 생성했습니다.")
+								newProject.id=data.idProject
+								share.app.appendProject(newProject)
+								share.projectLists.setRe([])
+								navigate(-1)
+							}
 						})
 					}}></input>
 				</label>

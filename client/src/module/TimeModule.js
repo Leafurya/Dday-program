@@ -47,8 +47,12 @@ function GetPickedDate(date){
 	
 	return (Math.floor(pickedDate.getTime()/86400000)+devDateDelta+1);
 }
+// function GetDateDiff(newDate,oldDate){
+// 	let diff = Math.abs(newDate.getTime() - oldDate.getTime());
+// 	return Math.ceil(diff / (1000 * 60 * 60 * 24));
+// }
 function GetDateDiff(newDate,oldDate){
-	let diff = Math.abs(newDate.getTime() - oldDate.getTime());
+	let diff = Math.abs(newDate - oldDate);
 	return Math.ceil(diff / (1000 * 60 * 60 * 24));
 }
 
